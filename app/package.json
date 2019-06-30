@@ -6,9 +6,7 @@
     "start": "ng serve",
     "build": "ng build --prod --base-href /portfolio/",
     "deploy": "ts-node deploy.ts",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {

@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { MaterialModule } from './lib/material.module'
+import { HeaderComponent } from './components/header/header.component'
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    HeaderComponent
+  ],
   imports: [
     CommonModule,
     MaterialModule
   ],
   exports: [
-    MaterialModule
+    MaterialModule,
+    HeaderComponent
   ]
 })
 export class CoreModule { }

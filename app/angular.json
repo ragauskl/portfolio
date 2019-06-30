@@ -31,7 +31,8 @@
               "src/styles.scss",
               "src/theme/main.scss"
             ],
-            "scripts": [],
+            "scripts": [
+            ],
             "stylePreprocessorOptions": {
               "includePaths": [
                   "src/app/core/styles"
@@ -97,7 +98,8 @@
               "src/styles.scss",
               "src/theme/main.scss"
             ],
-            "scripts": [],
+            "scripts": [
+            ],
             "stylePreprocessorOptions": {
               "includePaths": [
                   "src/app/core/styles"
