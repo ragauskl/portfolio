@@ -10,6 +10,7 @@ export class ThemeService {
 
   constructor () {
     this._theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+    this.updateTheme()
   }
 
   get isDark () {
@@ -17,13 +18,12 @@ export class ThemeService {
   }
 
   switchTheme () {
-    if (this._theme === 'light') {
-      this._theme = 'dark'
-      document.body.className = 'dark-theme'
-    } else {
-      this._theme = 'light'
-      document.body.className = ''
-    }
+    this._theme = this._theme === 'light' ? 'dark' : 'light'
+    this.updateTheme()
+  }
+
+  updateTheme () {
+    document.body.className = this._theme === 'dark' ? 'dark-theme' : ''
     localStorage.setItem('theme', this._theme)
   }
 }
