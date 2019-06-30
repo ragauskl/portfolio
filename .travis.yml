@@ -15,7 +15,7 @@ branches:
 
 jobs:
   include:
-    - env: TRAVIS_COMMIT_MESSAGE=~foo/--deploy/
+    - env: TRAVIS_COMMIT_MESSAGE=~/--deploy/
 
 install:
   - npm i -g @angular/cli
