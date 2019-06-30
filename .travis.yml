@@ -30,5 +30,5 @@ script:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
   - cd app
   - npm run build
-  # - npm run deploy
+  - npm run deploy
   - cd ..
