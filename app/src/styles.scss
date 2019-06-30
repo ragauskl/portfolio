@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat+Subrayada:400,700');
+
+:root {
+  --background: #fff;
+  --color: #121212;
+  // 500s
+  --primary: #522546;
+  --secondary: #26a69a;
+  --warn: #ff9800;
+  --error: #f44336;
+
+  .dark-theme {
+    --background: #121212;
+    --color: #fff;
+  }
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--background);
+}

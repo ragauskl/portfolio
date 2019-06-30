@@ -1,0 +1,38 @@
+@import 'typography';
+@import 'mixins';
+
+:host {
+  @include center-flex;
+  perspective: 70px;
+  $margin: 150px;
+
+  #coverContainer, #image, #shatterContainer, #textSpan {
+    position: absolute;
+  }
+
+  #coverContainer {
+    @include align-absolute(0);
+    margin: auto;
+    padding: $margin;
+
+    #imageRef {
+      @include align-absolute(0);
+    }
+
+    #shatterContainer {
+      @include align-absolute($margin);
+
+      #textSpan {
+        @include center-absolute;
+        @include font-decoration;
+        left: 52%;
+        cursor: pointer;
+        pointer-events: all;
+        width: fit-content;
+        height: fit-content;
+        opacity: 0;
+        color: white;
+      }
+    }
+  }
+}

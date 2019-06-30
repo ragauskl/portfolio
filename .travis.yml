@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+- '10.15.0'
+sudo: required
+services:
+- docker
+
+env:
+  global:
+  - NODE_ENV="ci"
+
+branches:
+  only:
+  - master
+
+install:
+  - npm i -g @angular/cli
+  - cd api
+  - npm i
+  - cd ../web-app
+  - npm i
+  - cd ..
+
+script:
+  - export GITHUB_USER=ragauskl:$GITHUB_TOKEN
+  - git config --global user.email "$GITHUB_EMAIL"
+  - git config --global user.name "$GITHUB_USER"
+  - git config user.email "$GITHUB_EMAIL"
+  - git config user.name "$GITHUB_USER"
+  - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
+  - cd app
+  - npm run build
+  # - npm run deploy
+  - cd ..

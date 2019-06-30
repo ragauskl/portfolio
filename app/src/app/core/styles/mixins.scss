@@ -1,0 +1,18 @@
+@mixin center-absolute {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin align-absolute ($padding) {
+  left: $padding;
+  right: $padding;
+  top: $padding;
+  bottom: $padding;
+}
+
+@mixin center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

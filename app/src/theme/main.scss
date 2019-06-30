@@ -1,0 +1,35 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/theming';
+@import './palletes.scss';
+
+@include mat-core();
+// Available color palettes: https://material.io/design/color/
+$light-primary: mat-palette($primary, 500, 400, 800);
+$light-accent:  mat-palette($accent, 500, 400, 800);
+$light-warn:    mat-palette($warn);
+
+// LIGHT THEME
+$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+@include angular-material-theme($light-theme);
+
+$error-primary: mat-palette($error, 500, 400, 800);
+// LIGHT ERROR THEME
+$error-component-theme: mat-light-theme($error-primary, $light-accent, $light-warn);
+.error-component {
+  @include angular-material-theme($error-component-theme);
+}
+
+// DARK THEME
+$dark-theme: mat-dark-theme($light-primary, $light-accent, $light-warn);
+$error-dark-component-theme: mat-dark-theme($error-primary, $light-accent, $light-warn);
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+
+  // DARK ERROR THEME
+  .error-component {
+    @include angular-material-theme($error-dark-component-theme);
+  }
+}
+
+
+
