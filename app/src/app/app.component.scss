@@ -1,18 +1,12 @@
 @import 'mixins.scss';
 
-$min-height: 700px;
-$height: 100vh;
-$width: 100vw;
-
 :host {
   display: flex;
-  height: $height;
-  width: $width;
-  min-height: $min-height;
+  height: 100%;
+  width: 100%;
 
   app-sidenav {
-    height: $height;
-    min-height: $min-height;
+    height: 100%;
     width: 64px;
   }
 
@@ -20,7 +14,7 @@ $width: 100vw;
     flex-direction: column;
 
     app-sidenav {
-      width: $width;
+      width: 100%;
       min-height: 0;
       height: 64px;
     }
