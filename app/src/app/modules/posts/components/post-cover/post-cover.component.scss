@@ -2,7 +2,7 @@
 @import 'mixins';
 
 :host {
-  @include center-flex;
+  @include flex;
   perspective: 70px;
   $margin: 150px;
 
@@ -11,19 +11,19 @@
   }
 
   #coverContainer {
-    @include align-absolute(0);
+    @include absolute-fill(0);
     margin: auto;
     padding: $margin;
 
     #imageRef {
-      @include align-absolute(0);
+      @include absolute-fill(0);
     }
 
     #shatterContainer {
-      @include align-absolute($margin);
+      @include absolute-fill($margin);
 
       #textSpan {
-        @include center-absolute;
+        @include absolute-center;
         @include font-decoration;
         left: 52%;
         cursor: pointer;

@@ -1,0 +1,81 @@
+@import 'mixins';
+
+#sidenav-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  @include flex($direction: column, $justify: space-between);
+  font-size: large;
+
+  @include break('lt', 'md') {
+    flex-direction: row;
+    font-size: medium;
+  }
+
+  > div {
+    flex: 0 0 calc((100% - 40px - 10%) / 2);
+    display: flex;
+  }
+
+  > button {
+    flex: 0 0 40px;
+  }
+
+  #nav-title, #nav-direction {
+    text-transform: uppercase;
+    span {
+      writing-mode: vertical-rl;
+
+      @include break('lt', 'md') {
+        writing-mode: initial;
+      }
+    }
+  }
+
+  #nav-direction {
+    > * {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    > *:hover {
+      color: var(--secondary);
+    }
+
+    @include flex($direction: column, $justify: flex-end);
+    > *:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    @include break('lt', 'md') {
+        flex-direction: row;
+        > *:not(:last-child) {
+          margin-bottom: 0;
+          margin-right: 10px;
+        }
+    }
+  }
+}
+
+#sidenav-menu {
+  background: var(--primary);
+  opacity: 0.3;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 64px;
+  z-index: 10;
+
+  @include break('lt', 'md') {
+    width: 100%;
+    height: 0;
+    top: 64px;
+    left: 0;
+
+    &.opened {
+      width: 100%;
+    }
+  }
+}

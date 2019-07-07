@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { MaterialModule } from './lib/material.module'
-import { HeaderComponent } from './components/header/header.component'
+import { SidenavComponent } from './components/sidenav/sidenav.component'
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    SidenavComponent
   ],
   imports: [
     CommonModule,
@@ -13,7 +13,7 @@ import { HeaderComponent } from './components/header/header.component'
   ],
   exports: [
     MaterialModule,
-    HeaderComponent
+    SidenavComponent
   ]
 })
 export class CoreModule { }

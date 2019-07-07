@@ -1,0 +1,28 @@
+@import 'mixins.scss';
+
+$min-height: 700px;
+$height: 100vh;
+$width: 100vw;
+
+:host {
+  display: flex;
+  height: $height;
+  width: $width;
+  min-height: $min-height;
+
+  app-sidenav {
+    height: $height;
+    min-height: $min-height;
+    width: 64px;
+  }
+
+  @include break('lt', 'md') {
+    flex-direction: column;
+
+    app-sidenav {
+      width: $width;
+      min-height: 0;
+      height: 64px;
+    }
+  }
+}

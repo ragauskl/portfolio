@@ -1,18 +1,68 @@
-@mixin center-absolute {
+@mixin absolute-center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-@mixin align-absolute ($padding) {
+@mixin absolute-fill ($padding) {
   left: $padding;
   right: $padding;
   top: $padding;
   bottom: $padding;
 }
 
-@mixin center-flex {
+@mixin flex ($direction: row, $justify: center, $align: center) {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
 }
+
+// ---> Breakpoints
+$breakpoints: (
+  'xs-min': 0px,
+  'xs-max': 599px,
+  'sm-min': 600px,
+  'sm-max': 959px,
+  'md-min': 960px,
+  'md-max': 1279px,
+  'lg-min': 1280px,
+  'lg-max': 1919px,
+  'xl-min': 1920px,
+  'xl-max': 5000px
+) !default;
+
+// xs	'screen and (max-width: 599px)'
+// sm	'screen and (min-width: 600px) and (max-width: 959px)'
+// md	'screen and (min-width: 960px) and (max-width: 1279px)'
+// lg	'screen and (min-width: 1280px) and (max-width: 1919px)'
+// xl	'screen and (min-width: 1920px) and (max-width: 5000px)'
+
+// lt-sm	'screen and (max-width: 599px)'
+// lt-md	'screen and (max-width: 959px)'
+// lt-lg	'screen and (max-width: 1279px)'
+// lt-xl	'screen and (max-width: 1919px)'
+
+// gt-xs	'screen and (min-width: 600px)'
+// gt-sm	'screen and (min-width: 960px)'
+// gt-md	'screen and (min-width: 1280px)'
+// gt-lg	'screen and (min-width: 1920px)'
+
+@mixin break($ltGt, $breakpoint) {
+  @if map-has-key($breakpoints, "#{$breakpoint}-min") {
+    @if ($ltGt == "lt") {
+      @media screen and (max-width: calc(#{map-get($breakpoints, "#{$breakpoint}-min")} - 1px)) {
+        @content;
+      }
+    } @else if ($ltGt == "gt") {
+      @media screen and (min-width: calc(#{map-get($breakpoints, "#{$breakpoint}-max")} + 1px)) {
+        @content;
+      }
+    } @else {
+      @error "Unrecognised parameter #{$ltGt}. Values 'gt' and 'lt' are accepted.";
+    }
+  } @else {
+    @error "Unrecognised breakpoint #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+// <--- Breakpoints

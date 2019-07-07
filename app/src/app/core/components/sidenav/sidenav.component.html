@@ -1,0 +1,20 @@
+<div id=sidenav-wrap>
+  <div id="nav-title">
+    <span>{{title}}</span>
+  </div>
+
+  <button mat-icon-button color="primary" aria-label="menu" (click)="toggleMenu()">
+    <mat-icon>{{menuOpen ? 'close' : 'menu'}}</mat-icon>
+  </button>
+
+  <div>
+    <div *ngIf="!minimized" id="nav-direction">
+      <span>Prev</span>
+      <span>Next</span>
+    </div>
+  </div>
+</div>
+
+<div id="sidenav-menu" [@menuSlide]="(minimized ? 'min' : 'max') + '-' + (menuOpen ? 'open' : 'closed')">
+
+</div>

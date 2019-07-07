@@ -20,6 +20,10 @@
 
 body {
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
   background: var(--background);
+}
+
+button {
+  text-transform: uppercase;
 }
