@@ -1,0 +1,98 @@
+{
+  "development": [
+    {
+      "title": "Angular",
+      "src": "angular.svg"
+    }, {
+      "title": "Electron",
+      "src": "electron.svg"
+    }, {
+      "title": "Go Lang",
+      "src": "gopher.svg"
+    }, {
+      "title": "GraphQL",
+      "src": "graphql.svg"
+    }, {
+      "title": "Ionic",
+      "src": "ionic.svg"
+    }, {
+      "title": "Jasmine",
+      "src": "jasmine.svg"
+    }, {
+      "title": "JavaScript",
+      "src": "javascript.svg"
+    }, {
+      "title": "Mocha",
+      "src": "mocha.svg"
+    }, {
+      "title": "MongoDB",
+      "src": "mongodb.svg"
+    }, {
+      "title": "NestJS",
+      "src": "nestjs.svg"
+    }, {
+      "title": "Node.js",
+      "src": "nodejs.svg"
+    }, {
+      "title": "Postgres SQL",
+      "src": "postgresql.svg"
+    }, {
+      "title": "RxJS",
+      "src": "reactivex.svg"
+    }, {
+      "title": "Swagger",
+      "src": "swagger.svg"
+    }, {
+      "title": "TypeScript",
+      "src": "typescript.svg"
+    }
+  ],
+  "devops": [
+    {
+     "title": "GC Datastore",
+     "src": "cloud-datastore.svg"
+    }, {
+      "title": "GC Functions",
+      "src": "cloud-functions.svg"
+    }, {
+      "title": "GC PubSub",
+      "src": "cloud-pubsub.svg"
+    }, {
+      "title": "GC SQL",
+      "src": "cloud-sql.svg"
+    }, {
+      "title": "GC Storage",
+      "src": "cloud-storage.svg"
+    }, {
+      "title": "GC Compute",
+      "src": "compute-engine.svg"
+    }, {
+      "title": "GC Container Registry",
+      "src": "container-registry.svg"
+    }, {
+      "title": "Docker",
+      "src": "docker.svg"
+    }, {
+      "title": "Git",
+      "src": "git-icon.svg"
+    }, {
+      "title": "Gitlab CI",
+      "src": "gitlab.svg"
+    }, {
+      "title": "Google Cloud Platform",
+      "src": "google-cloud.svg"
+    }, {
+      "title": "Heroku",
+      "src": "heroku.svg"
+    }, {
+      "title": "Kubernetes",
+      "src": "kubernetes-logo.svg"
+    }, {
+      "title": "GC Stackdriver",
+      "src": "stackdriver.svg"
+    }, {
+      "title": "Travis CI",
+      "src": "travis-ci.svg"
+    }
+  ]
+}
