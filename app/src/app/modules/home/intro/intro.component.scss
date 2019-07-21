@@ -5,15 +5,22 @@
 }
 
 .icon-panel {
-  display: flex;
-  flex-wrap: wrap;
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
+// ::ng-deep .bubble-rect {
+//   box-shadow:
+//   0 15px 35px rgba(0, 0, 0, 0.1),
+//   0 3px 10px rgba(0, 0, 0, 0.1);
+// }
+
 ::ng-deep .bubble {
-  width: 152px;
-  height: 152px;
-  margin-right: 20px;
+  // $size: 100px;
+  // width: $size;
+  // height: $size;
+  // margin-right: 20px;
   background: white;
   border-radius: 50%;
   overflow: hidden;
@@ -22,8 +29,8 @@
     0 3px 10px rgba(0, 0, 0, 0.1);
 
   @include break('lt', 'md') {
-    width: 100px;
-    height: 100px;
+    // width: 100px;
+    // height: 100px;
 
     box-shadow:
     0 10px 27px rgba(0, 0, 0, 0.1),
