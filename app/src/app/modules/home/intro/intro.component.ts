@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core'
+import { Component, ViewChild, ElementRef, AfterViewInit, HostBinding, HostListener } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import Noise from 'noisejs'
 @Component({
@@ -8,6 +8,16 @@ import Noise from 'noisejs'
 })
 export class IntroComponent implements AfterViewInit {
   @ViewChild('bubblesLeft', { static: false }) bubblesLeft!: ElementRef<HTMLElement>
+  @HostListener('window:keyup', ['$event'])
+  onKeyUp (e: KeyboardEvent) {
+    if (e.code === 'Space') {
+      this.action.stop = true
+    }
+  }
+
+  action = {
+    stop: false
+  }
 
   constructor (
   private _http: HttpClient
@@ -28,6 +38,7 @@ export class IntroComponent implements AfterViewInit {
         // Call each individual bubble's update method
         rectangles.forEach(r => r.update())
         // Queue up another update() method call on the next frame
+        if (this.action.stop) return
         requestAnimationFrame(update)
       }
       let skillIndex = 0
@@ -45,14 +56,11 @@ export class IntroComponent implements AfterViewInit {
     })
   }
 
-  createRectangles (size: number, startX: number, startY: number, xPadding: number, yOffset: number, limit: number): Rectangle[] {
-    const maxWidth = this.bubblesLeft.nativeElement.clientWidth
-    console.log('maxWi:', maxWidth, size)
-    const maxItems = Math.ceil(this.bubblesLeft.nativeElement.clientWidth % size * 1.5)
-    // 16 / 3 / 2 * 3 * 150 - 1515
-    console.log('maxItems:', maxItems)
+  createRectangles (size: number, startX: number, startY: number, xPadding: number, yOffset: number, itemCount: number): Rectangle[] {
+    const minWidth = this.bubblesLeft.nativeElement.clientWidth
     let y = startY + yOffset
     let left = startX + size
+    let right: number
     const items: Rectangle[] = []
     const scales = shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
     const usedScale = []
@@ -93,8 +101,11 @@ export class IntroComponent implements AfterViewInit {
         scale()
       ))
 
-      const last = items[items.length - 1]
-      if (last.x + last.size > maxWidth) {
+      right = bubble.x + size
+      RIGHT = right
+      // TODO: increase element count
+      // TODO: Adjust next icon loop
+      if (right >= minWidth && i >= itemCount && (y > startY ? step === 2 : step === 3)) {
         break
       }
 
@@ -106,26 +117,14 @@ export class IntroComponent implements AfterViewInit {
       }
     }
 
-    if (y > startY) {
-      if (step === 3) items.pop()
-      else if (step === 1) {
-        // add item
-      }
-    } else {
-      if (step === 2) {
-        items.pop()
-        // or add?
-      }
-    }
-
     return items
   }
 
 }
-
+let RIGHT = 0
 const NOISE_SPEED = 0.005 // The frequency. Smaller for flat slopes, higher for jagged spikes.
 const NOISE_AMOUNT = 5    // The amplitude. The amount the noise affects the movement.
-const SCROLL_SPEED = 4
+const SCROLL_SPEED = 0.4
 
 const map = (num: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
@@ -200,7 +199,8 @@ class Rectangle {
     this.xWithNoise = this.x + (randomX * NOISE_AMOUNT)
     this.yWithNoise = this.y + (randomY * NOISE_AMOUNT)
 
-    if (this.x < -this.size) {
+    console.log(':', RIGHT, this.el.parentElement.clientWidth, this.el.parentElement.clientWidth - RIGHT + ((150 - 20) / 2))
+    if (this.x < this.el.parentElement.clientWidth - RIGHT + ((150 - 20) / 2)) {
       this.x = this.el.parentElement.clientWidth
     }
 
@@ -217,38 +217,4 @@ interface SkillsConfig {
 interface Skill {
   title: string
   src: string
-}
-
-class Bubbles {
-  update () {
-     // Call each individual bubble's update method
-    // this.bubbles.forEach(bubble => bubble.update())
-
-     // Queue up another update() method call on the next frame
-    requestAnimationFrame(this.update.bind(this))
-  }
-}
-
-class Bubble {
-
-//   const NOISE_SPEED = 0.004; // The frequency. Smaller for flat slopes, higher for jagged spikes.
-// const NOISE_AMOUNT = 5;    // The amplitude. The amount the noise affects the movement.
-  update () {
-    // this.noiseSeedX += NOISE_SPEED;
-    // this.noiseSeedY += NOISE_SPEED;
-
-    // // The noise library we're using: https://github.com/josephg/noisejs
-    // let randomX = noise.simplex2(this.noiseSeedX, 0);
-    // let randomY = noise.simplex2(this.noiseSeedY, 0);
-
-    // this.x -= SCROLL_SPEED;
-    // this.xWithNoise = this.x + (randomX * NOISE_AMOUNT);
-    // this.yWithNoise = this.y + (randomY * NOISE_AMOUNT)
-
-    // if (this.x <  -200) {
-    //   this.x = CANVAS_WIDTH;
-    // }
-
-    // this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px) scale(${this.scale})`;
-  }
 }
