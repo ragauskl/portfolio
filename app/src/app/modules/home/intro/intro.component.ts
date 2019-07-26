@@ -44,8 +44,8 @@ export class IntroComponent implements AfterViewInit {
       let skillIndex = 0
       for (const r of rectangles) {
         const img = document.createElement('img')
-        const skill = json.development[skillIndex]
-        img.src = `assets/icons/skills/jpg/development/${skill.src}`
+        const skill = json.devops[skillIndex]
+        img.src = `assets/icons/skills/jpg/devops/${skill.src}`
         r.el.appendChild(img)
         this.bubblesLeft.nativeElement.appendChild(r.el)
         skillIndex++
