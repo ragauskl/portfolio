@@ -61,8 +61,8 @@
       "title": "GC SQL",
       "src": "cloud-sql.jpg"
     }, {
-      "title": "GC Storage",
-      "src": "cloud-storage.jpg"
+      "title": "Cloudflare",
+      "src": "cloudflare.jpg"
     }, {
       "title": "GC Compute",
       "src": "compute-engine.jpg"
