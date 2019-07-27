@@ -1,127 +1,7 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, HostBinding, HostListener } from '@angular/core'
+import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import Noise from 'noisejs'
-@Component({
-  selector: 'app-intro',
-  templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.scss']
-})
-export class IntroComponent implements AfterViewInit {
-  @ViewChild('bubblesLeft', { static: false }) bubblesLeft!: ElementRef<HTMLElement>
-  @HostListener('window:keyup', ['$event'])
-  onKeyUp (e: KeyboardEvent) {
-    if (e.code === 'Space') {
-      this.action.stop = true
-    }
-  }
 
-  action = {
-    stop: false
-  }
-
-  constructor (
-  private _http: HttpClient
- ) {}
-
-  ngAfterViewInit () {
-    this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
-      const maxItems = Math.max(json.development.length, json.devops.length)
-      const rectangles = this.createRectangles(
-        150, 0,
-        this.bubblesLeft.nativeElement.clientHeight / 2,
-        20,
-        20,
-        maxItems
-      )
-
-      const update = () => {
-        // Call each individual bubble's update method
-        rectangles.forEach(r => r.update())
-        // Queue up another update() method call on the next frame
-        if (this.action.stop) return
-        requestAnimationFrame(update)
-      }
-      let skillIndex = 0
-      for (const r of rectangles) {
-        const img = document.createElement('img')
-        const skill = json.devops[skillIndex]
-        img.src = `assets/icons/skills/jpg/devops/${skill.src}`
-        r.el.appendChild(img)
-        this.bubblesLeft.nativeElement.appendChild(r.el)
-        skillIndex++
-        if (skillIndex === json.development.length) skillIndex = 0
-      }
-
-      update()
-    })
-  }
-
-  createRectangles (size: number, startX: number, startY: number, xPadding: number, yOffset: number, itemCount: number): Rectangle[] {
-    const minWidth = this.bubblesLeft.nativeElement.clientWidth
-    let y = startY + yOffset
-    let left = startX + size
-    let right: number
-    const items: Rectangle[] = []
-    const scales = shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
-    const usedScale = []
-    const padding = () => xPadding * items.length
-    const scale = () => {
-      const [val] = scales.splice(0, 1)
-      usedScale.push(val)
-      if (scale.length <= 2) scales.push(...usedScale.splice(0))
-      return val
-    }
-
-    let step = 1
-    for (let i = 1; true; i++) {
-      console.log('i:', i)
-      let bubble = { x: undefined, y: undefined }
-      if (step === 1) {
-        bubble = {
-          x: left - size + padding(),
-          y: y > startY ? y : y - size
-        }
-      } else if (step === 2) {
-        bubble = {
-          x: left - size / 2 + padding(),
-          y: y > startY ? y - size : y
-        }
-      } else if (step === 3) {
-        bubble = {
-          x: left + padding(),
-          y: y > startY ? y : y - size
-        }
-      }
-
-      items.push(new Rectangle(
-        items.length,
-        bubble.x,
-        bubble.y,
-        size,
-        scale()
-      ))
-
-      right = bubble.x + size
-      RIGHT = right
-      // TODO: increase element count
-      // TODO: Adjust next icon loop
-      if (right >= minWidth && i >= itemCount && (y > startY ? step === 2 : step === 3)) {
-        break
-      }
-
-      step++
-      if (step > 3) {
-        step = 1
-        left += size * 1.5
-        y = startY + (y > startY ? -yOffset : +yOffset)
-      }
-    }
-
-    return items
-  }
-
-}
-let RIGHT = 0
 const NOISE_SPEED = 0.005 // The frequency. Smaller for flat slopes, higher for jagged spikes.
 const NOISE_AMOUNT = 5    // The amplitude. The amount the noise affects the movement.
 const SCROLL_SPEED = 0.4
@@ -150,6 +30,165 @@ function shuffle (array) {
 
   return array
 }
+
+@Component({
+  selector: 'app-intro',
+  templateUrl: './intro.component.html',
+  styleUrls: ['./intro.component.scss']
+})
+export class IntroComponent implements AfterViewInit {
+  @ViewChild('bubblesLeft', { static: false }) bubblesLeft!: ElementRef<HTMLElement>
+  @HostListener('window:keyup', ['$event'])
+  onKeyUp (e: KeyboardEvent) {
+    if (e.code === 'Space') {
+      this.action.stop = true
+    }
+  }
+  skills!: SkillsConfig
+  devSkillGen = this.nextDevelopmentSkill()
+  opsSkillGen = this.nextDevopsSkill()
+  scaleGen = this.nextScale()
+  rectangleGen!: IterableIterator<Rectangle>
+  action = {
+    stop: false
+  }
+
+  constructor (
+    private _http: HttpClient
+  ) {}
+
+  ngAfterViewInit () {
+    this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
+      this.skills = json
+      this.loadBubbles()
+    })
+  }
+
+  loadBubbles () {
+    this.rectangleGen = this.nextRectangle(
+      150,
+      this.bubblesLeft.nativeElement.clientHeight / 2,
+      20,
+      20
+    )
+    //
+    const rectangles: Rectangle[] = []
+    rectangles.push(this.rectangleGen.next().value)
+    while (rectangles[rectangles.length - 1].x < this.bubblesLeft.nativeElement.clientWidth) {
+      rectangles.push(this.rectangleGen.next(rectangles[rectangles.length - 1]).value)
+    }
+
+    const update = () => {
+        // Call each individual bubble's update method
+      rectangles.forEach(r => {
+        r.noiseSeedX += NOISE_SPEED
+        r.noiseSeedY += NOISE_SPEED
+        const noise = new (Noise as any).Noise()
+        const randomX = noise.simplex2(r.noiseSeedX, 0)
+        const randomY = noise.simplex2(r.noiseSeedY, 0)
+
+        r.x -= SCROLL_SPEED
+        r.xWithNoise = r.x + (randomX * NOISE_AMOUNT)
+        r.yWithNoise = r.y + (randomY * NOISE_AMOUNT)
+
+        r.transform()
+      })
+
+      const last = rectangles[rectangles.length - 1]
+      if (last.x + (last.size / 2) + 20 <= this.bubblesLeft.nativeElement.clientWidth + last.size) {
+        const bubble = this.rectangleGen.next(last).value
+        rectangles.push(bubble)
+        this.bubblesLeft.nativeElement.appendChild(bubble.el)
+      }
+
+      const first = rectangles[0]
+      if (first.x < -first.size - 20) {
+        rectangles.splice(0, 1)
+        this.bubblesLeft.nativeElement.removeChild(first.el)
+      }
+      // Queue up another update() method call on the next frame
+      if (this.action.stop) return
+      requestAnimationFrame(update)
+    }
+
+    for (const r of rectangles) {
+      this.bubblesLeft.nativeElement.appendChild(r.el)
+    }
+
+    update()
+  }
+
+  *nextDevelopmentSkill (): IterableIterator<string> {
+    let i = -1
+
+    while (true) {
+      i++
+      if (i === this.skills.development.length) i = 0
+      yield `assets/icons/skills/jpg/development/${this.skills.development[i].src}`
+    }
+  }
+
+  *nextDevopsSkill (): IterableIterator<string> {
+    let i = -1
+
+    while (true) {
+      i++
+      if (i === this.skills.devops.length) i = 0
+      yield `assets/icons/skills/jpg/devops/${this.skills.devops[i]}`
+    }
+  }
+
+  *nextScale (): IterableIterator<number> {
+    const scales = shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
+    const usedScales = []
+
+    while (true) {
+      const [val] = scales.splice(0, 1)
+      usedScales.push(val)
+      if (scales.length <= 2) scales.push(...usedScales.splice(0))
+      yield val
+    }
+  }
+
+  *nextRectangle (size: number, startY: number, xPadding: number, yOffset: number): IterableIterator<Rectangle> {
+    let y = startY + yOffset
+    const calcY = () => {
+      if (step === 1 || step === 3) return y > startY ? y : y - size
+      else return y > startY ? y - size : y
+    }
+    let step = 1
+    let prevBubble: Rectangle | undefined
+    for (let i = 1; true; i++) {
+      let bubble = { x: undefined, y: undefined }
+      bubble = {
+        x: (prevBubble ? prevBubble.x + (size / 2) : 0) + xPadding,
+        y: calcY()
+      }
+
+      const rect = new Rectangle(
+        i,
+        step,
+        y > startY ? 'p' : 'n',
+        bubble.x,
+        bubble.y,
+        size,
+        this.scaleGen.next().value
+      )
+
+      const img = document.createElement('img')
+      img.src = this.devSkillGen.next().value
+      rect.el.appendChild(img)
+      prevBubble = yield rect
+
+      step++
+      if (step > 3) {
+        step = 1
+        y = startY + (y > startY ? -yOffset : +yOffset)
+      }
+    }
+  }
+}
+
 class Rectangle {
   noiseSeedX = Math.floor(Math.random() * 64000)
   noiseSeedY = Math.floor(Math.random() * 64000)
@@ -158,17 +197,18 @@ class Rectangle {
   el: HTMLElement
   constructor (
     public i: number,
+    public step: number,
+    public offset: 'p' | 'n',
     public x: number,
     public y: number,
     public size: number,
     public scale: number
   ) {
     const diameter = this.size * this.scale
-    const innerPadding = 0.05
     // Add random increment to x and y, that are in bounds of a 'rectangle'
     // respecting inner padding (so that circles don't overflow eachother)
-    const minInnerX = this.size * innerPadding
-    const maxInnerX = this.size * (1 - innerPadding) - diameter
+    const minInnerX = this.size
+    const maxInnerX = this.size - diameter
     const randX = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     const randY = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     x += randX
@@ -181,30 +221,11 @@ class Rectangle {
     this.el.className = 'bubble'
     this.el.style.position = 'absolute'
     this.el.style.width = this.el.style.height = `${diameter}px`
-    this.Transform()
+    this.transform()
   }
 
-  private Transform () {
+  transform () {
     this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px)`
-  }
-
-  update () {
-    this.noiseSeedX += NOISE_SPEED
-    this.noiseSeedY += NOISE_SPEED
-    const noise = new (Noise as any).Noise()
-    const randomX = noise.simplex2(this.noiseSeedX, 0)
-    const randomY = noise.simplex2(this.noiseSeedY, 0)
-
-    this.x -= SCROLL_SPEED
-    this.xWithNoise = this.x + (randomX * NOISE_AMOUNT)
-    this.yWithNoise = this.y + (randomY * NOISE_AMOUNT)
-
-    console.log(':', RIGHT, this.el.parentElement.clientWidth, this.el.parentElement.clientWidth - RIGHT + ((150 - 20) / 2))
-    if (this.x < this.el.parentElement.clientWidth - RIGHT + ((150 - 20) / 2)) {
-      this.x = this.el.parentElement.clientWidth
-    }
-
-    this.Transform()
   }
 }
 // ---

@@ -1,0 +1,12 @@
+1. Fix left side float
+2. On left side float end, in right side reassign new icon and new scale
+3. Generate only as many bubbles as needed to fill the width
+4. Calculate all bubbles in full width. Add items to half in which its bounding box falls in
+  Once item crosses both halfs, there should be two bubbles spawned
+    left side should have bubble entering
+    right half should have bubble leaving
+5. Two div elements, absolute positioned, cover absolute on top
+6. Resize:
+  Animate translation
+  On resize, move translation in percentage (add percentage values to bubbles, but for transform use pixels)
+  Set min/max scale
