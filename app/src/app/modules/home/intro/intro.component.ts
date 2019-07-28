@@ -37,7 +37,8 @@ function shuffle (array) {
   styleUrls: ['./intro.component.scss']
 })
 export class IntroComponent implements AfterViewInit {
-  @ViewChild('bubblesLeft', { static: false }) bubblesLeft!: ElementRef<HTMLElement>
+  @ViewChild('bubbles', { static: false }) bubbles!: ElementRef<HTMLElement>
+
   @HostListener('window:keyup', ['$event'])
   onKeyUp (e: KeyboardEvent) {
     if (e.code === 'Space') {
@@ -54,7 +55,8 @@ export class IntroComponent implements AfterViewInit {
   }
 
   constructor (
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _el: ElementRef<HTMLElement>
   ) {}
 
   ngAfterViewInit () {
@@ -67,20 +69,21 @@ export class IntroComponent implements AfterViewInit {
   loadBubbles () {
     this.rectangleGen = this.nextRectangle(
       150,
-      this.bubblesLeft.nativeElement.clientHeight / 2,
+      this._el.nativeElement.clientHeight / 2,
       20,
       20
     )
-    //
+
     const rectangles: Rectangle[] = []
     rectangles.push(this.rectangleGen.next().value)
-    while (rectangles[rectangles.length - 1].x < this.bubblesLeft.nativeElement.clientWidth) {
+    while (rectangles[rectangles.length - 1].x < this._el.nativeElement.clientWidth) {
       rectangles.push(this.rectangleGen.next(rectangles[rectangles.length - 1]).value)
     }
 
     const update = () => {
+      const midX = this._el.nativeElement.clientWidth * 0.5
         // Call each individual bubble's update method
-      rectangles.forEach(r => {
+      for (const r of rectangles) {
         r.noiseSeedX += NOISE_SPEED
         r.noiseSeedY += NOISE_SPEED
         const noise = new (Noise as any).Noise()
@@ -91,20 +94,22 @@ export class IntroComponent implements AfterViewInit {
         r.xWithNoise = r.x + (randomX * NOISE_AMOUNT)
         r.yWithNoise = r.y + (randomY * NOISE_AMOUNT)
 
+        r.imageClipX = midX - r.xWithNoise
+
         r.transform()
-      })
+      }
 
       const last = rectangles[rectangles.length - 1]
-      if (last.x + (last.size / 2) + 20 <= this.bubblesLeft.nativeElement.clientWidth + last.size) {
+      if (last.x + (last.size / 2) + 20 <= this.bubbles.nativeElement.clientWidth + last.size) {
         const bubble = this.rectangleGen.next(last).value
         rectangles.push(bubble)
-        this.bubblesLeft.nativeElement.appendChild(bubble.el)
+        this.bubbles.nativeElement.appendChild(bubble.el)
       }
 
       const first = rectangles[0]
       if (first.x < -first.size - 20) {
         rectangles.splice(0, 1)
-        this.bubblesLeft.nativeElement.removeChild(first.el)
+        this.bubbles.nativeElement.removeChild(first.el)
       }
       // Queue up another update() method call on the next frame
       if (this.action.stop) return
@@ -112,7 +117,7 @@ export class IntroComponent implements AfterViewInit {
     }
 
     for (const r of rectangles) {
-      this.bubblesLeft.nativeElement.appendChild(r.el)
+      this.bubbles.nativeElement.appendChild(r.el)
     }
 
     update()
@@ -134,7 +139,7 @@ export class IntroComponent implements AfterViewInit {
     while (true) {
       i++
       if (i === this.skills.devops.length) i = 0
-      yield `assets/icons/skills/jpg/devops/${this.skills.devops[i]}`
+      yield `assets/icons/skills/jpg/devops/${this.skills.devops[i].src}`
     }
   }
 
@@ -145,7 +150,7 @@ export class IntroComponent implements AfterViewInit {
     while (true) {
       const [val] = scales.splice(0, 1)
       usedScales.push(val)
-      if (scales.length <= 2) scales.push(...usedScales.splice(0))
+      if (scales.length <= 2) scales.push(...shuffle(usedScales.splice(0)))
       yield val
     }
   }
@@ -172,12 +177,11 @@ export class IntroComponent implements AfterViewInit {
         bubble.x,
         bubble.y,
         size,
-        this.scaleGen.next().value
+        this.scaleGen.next().value,
+        this.devSkillGen.next().value,
+        this.opsSkillGen.next().value
       )
 
-      const img = document.createElement('img')
-      img.src = this.devSkillGen.next().value
-      rect.el.appendChild(img)
       prevBubble = yield rect
 
       step++
@@ -195,6 +199,10 @@ class Rectangle {
   xWithNoise
   yWithNoise
   el: HTMLElement
+  imageSprite: HTMLElement
+  imageClipX = 0
+  diameter: number
+  clippedImage: HTMLElement
   constructor (
     public i: number,
     public step: number,
@@ -202,13 +210,15 @@ class Rectangle {
     public x: number,
     public y: number,
     public size: number,
-    public scale: number
+    public scale: number,
+    public imgLeft: string,
+    public imgRight: string
   ) {
-    const diameter = this.size * this.scale
+    this.diameter = this.size * this.scale
     // Add random increment to x and y, that are in bounds of a 'rectangle'
     // respecting inner padding (so that circles don't overflow eachother)
-    const minInnerX = this.size
-    const maxInnerX = this.size - diameter
+    const minInnerX = this.size * 0.05
+    const maxInnerX = this.size * 0.95 - this.diameter
     const randX = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     const randY = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     x += randX
@@ -220,15 +230,28 @@ class Rectangle {
     this.el = document.createElement('div')
     this.el.className = 'bubble'
     this.el.style.position = 'absolute'
-    this.el.style.width = this.el.style.height = `${diameter}px`
+    this.el.style.width = this.el.style.height = `${this.diameter}px`
+
+    const iLeft = document.createElement('img')
+    iLeft.src = imgLeft
+    const iRight = document.createElement('img')
+    iRight.src = imgRight
+
+    iLeft.style.width = iLeft.style.height = iRight.style.width = iRight.style.height = `${this.diameter}px`
+    iLeft.style.position = iRight.style.position = 'absolute'
+    iLeft.style.top = iLeft.style.left = iRight.style.top = iRight.style.left = '0'
+
+    this.el.appendChild(iLeft)
+    this.el.appendChild(iRight)
+    this.clippedImage = iRight
     this.transform()
   }
 
   transform () {
     this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px)`
+    this.clippedImage.style.clipPath = `inset(0 0 0 ${Math.min(this.diameter, Math.max(0, this.imageClipX))}px)`
   }
 }
-// ---
 
 interface SkillsConfig {
   development: Skill[]

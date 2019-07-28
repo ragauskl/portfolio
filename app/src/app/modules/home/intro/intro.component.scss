@@ -1,13 +1,53 @@
 @import 'mixins';
 
 :host {
-  padding: 20px;
+  position: relative;
+}
+.icon-panel {
+  // filter: grayscale(1);
 }
 
-.icon-panel {
-  position: relative;
+.icon-panel, .text-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
+}
+
+.left-text, .right-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  // display: flex;
+  // align-items: center;
+  font-size: 50px;
+  font-weight: bold;
+  color: rgb(49, 50, 56);
+
+  span {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+.left-text {
+  left: 0;
+  justify-content: flex-end;
+  border-right: 2px solid rgba($color: #000, $alpha: 0.5);
+
+}
+
+.right-text {
+  left: 50%;
+  justify-content: flex-start;
+  border-left: 2px solid rgba($color: #000, $alpha: 0.5);
+
 }
 
 ::ng-deep .bubble {
