@@ -202,7 +202,7 @@ class Rectangle {
   imageSprite: HTMLElement
   imageClipX = 0
   diameter: number
-  clippedImage: HTMLElement
+  backImage: HTMLElement
   constructor (
     public i: number,
     public step: number,
@@ -229,27 +229,35 @@ class Rectangle {
 
     this.el = document.createElement('div')
     this.el.className = 'bubble'
-    this.el.style.position = 'absolute'
     this.el.style.width = this.el.style.height = `${this.diameter}px`
 
     const iLeft = document.createElement('img')
     iLeft.src = imgLeft
+    iLeft.className = 'back'
+    this.backImage = iLeft
     const iRight = document.createElement('img')
     iRight.src = imgRight
 
-    iLeft.style.width = iLeft.style.height = iRight.style.width = iRight.style.height = `${this.diameter}px`
-    iLeft.style.position = iRight.style.position = 'absolute'
-    iLeft.style.top = iLeft.style.left = iRight.style.top = iRight.style.left = '0'
-
     this.el.appendChild(iLeft)
     this.el.appendChild(iRight)
-    this.clippedImage = iRight
+
     this.transform()
   }
 
   transform () {
-    this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px)`
-    this.clippedImage.style.clipPath = `inset(0 0 0 ${Math.min(this.diameter, Math.max(0, this.imageClipX))}px)`
+    const xCenter = Math.min(this.size, Math.max(0, this.imageClipX))
+    const percentage = xCenter * 100 / this.size
+    let rotate = percentage < 40 ? 0 :
+    percentage > 60 ? 180 : map(percentage, 40, 60, 0, 180 + 360)
+    rotate = rotate % 360
+    if (rotate >= 90 && rotate <= 180) {
+      this.backImage.style.backfaceVisibility = 'visible'
+      console.log(this.backImage.style)
+    } else {
+      this.backImage.style.backfaceVisibility = 'hidden'
+    }
+    this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px) rotateY(${rotate}deg)`
+    // 0 - 0, 100 - 180
   }
 }
 
