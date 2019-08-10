@@ -4,7 +4,7 @@
   position: relative;
 }
 .icon-panel {
-  // filter: grayscale(1);
+  filter: grayscale(1);
 }
 
 .icon-panel, .text-panel {
@@ -39,22 +39,20 @@
 .left-text {
   left: 0;
   justify-content: flex-end;
-  // border-right: 2px solid rgba($color: #000, $alpha: 0.5);
 
 }
 
 .right-text {
   left: 50%;
   justify-content: flex-start;
-  // border-left: 2px solid rgba($color: #000, $alpha: 0.5);
 
 }
 
 ::ng-deep .bubble {
   background: white;
   border-radius: 50%;
-  overflow: hidden;
   position: absolute;
+  transform-style: preserve-3d;
   box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.1),
     0 3px 10px rgba(0, 0, 0, 0.1);
@@ -73,13 +71,10 @@
     position: absolute;
     top: 0;
     left: 0;
-
-    &.front {
-
-    }
+    border-radius: 50%;
 
     &.back {
-      transform: rotateY(180deg) scaleX(-1);
+      transform: rotateY(180deg);
     }
 
   }

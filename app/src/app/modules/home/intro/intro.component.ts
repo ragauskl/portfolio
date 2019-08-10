@@ -238,8 +238,8 @@ class Rectangle {
     const iRight = document.createElement('img')
     iRight.src = imgRight
 
-    this.el.appendChild(iLeft)
     this.el.appendChild(iRight)
+    this.el.appendChild(iLeft)
 
     this.transform()
   }
@@ -250,14 +250,7 @@ class Rectangle {
     let rotate = percentage < 40 ? 0 :
     percentage > 60 ? 180 : map(percentage, 40, 60, 0, 180 + 360)
     rotate = rotate % 360
-    if (rotate >= 90 && rotate <= 180) {
-      this.backImage.style.backfaceVisibility = 'visible'
-      console.log(this.backImage.style)
-    } else {
-      this.backImage.style.backfaceVisibility = 'hidden'
-    }
     this.el.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px) rotateY(${rotate}deg)`
-    // 0 - 0, 100 - 180
   }
 }
 
