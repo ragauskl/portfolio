@@ -2,33 +2,31 @@
 
 :host {
   position: relative;
-}
-.icon-panel {
-  filter: grayscale(1);
+  background-image: url('assets/landing-background.jpg')
 }
 
 .icon-panel, .text-panel {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
+  bottom: 0;
+  right: 0;
 }
 
-.left-text, .right-text {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  // display: flex;
-  // align-items: center;
+.icon-panel {
+  top: 15%;
+  // filter: grayscale(0.9);
+    // transition: filter 1s linear;
+}
+
+.text-panel {
   font-size: 50px;
-  font-weight: bold;
+  font-weight: bolder;
   color: rgb(49, 50, 56);
 
   span {
     position: absolute;
-    top: 15%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -36,46 +34,69 @@
   }
 }
 
-.left-text {
-  left: 0;
-  justify-content: flex-end;
-
-}
-
-.right-text {
-  left: 50%;
-  justify-content: flex-start;
-
-}
-
-::ng-deep .bubble {
-  background: white;
-  border-radius: 50%;
+::ng-deep .bubble-container {
   position: absolute;
-  transform-style: preserve-3d;
-  box-shadow:
-    0 15px 35px rgba(0, 0, 0, 0.1),
-    0 3px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  opacity: 0.9;
+  transition: opacity 0.3s linear;
 
-  @include break('lt', 'md') {
-    box-shadow:
-    0 10px 27px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
+  .bubble {
+    background: white;
     border-radius: 50%;
+    transform-style: preserve-3d;
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.1),
+      0 3px 10px rgba(0, 0, 0, 0.1);
 
-    &.back {
-      transform: rotateY(180deg);
+    svg {
+      position: absolute;
+      transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+      opacity: 0;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      overflow: visible;
+      filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.1));
+      z-index: 1;
+
+      &.back {
+        transform: rotateY(180deg);
+      }
     }
 
+    @include break('lt', 'md') {
+      box-shadow:
+      0 10px 27px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      z-index: 3;
+
+      &.back {
+        transform: rotateY(180deg);
+      }
+
+
+    }
+  }
+
+  &:hover {
+    opacity: 1;
+
+    svg {
+      opacity: 1;
+      top: 0;
+    }
   }
 }
