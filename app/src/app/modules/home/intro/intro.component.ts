@@ -63,7 +63,7 @@ export class IntroComponent implements AfterViewInit {
   ngAfterViewInit () {
     this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
       this.skills = json
-      this.loadBubbles()
+      // this.loadBubbles()
     })
   }
 
@@ -225,8 +225,8 @@ class Rectangle {
     this.diameter = this.size * this.scale
     // Add random increment to x and y, that are in bounds of a 'rectangle'
     // respecting inner padding (so that circles don't overflow eachother)
-    const minInnerX = this.size * 0.05
-    const maxInnerX = this.size * 0.95 - this.diameter
+    const minInnerX = this.size * 0.10
+    const maxInnerX = this.size * 0.90 - this.diameter
     const randX = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     const randY = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     x += randX
