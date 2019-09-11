@@ -89,7 +89,7 @@
 }
 
 #bubbles-container {
-  background: purple;
+  border: 5px solid orange;
   @include break-prop('flex', (
     'xs': 0 30%,
     's': 0 35%,
