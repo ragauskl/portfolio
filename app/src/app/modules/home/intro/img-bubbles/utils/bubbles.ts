@@ -6,18 +6,6 @@ import Noise from 'noisejs'
 // const NOISE_AMOUNT = 5    // The amplitude. The amount the noise affects the movement.
 
 export class Bubbles {
-  private _stop = false
-  set stop (val: boolean) {
-    const prev = this._stop
-    this._stop = val
-    if (prev && !val) {
-      this.nextFrame()
-    }
-  }
-  get stop () {
-    return this._stop
-  }
-
   get scrollSpeed () {
     return Math.max(Math.min(this.size * 0.002, 0.4), 0.05)
   }
@@ -43,6 +31,8 @@ export class Bubbles {
   scaleGen = this.nextScale()
   devSkillGen = this.nextDevelopmentSkill()
   opsSkillGen = this.nextDevopsSkill()
+
+  state: 'running' | 'stop requested' | 'stopped'
 
   get midY () {
     return this.el.clientHeight / 2
@@ -73,32 +63,50 @@ export class Bubbles {
     this.xPadding = this.yPadding = Math.max(10, Math.round(this.size * 0.1))
   }
 
-  resize () {
-    this.stop = true
-    setTimeout(() => {
-      const first = this.list[0]
+  async stateChanged (expected: string) {
+    while (this.state !== expected) {
+      await new Promise(res => setTimeout(res, 100))
+    }
+  }
 
-      const setBack = {
-        x: first.x - (this.size * 0.6),
-        step: first.step !== 1 ? first.step - 1 : 3,
-        offset: first.step !== 1 ? first.offset : (
-          first.offset === 'p' ? 'n' : 'p'
-        )
-      }
+  async stopAnimation () {
+    if (this.state !== 'stopped') {
+      this.state = 'stop requested'
+      await this.stateChanged('stopped')
+    }
+  }
 
-      this.curr.y = this.midY + (
-      (setBack.step === 2 && setBack.offset === 'p') || ([1, 3].includes(setBack.step) && setBack.offset === 'n') ?
-      -this.yPadding : this.yPadding
-    )
-      this.curr.step = setBack.step
+  startAnimation () {
+    if (this.state !== 'running') {
+      this.state = 'running'
+      this.nextFrame()
+    }
+  }
 
-      let prevBubble: Bubble | undefined
-      for (const bubble of this.list) {
-        prevBubble = this.nextBubble(prevBubble ? prevBubble.x : setBack.x, bubble)
-      }
+  async resize () {
+    await this.stopAnimation()
+    const first = this.list[0]
 
-      this.stop = false
-    }, 10)
+    const setBack = {
+      x: first.x - (this.size * 0.6),
+      step: first.step !== 1 ? first.step - 1 : 3,
+      offset: first.step !== 1 ? first.offset : (
+        first.offset === 'p' ? 'n' : 'p'
+      )
+    }
+
+    this.curr.y = this.midY + (
+    (setBack.step === 2 && setBack.offset === 'p') || ([1, 3].includes(setBack.step) && setBack.offset === 'n') ?
+    -this.yPadding : this.yPadding
+  )
+    this.curr.step = setBack.step
+
+    let prevBubble: Bubble | undefined
+    for (const bubble of this.list) {
+      prevBubble = this.nextBubble(prevBubble ? prevBubble.x : setBack.x, bubble)
+    }
+
+    this.startAnimation()
   }
 
   init () {
@@ -111,10 +119,14 @@ export class Bubbles {
     for (const r of this.list) {
       this.el.firstChild.appendChild(r.elContainer)
     }
+    this.state = 'running'
     this.nextFrame()
   }
   nextFrame () {
-    if (this.stop) return
+    if (this.state !== 'running') {
+      this.state = 'stopped'
+      return
+    }
     // Call each individual bubble's update method
     for (const r of this.list) {
       r.noiseSeedX += this.noiseSpeed
@@ -156,11 +168,11 @@ export class Bubbles {
     }
   }
 
-  updateAll () {
+  async updateAll () {
     this.updateSize()
     this.updatePadding()
     // Recalculate bubbles
-    this.resize()
+    await this.resize()
   }
 
   private nextY () {
@@ -168,12 +180,14 @@ export class Bubbles {
     else return this.curr.y > this.midY ? this.curr.y - this.size : this.curr.y
   }
 
-  private nextBubble (prevX?: number, target?: Bubble): Bubble {
+  private nextBubble (prevX?: number, target?: Bubble | null): Bubble | undefined {
     this.curr.step++
     if (this.curr.step > 3) {
       this.curr.step = 1
       this.curr.y = this.midY + (this.curr.y > this.midY ? -this.yPadding : +this.xPadding)
     }
+
+    if (target === null) return undefined
 
     let bubble = { x: undefined, y: undefined }
     bubble = {
@@ -190,8 +204,6 @@ export class Bubbles {
       return target
     }
 
-    console.log(this.curr.step,
-      this.curr.y > this.midY ? 'p' : 'n')
     return new Bubble(
       this.list.length,
       this.curr.step,

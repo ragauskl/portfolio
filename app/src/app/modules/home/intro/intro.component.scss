@@ -89,7 +89,7 @@
 }
 
 #bubbles-container {
-  border: 5px solid orange;
+  overflow: visible;
   @include break-prop('flex', (
     'xs': 0 30%,
     's': 0 35%,
@@ -100,6 +100,8 @@
 }
 
 #wave-container {
+  overflow: visible;
+  position: relative;
   flex: 0 10%;
 }
 

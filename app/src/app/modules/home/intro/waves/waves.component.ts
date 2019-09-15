@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core'
+import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core'
 
 const NS = 'http://www.w3.org/2000/svg'
 @Component({
@@ -7,92 +7,78 @@ const NS = 'http://www.w3.org/2000/svg'
   styleUrls: ['./waves.component.scss']
 })
 export class WavesComponent implements AfterViewInit {
+  @HostListener('window:resize')
+  onResize () {
+    this.GenerateWaves()
+  }
+
   @ViewChild('wavesContainer', { static: false }) wavesContainer!: ElementRef<HTMLElement>
   ngAfterViewInit () {
-    // this.GenerateWaves()
+    this.GenerateWaves()
   }
 
   private GenerateWaves () {
     const el = this.wavesContainer.nativeElement
-    // Original width: 120, height: 28
-    const { width, height } = el.getBoundingClientRect()
+    let { width, height } = el.getBoundingClientRect()
 
     const svgEl = document.createElementNS(NS, 'svg')
-    svgEl.setAttributeNS(NS, 'viewBox', `0 0 ${width} ${height}`)
+    svgEl.setAttributeNS(null, 'viewBox', `0 0 ${width} ${height}`)
+    svgEl.style.width = `${width}px`
+    svgEl.style.height = `${height}px`
 
-    const map = (value, oMax, nMax) => (value * 100 / oMax) * nMax / 100
+    const h = width < 299 ? 10 :
+    width < 499 ? 20 :
+      width < 599 ? 30 :
+        width < 959 ? 40 :
+          width < 1279 ? 50 :
+            width < 1919 ? 50 : 50
 
-    const h10 = map(10, 28, height)
-    const h15 = map(15, 28, height)
+    width = width * 2
 
-    const w30 = map(30, 120, width)
-    const w60 = map(60, 120, width)
-    const w90 = map(90, 120, width)
-    const w120 = map(120, 120, width)
-    const w150 = map(150, 120, width)
-    const w180 = map(180, 120, width)
-    const w210 = map(210, 120, width)
-    const w240 = map(240, 120, width)
+    const w100 = width * (12.5 / 100)
+    const w200 = width * (25 / 100)
+    const w300 = width * (37.5 / 100)
+    const w400 = width * (50 / 100)
+    const w500 = width * (62.5 / 100)
+    const w600 = width * (75 / 100)
+    const w700 = width * (87.5 / 100)
 
-    const path = `\
-      M 0,${h10} \
-      C ${w30},${h10} ${w30},${h15} ${w60},${h15} ${w90},${h15} ${w90},${h10} ${w120},${h10} ${w150},${h10} ${w150},${h15} ${w180},${h15} ${w210},${h15} ${w210},${h10} ${w240},${h10} \
-      v ${height} h ${-2 * width} z\
-    `
-    console.log('path:', path)
+    const rawPath = `` +
+     `M 0 0 ` +
+      `C ${w100} 0 ${w100} ${h} ${w200} ${h} ` +
+      `C ${w300} ${h} ${w300} 0 ${w400} 0 ` +
+      `C ${w500} 0 ${w500} ${h} ${w600} ${h} ` +
+      `C ${w700} ${h} ${w700} 0 ${width} 0 ` +
+      `L ${width} ${height} ` +
+      `L 0 ${height} ` +
+      `Z`
 
-    const defsEl = document.createElementNS(NS, 'defs')
-    svgEl.appendChild(defsEl)
     const pathEl = document.createElementNS(NS, 'path')
-    defsEl.appendChild(pathEl)
-    pathEl.setAttributeNS(NS, 'd', path)
+    pathEl.setAttributeNS(null, 'd', rawPath)
+    pathEl.setAttributeNS(null, 'id', 'wave')
 
-    const path2 = pathEl.cloneNode(true) as SVGPathElement
-    const path3 = pathEl.cloneNode(true) as SVGPathElement
+    const defEl = document.createElementNS(NS, 'defs')
+    defEl.appendChild(pathEl)
+    svgEl.appendChild(defEl)
 
-    path3.setAttributeNS(NS, 'id', 'wave3')
-    path3.setAttributeNS(NS, 'class', 'wave')
-    path3.setAttributeNS(NS, 'x', '0')
-    path3.setAttributeNS(NS, 'y', '-20')
-    svgEl.appendChild(path3)
+    const use1 = document.createElementNS(NS, 'use')
+    use1.setAttributeNS(null, 'id', 'wave1')
+    use1.setAttributeNS(null, 'class', 'wave')
+    use1.setAttributeNS(null, 'x', '0')
+    use1.setAttributeNS(null, 'y', '0')
+    use1.setAttributeNS(null, 'href', '#wave')
 
-    path2.setAttributeNS(NS, 'id', 'wave2')
-    path2.setAttributeNS(NS, 'class', 'wave')
-    path2.setAttributeNS(NS, 'x', '0')
-    path2.setAttributeNS(NS, 'y', '-10')
-    svgEl.appendChild(path2)
+    const use2 = use1.cloneNode() as any
+    use2.setAttributeNS(null, 'id', 'wave2')
+    use2.setAttributeNS(null, 'y', '-2')
 
-    pathEl.setAttributeNS(NS, 'id', 'wave1')
-    pathEl.setAttributeNS(NS, 'class', 'wave')
-    pathEl.setAttributeNS(NS, 'x', '0')
-    pathEl.setAttributeNS(NS, 'y', '10')
-    svgEl.appendChild(pathEl)
+    const use3 = use1.cloneNode() as any
+    use3.setAttributeNS(null, 'id', 'wave3')
+    use3.setAttributeNS(null, 'y', '-4')
 
-    // pathEl.setAttributeNS(NS, 'id', 'wave')
-
-    // const use3 = document.createElementNS(NS, 'use')
-    // svgEl.appendChild(use3)
-    // use3.setAttributeNS(NS, 'id', 'wave3')
-    // use3.setAttributeNS(NS, 'class', 'wave')
-    // use3.setAttributeNS(NS, 'xlink:href', '#wave')
-    // use3.setAttributeNS(NS, 'x', '0')
-    // use3.setAttributeNS(NS, 'y', '-20')
-
-    // const use2 = document.createElementNS(NS, 'use')
-    // svgEl.appendChild(use2)
-    // use2.setAttributeNS(NS, 'id', 'wave2')
-    // use2.setAttributeNS(NS, 'class', 'wave')
-    // use2.setAttributeNS(NS, 'xlink:href', '#wave')
-    // use2.setAttributeNS(NS, 'x', '0')
-    // use2.setAttributeNS(NS, 'y', '-10')
-
-    // const use1 = document.createElementNS(NS, 'use')
-    // svgEl.appendChild(use1)
-    // use1.setAttributeNS(NS, 'id', 'wave1')
-    // use1.setAttributeNS(NS, 'class', 'wave')
-    // use1.setAttributeNS(NS, 'xlink:href', '#wave')
-    // use1.setAttributeNS(NS, 'x', '0')
-    // use1.setAttributeNS(NS, 'y', '10')
+    svgEl.appendChild(use3)
+    svgEl.appendChild(use2)
+    svgEl.appendChild(use1)
 
     if (el.firstChild) el.replaceChild(svgEl, el.firstChild)
     else el.appendChild(svgEl)

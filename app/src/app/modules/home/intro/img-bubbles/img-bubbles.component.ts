@@ -3,6 +3,8 @@ import { SkillsConfig } from './utils/bubble-utils'
 import { HttpClient } from '@angular/common/http'
 import { ResizedEvent } from 'angular-resize-event'
 import { Bubbles } from './utils/bubbles'
+import { Subject } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
 
 @Component({
   selector: 'app-img-bubbles',
@@ -13,16 +15,27 @@ export class ImgBubblesComponent implements AfterViewInit {
   @HostListener('window:keyup', ['$event'])
   onKeyUp (e: KeyboardEvent) {
     if (e.code === 'Space') {
-      this.bubbles.stop = !this.bubbles.stop
+      if (this.bubbles.state === 'running') this.bubbles.stopAnimation()
+      else if (this.bubbles.state === 'stopped') this.bubbles.startAnimation()
     }
   }
 
   bubbles: Bubbles
-
+  resizeEvent = new Subject()
   constructor (
     private _http: HttpClient,
     private _el: ElementRef<HTMLElement>
-  ) { }
+  ) {
+    let resizeInProgress = false
+    this.resizeEvent
+    .pipe(debounceTime(100))
+    .subscribe(async () => {
+      if (resizeInProgress) return
+      resizeInProgress = true
+      this.bubbles && await this.bubbles.updateAll()
+      resizeInProgress = false
+    })
+  }
 
   ngAfterViewInit () {
     this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
@@ -32,7 +45,7 @@ export class ImgBubblesComponent implements AfterViewInit {
 
   onResized (e: ResizedEvent) {
     if (Math.abs(e.newHeight - e.oldHeight) > 0 && this.bubbles) {
-      this.bubbles.updateAll()
+      this.resizeEvent.next()
     }
   }
 }

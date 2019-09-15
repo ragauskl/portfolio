@@ -1,6 +1,4 @@
 import { IconMeta, map, describeArc, scaleCoordinate, angleBetweenPoints } from './bubble-utils'
-import { Subject } from 'rxjs'
-import { throttleTime } from 'rxjs/operators'
 
 export default class Bubble {
   noiseSeedX = Math.floor(Math.random() * 64000)
@@ -13,11 +11,7 @@ export default class Bubble {
   imageClipX = 0
   diameter: number
   backImage: HTMLElement
-  logSub = new Subject()
 
-  get log () {
-    return false && this.i === 12
-  }
   constructor (
     public i: number,
     public step: number,
@@ -29,9 +23,6 @@ export default class Bubble {
     public itemLeft: IconMeta,
     public itemRight: IconMeta
   ) {
-    this.logSub.pipe(
-      throttleTime(1000)
-    ).subscribe(x => console.log(x))
     this.diameter = this.size * this.scale
     // Add random increment to x and y, that are in bounds of a 'rectangle'
     // respecting inner padding (so that circles don't overflow eachother)
@@ -39,14 +30,12 @@ export default class Bubble {
     const maxInnerX = this.size * 0.90 - this.diameter
     const randX = map(Math.random(), 0, 1, minInnerX, maxInnerX)
     const randY = map(Math.random(), 0, 1, minInnerX, maxInnerX)
-    if (this.log) console.log(x)
 
     this.xWithNoise = x + randX
     this.yWithNoise = x + randY
 
     this.elContainer = document.createElement('div')
     this.elContainer.className = 'bubble-container'
-    if (this.log) this.elContainer.style.border = '1px solid orange'
     this.elContainer.style.width = this.elContainer.style.height = `${this.diameter}px`
 
     this.el = document.createElement('div')
@@ -60,6 +49,8 @@ export default class Bubble {
     this.backImage = iLeft
     const iRight = document.createElement('img')
     iRight.src = itemRight.src
+
+    iLeft.draggable = iRight.draggable = false
 
     const rightTitle = this.GenerateTitle(itemRight.title)
     const leftTitle = this.GenerateTitle(itemLeft.title)
@@ -90,7 +81,6 @@ export default class Bubble {
     this.x = x
     this.y = y
 
-    if (this.log) console.log('this.x:', this.x)
     this.xWithNoise = x + randX
     this.yWithNoise = y + randY
 
@@ -142,24 +132,12 @@ export default class Bubble {
           x: lastExtent.x + lastExtent.width,
           y: lastExtent.y + lastExtent.height
         }
-        // console.log('\n\n')
         const origin = {
           x: 50,
           y: 50
         }
         const snappedMin = scaleCoordinate(min, origin, 50)
         const snappedMax = scaleCoordinate(max, origin, 50)
-
-        // const addCircle = (c: Coordinate, fill: string = 'none') => {
-        //   const circleStart = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        //   circleStart.setAttribute('cx', `${c.x}`)
-        //   circleStart.setAttribute('cy', `${c.y}`)
-        //   circleStart.setAttribute('r', '2')
-        //   circleStart.setAttribute('fill', fill)
-        //   titleSvg.appendChild(circleStart)
-        // }
-        // addCircle(snappedMin, 'orange')
-        // addCircle(snappedMax, 'orange')
 
         const curveDegree = Math.abs(angleBetweenPoints(snappedMin, snappedMax, origin)) / 2
 
