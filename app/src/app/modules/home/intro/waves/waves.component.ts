@@ -21,6 +21,8 @@ export class WavesComponent implements AfterViewInit {
     const el = this.wavesContainer.nativeElement
     let { width, height } = el.getBoundingClientRect()
 
+    const siblingEl = document.getElementById('bubbles-container')
+    height += siblingEl.clientHeight * 0.1
     const svgEl = document.createElementNS(NS, 'svg')
     svgEl.setAttributeNS(null, 'viewBox', `0 0 ${width} ${height}`)
     svgEl.style.width = `${width}px`

@@ -60,7 +60,8 @@ export class Bubbles {
   }
 
   updatePadding () {
-    this.xPadding = this.yPadding = Math.max(10, Math.round(this.size * 0.1))
+    this.xPadding = Math.max(10, Math.round(this.size * 0.15))
+    this.yPadding = Math.max(10, Math.round(this.size * 0.17))
   }
 
   async stateChanged (expected: string) {
