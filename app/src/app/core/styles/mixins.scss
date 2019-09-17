@@ -1,3 +1,5 @@
+@import 'functions';
+
 @mixin absolute-center {
   top: 50%;
   left: 50%;
@@ -22,12 +24,12 @@
 $breakpoints: (
   'xs-min': 0px,
   'xs-max': 599px,
-  'sm-min': 600px,
-  'sm-max': 959px,
-  'md-min': 960px,
-  'md-max': 1279px,
-  'lg-min': 1280px,
-  'lg-max': 1919px,
+  's-min': 600px,
+  's-max': 959px,
+  'm-min': 960px,
+  'm-max': 1279px,
+  'l-min': 1280px,
+  'l-max': 1919px,
   'xl-min': 1920px,
   'xl-max': 5000px
 ) !default;
@@ -65,4 +67,37 @@ $breakpoints: (
     @error "Unrecognised breakpoint #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}.";
   }
 }
+
+@mixin break-prop ($property, $break-map) {
+  // xs
+  @media screen and (max-width: 599px) {
+    #{$property}: map-get($break-map, "xs");
+  }
+  // s
+  @media screen and (min-width: 600px) and (max-width: 959px) {
+    #{$property}: map-get($break-map, "s");
+  }
+  // m
+  @media screen and (min-width: 960px) and (max-width: 1279px) {
+    #{$property}: map-get($break-map, "m");
+  }
+  // l
+  @media screen and (min-width: 1280px) and (max-width: 1919px) {
+    #{$property}: map-get($break-map, "l");
+  }
+  // xl
+  @media screen and (min-width: 1920px) {
+    #{$property}: map-get($break-map, "xl");
+  }
+}
 // <--- Breakpoints
+
+@mixin break-font ($size, $min: null, $max: null) {
+  @include break-prop('font-size', (
+    'xs': snap($size * 0.6, $min, $max),
+    's': snap($size * 0.8, $min, $max),
+    'm': $size,
+    'l': snap($size * 1.2, $min, $max),
+    'xl': snap($size * 1.4, $min, $max)
+  ))
+}

@@ -2,43 +2,139 @@
 
 :host {
   position: relative;
-  background-image: url('assets/landing-background.jpg')
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    background: #581879;
+    color: white;
+
+    > * {
+      overflow: hidden;
+    }
+  }
 }
 
-.icon-panel, .text-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+#title-container {
+  flex: 0 10%;
+  display: flex;
+
+  #im {
+    position: relative;
+    @include break-font(45px);
+    margin: auto;
+    text-transform: uppercase;
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      width: 100%;
+      height: 0.1em;
+      top: 53%;
+      left: 0;
+      background: #581879;
+    }
+  }
+}
+
+#description-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 50%;
+
+    @include break('lt', 's') {
+      flex: 0 100%;
+    }
+
+    .card {
+      margin: auto;
+      height: fit-content;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 50vw;
+      @include break-font(20px, 14px, 20px);
+      @include break('lt', 's') {
+        max-width: 70vw;
+
+        &:first-child {
+          margin-bottom: 10px;
+        }
+      }
+
+      > *:not(:last-child) {
+        margin-bottom: 0.15em;
+      }
+
+      &:hover {
+        .divider {
+          width: 80%;
+          opacity: 0.8;
+        }
+      }
+
+      .title {
+        @include break-font(27px, 19px, 27px);
+        text-align: center;
+      }
+
+      .divider {
+        min-height: 1px;
+        height: 0.1em;
+        width: 0em;
+        opacity: 0.1;
+        background: white;
+        transition: width 0.5s ease-in-out, opacity 0.5s ease;
+      }
+
+      .description {
+        font-size: inherit;
+        font-weight: lighter;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+      }
+    }
+  }
+}
+
+#bubbles-container {
+  overflow: visible;
+  @include break-prop('flex', (
+    'xs': 0 30%,
+    's': 0 35%,
+    'm': 0 40%,
+    'l': 0 50%,
+    'xl': 0 55%
+  ))
+}
+
+#wave-container {
+  overflow: visible;
+  position: relative;
+  flex: 0 10%;
 }
 
 .icon-panel {
   top: 15%;
-  // filter: grayscale(0.9);
-    // transition: filter 1s linear;
 }
 
-.text-panel {
-  font-size: 50px;
-  font-weight: bolder;
-  color: rgb(49, 50, 56);
-
-  span {
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    white-space: nowrap;
-  }
-}
 
 ::ng-deep .bubble-container {
   position: absolute;
   z-index: 2;
   opacity: 0.9;
-  transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear, filter 0.3s linear;
 
   .bubble {
     background: white;
@@ -47,6 +143,7 @@
     box-shadow:
       0 15px 35px rgba(0, 0, 0, 0.1),
       0 3px 10px rgba(0, 0, 0, 0.1);
+
 
     svg {
       position: absolute;
@@ -64,12 +161,6 @@
       &.back {
         transform: rotateY(180deg);
       }
-    }
-
-    @include break('lt', 'md') {
-      box-shadow:
-      0 10px 27px rgba(0, 0, 0, 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     img {

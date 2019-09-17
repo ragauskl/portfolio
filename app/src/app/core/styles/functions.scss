@@ -1,0 +1,10 @@
+@function snap ($value, $min: null, $max: null) {
+  $result: $value;
+  @if $min != null {
+    $result: max($result, $min)
+  }
+  @if $max != null {
+    $result: min($result, $max)
+  }
+  @return $result
+}
