@@ -11,6 +11,8 @@ export class ThemeService {
   constructor () {
     this._theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
     this.updateTheme()
+
+    ;(window as any).theme = () => this.switchTheme()
   }
 
   get isDark () {

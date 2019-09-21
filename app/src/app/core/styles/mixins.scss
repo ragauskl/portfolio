@@ -101,3 +101,21 @@ $breakpoints: (
     'xl': snap($size * 1.4, $min, $max)
   ))
 }
+
+// Flex layout
+@mixin fxFlex ($direction, $gap: null, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+
+  @if ($gap) {
+    > *:not(:last-child) {
+      @if ($direction == row) {
+        margin-right: $gap;
+      } @else if ($direction == column) {
+        margin-bottom: $gap;
+      }
+    }
+  }
+}

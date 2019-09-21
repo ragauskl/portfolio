@@ -4,8 +4,7 @@
   position: relative;
 
   > div {
-    display: flex;
-    flex-direction: column;
+    @include fxFlex(column);
     align-items: stretch;
     width: 100%;
     height: 100%;
@@ -20,7 +19,7 @@
 
 #title-container {
   flex: 0 10%;
-  display: flex;
+  @include fxFlex(row);
 
   #im {
     position: relative;
@@ -42,13 +41,12 @@
 
 #description-container {
   flex-grow: 1;
-  display: flex;
+  @include fxFlex(row);
   align-items: stretch;
   flex-wrap: wrap;
 
   > div {
-    display: flex;
-    align-items: center;
+    @include fxFlex(row);
     justify-content: center;
     flex: 0 50%;
 
@@ -60,9 +58,7 @@
       margin: auto;
       height: fit-content;
       width: 80%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      @include fxFlex(column, 0.15em);
       max-width: 50vw;
       @include break-font(20px, 14px, 20px);
       @include break('lt', 's') {
@@ -71,10 +67,6 @@
         &:first-child {
           margin-bottom: 10px;
         }
-      }
-
-      > *:not(:last-child) {
-        margin-bottom: 0.15em;
       }
 
       &:hover {
