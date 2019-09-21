@@ -4,10 +4,10 @@
 
   <div id="browsers">
 
-    <div class="browser" *ngFor="let browser of browsers" [class.no-support]="!browser.supported">
+    <a class="browser" *ngFor="let browser of browsers" [class.no-support]="!browser.supported" [href]="browser.href" target="_blank">
       <img [src]="browser.src" alt="Logo" [draggable]="false">
       <span>{{browser.name}}</span>
-    </div>
+    </a>
 
   </div>
 </div>

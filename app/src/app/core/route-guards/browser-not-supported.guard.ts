@@ -12,10 +12,10 @@ export class BrowserNotSupportedGuard implements CanActivate {
   ) {}
 
   canActivate (): boolean {
-    if (this.browserService.supported) {
-      this.router.navigateByUrl('/')
-      return false
-    }
+    // if (this.browserService.supported) {
+    //   this.router.navigateByUrl('/')
+    //   return false
+    // }
     return true
   }
 }
