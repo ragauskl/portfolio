@@ -44,7 +44,7 @@ export class BrowserService {
   }]
 
   browserName = this.getBrowserName()
-  supported = !!this.browsers.find(x => x.name === this.browserName)
+  supported = this.browserName ? !!this.browsers.find(x => x.name === this.browserName) : true
 
   private getBrowserName () {
     const w: any = window

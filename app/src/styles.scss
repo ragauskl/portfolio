@@ -5,8 +5,18 @@
 @import url('https://fonts.googleapis.com/css?family=Crete+Round&display=swap');
 
 :root {
-  --background: #fff;
-  --color: #121212;
+  --od-v-dark: #1b1d1f;
+  --od-dark: #2e3235;
+  --od-light: white;
+  --od-dec: #c678dd;
+  --od-str: #98c379;
+  --od-obj: #e5c07b;
+  --od-fn: #56b6c2;
+  --od-var: #e06c75;
+  --od-cmt: #646464;
+
+  --background: white;
+  --color: var(--od-back);
   // 500s
   --primary: #522546;
   --secondary: #26a69a;
@@ -17,8 +27,8 @@
   --secondary900: #0d7b6c;
 
   .dark-theme {
-    --background: #251f29;
-    --color: #fff;
+    --background: var(--od-dark);
+    --color: var(--od-light);
   }
 }
 
