@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { ThemeService } from '@core/services/theme.service'
+import { environment } from 'environments/environment'
 
 @Component({
   selector: 'app-root',
@@ -12,5 +13,9 @@ export class AppComponent {
       !window.location.href.includes('error')
   }
 
-  constructor (private themeService: ThemeService) {}
+  constructor (private themeService: ThemeService) {
+    if (environment.production) {
+      // TODO: Inject google analytics
+    }
+  }
 }

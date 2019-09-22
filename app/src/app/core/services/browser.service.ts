@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core'
-declare var opr
-declare var InstallTrigger
-declare var safari
+import browser from 'bowser'
 
 @Injectable({
   providedIn: 'root'
@@ -43,40 +41,25 @@ export class BrowserService {
     src: `${this.logos}/ie.svg`
   }]
 
-  browserName = this.getBrowserName()
-  supported = this.browserName ? !!this.browsers.find(x => x.name === this.browserName) : true
+  browserName = this.formatName(
+    browser.getParser(window.navigator.userAgent).getBrowserName()
+  )
+  supported = !!this.browsers.find(x => x.name === this.browserName && x.supported)
 
-  private getBrowserName () {
-    const w: any = window
-    const d: any = document
-    let name: string
-
-    if (navigator.userAgent.includes('Chrome') || navigator.userAgent.includes('Chromium')) {
-      name = 'Chrome'
-    } else if (
-      (!!w.opr && !!opr.addons) || !!w.opera || navigator.userAgent.indexOf(' OPR/') >= 0
-    ) {
-      name = 'Opera'
-    } else if (
-      typeof InstallTrigger !== 'undefined'
-    ) {
-      name = 'Firefox'
-    } else if (
-      /constructor/i.test(w.HTMLElement) ||
-      (function (p) { return p.toString() === '[object SafariRemoteNotification]' })(!window['safari'] ||
-      (typeof safari !== 'undefined' && safari.pushNotification))
-    ) {
-      name = 'Safari'
-    } else if (
-      /*@cc_on!@*/false || d.documentMode
-    ) {
-      name = 'Edge'
-    } else if (
-      w.StyleMedia
-    ) {
-      name = 'IE'
+  private formatName (name: string) {
+    name = name.toLowerCase()
+    if (name.includes('chrome')) {
+      return 'Chrome'
+    } else if (name.includes('edge')) {
+      return 'Edge'
+    } else if (name.includes('opera')) {
+      return 'Opera'
+    } else if (name.includes('firefox')) {
+      return 'Firefox'
+    } else if (name.includes('safari')) {
+      return 'Safari'
+    } else if (name.includes('explorer')) {
+      return 'IE'
     }
-
-    return name
   }
 }

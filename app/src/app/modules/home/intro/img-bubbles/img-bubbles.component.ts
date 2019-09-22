@@ -14,10 +14,10 @@ import { debounceTime } from 'rxjs/operators'
 export class ImgBubblesComponent implements AfterViewInit {
   @HostListener('window:keyup', ['$event'])
   onKeyUp (e: KeyboardEvent) {
-    if (e.code === 'Space') {
-      if (this.bubbles.state === 'running') this.bubbles.stopAnimation()
-      else if (this.bubbles.state === 'stopped') this.bubbles.startAnimation()
-    }
+    // if (e.code === 'Space') {
+    //   if (this.bubbles.state === 'running') this.bubbles.stopAnimation()
+    //   else if (this.bubbles.state === 'stopped') this.bubbles.startAnimation()
+    // }
   }
 
   bubbles: Bubbles
