@@ -4,12 +4,6 @@ import {
   FastifyAdapter,
   NestFastifyApplication
 } from '@nestjs/platform-fastify'
-import * as moduleAlias from 'module-alias'
-import * as path from 'path'
-
-moduleAlias.addAliases({
-  '@root': path.join(__dirname, '')
-})
 
 async function bootstrap () {
   const app = await NestFactory.create<NestFastifyApplication>(

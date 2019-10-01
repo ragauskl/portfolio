@@ -7,13 +7,12 @@
     "experimentalDecorators": true,
     "target": "es6",
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./src",
-    "incremental": true
+    "outDir": "dist",
+    "baseUrl": "src",
+    "incremental": true,
+    "paths": {
+      "@pipes/*": ["pipes/*"]
+    }
   },
-  "exclude": ["node_modules"],
-  "paths": {
-    "@controllers/*":  ["controllers/*"],
-    "@pipes/*":  ["pipes/*"]
-  }
+  "exclude": ["node_modules"]
 }
