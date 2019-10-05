@@ -5,14 +5,20 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "target": "es6",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "src",
     "incremental": true,
     "paths": {
-      "@pipes/*": ["pipes/*"]
+      "@pipes/*": ["pipes/*"],
+      "@utils/*": ["utils/*"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": [
+    "src/**/*",
+    "src/global.d.ts", "scripts"
+  ]
 }

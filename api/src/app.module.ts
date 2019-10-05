@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { EmailsModule } from './controllers/emails/emails.module'
 import { RouterModule, Routes } from 'nest-router'
+
 @Module({
   imports: [
     EmailsModule,
@@ -10,9 +10,6 @@ import { RouterModule, Routes } from 'nest-router'
   ],
   controllers: [
     AppController
-  ],
-  providers: [
-    AppService
   ]
 })
 export class AppModule {
