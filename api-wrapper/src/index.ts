@@ -66,7 +66,7 @@ export class Api {
       super(handler, `/emails`)
     }
 
-    add = (body: ContactForm): ApiRoute<undefined> => new class extends ApiRoute<any> {
+    sendContactForm = (body: ContactForm): ApiRoute<undefined> => new class extends ApiRoute<any> {
       constructor (handler: ApiHandler, basePath: string) {
         super(handler, 'post', basePath, body)
       }

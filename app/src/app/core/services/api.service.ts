@@ -6,9 +6,11 @@ import { Observable, of } from 'rxjs'
 import { retry, catchError, map } from 'rxjs/operators'
 import { AppError } from '../utils/app-error'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ApiService {
-  api = new Api(this)
+  wrapr = new Api(this)
 
   constructor (
     private http: HttpClient
@@ -91,7 +93,7 @@ export class ApiService {
         // Too many requests page
         break
       case 0:
-        const res = await this.handleRequest(this.api.Root().ping(), undefined, true) as (string | number)
+        const res = await this.handleRequest(this.wrapr.Root().ping(), undefined, true) as (string | number)
         if (res === 0) {
           // Redirect to server down
           throw new AppError(`Server is down.`)

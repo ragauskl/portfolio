@@ -1,0 +1,32 @@
+@import 'mixins';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin: 2em 0;
+
+    .mat-form-field {
+      flex: 0 1 48%;
+
+      @include break('lt', 'm') {
+        flex: 0 0 100%;
+      }
+
+      &.textarea {
+        flex: 0 0 100%;
+      }
+
+      textarea {
+        height: 150px;
+      }
+    }
+  }
+}

@@ -12,10 +12,10 @@ export default class Email {
 
   static sendEmail = async (name: string, replyTo: string, msg: string) => {
     const mailOptions: nodemailer.SendMailOptions = {
-      from: `"${name} " <${process.env[ENV.NO_REPLY_EMAIL]}>`,
+      from: `"Protfolio System " <${process.env[ENV.NO_REPLY_EMAIL]}>`,
       to: `${process.env[ENV.NO_REPLY_EMAIL]}`,
-      subject: 'Contact From submitted on lina.codes',
-      text: msg
+      subject: 'Contact Form submitted on lina.codes',
+      text: `Name: ${name}\n\nEmail: ${replyTo}\n\nMessage: ${msg}`
     }
 
     await Email.send(mailOptions)
