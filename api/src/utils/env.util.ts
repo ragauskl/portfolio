@@ -4,14 +4,24 @@ export enum ENV {
   ENV_DECRYPTION_KEY = 'ENV_DECRYPTION_KEY',
   NODE_ENV = 'NODE_ENV',
   NO_REPLY_EMAIL = 'NO_REPLY_EMAIL',
-  NO_REPLY_PASSWORD = 'NO_REPLY_PASSWORD'
+  NO_REPLY_PASSWORD = 'NO_REPLY_PASSWORD',
+  PORT = 'PORT',
+  HOST = 'HOST'
 }
 
 export function validateVariables () {
   if (!process.env[ENV.NODE_ENV]) process.env[ENV.NODE_ENV] = 'dev'
+  if (!process.env[ENV.PORT]) process.env[ENV.PORT] = 3000 as any
 
   const missing: string[] = []
   for (const k in ENV) {
+    if (
+      [
+        ENV.HOST
+      ]
+      .includes(k as ENV)
+    ) continue
+
     if (!process.env[k]) missing.push(k)
   }
 

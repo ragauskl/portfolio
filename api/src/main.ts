@@ -1,4 +1,4 @@
-import { decryptVariables, validateVariables } from '@utils/env.util'
+import { decryptVariables, validateVariables, ENV } from '@utils/env.util'
 decryptVariables()
 validateVariables()
 
@@ -30,8 +30,8 @@ async function bootstrap () {
   }))
   app.use(cors())
 
-  await app.listen(3000)
-  console.log('Server up')
+  await app.listen(process.env[ENV.PORT], process.env[ENV.HOST])
+  console.log(`#> Server up. Listening to port ${process.env[ENV.HOST] || ''}:${process.env[ENV.PORT]}`)
 }
 
 bootstrap()
