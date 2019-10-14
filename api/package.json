@@ -14,13 +14,14 @@
     "build": "tsc -p tsconfig.build.json",
     "format": "tslint -p tsconfig.json -c tslint.json --fix",
     "lint": "tslint -p tsconfig.json -c tslint.json",
-    "prestart:prod": "rimraf dist && npm run build"
+    "prestart:prod": "rimraf dist && npm run build",
+    "i:lib": "rimraf lib && mkdirp ./lib/api-wrapper && cp -r ../api-wrapper/package*.json ../api-wrapper/dist ./lib/api-wrapper && npm i -S lib/api-wrapper/"
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-fastify": "^6.7.2",
-    "api-wrapper": "file:../api-wrapper",
+    "api-wrapper": "file:lib/api-wrapper",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.10.1",
     "cors": "^2.8.5",
@@ -34,7 +35,8 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "secure-env": "^1.2.0"
+    "secure-env": "^1.2.0",
+    "tsconfig-paths": "^3.8.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",
@@ -44,10 +46,10 @@
     "@types/nodemailer": "^6.2.1",
     "@types/on-finished": "^2.3.1",
     "concurrently": "^4.1.0",
+    "cp": "^0.2.0",
     "nodemon": "^1.19.3",
     "supertest": "^3.4.2",
     "ts-node": "^8.1.0",
-    "tsconfig-paths": "^3.8.0",
     "tslint": "^5.16.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.4.3",
