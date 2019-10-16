@@ -9,10 +9,23 @@ before_install:
   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
   - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
   - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
+  - export GITHUB_USER=ragauskl:$GITHUB_TOKEN
+  - git config --global user.email "$GITHUB_EMAIL"
+  - git config --global user.name "$GITHUB_USER"
+  - git config user.email "$GITHUB_EMAIL"
+  - git config user.name "$GITHUB_USER"
+  - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 stages:
-  - name: script
+  - install
+  - name: deploy_app
     if: env(TRAVIS_PULL_REQUEST) != true && branch = master
+
+jobs:
+  include:
+    - stage: deploy_app
+      script: cd app && npm run build
+      # && npm run deploy
 
 branches:
   only:
@@ -26,16 +39,5 @@ install:
   - cd ../app
   - npm i
   - cd ..
-
-before_script:
-  - export GITHUB_USER=ragauskl:$GITHUB_TOKEN
-  - git config --global user.email "$GITHUB_EMAIL"
-  - git config --global user.name "$GITHUB_USER"
-  - git config user.email "$GITHUB_EMAIL"
-  - git config user.name "$GITHUB_USER"
-  - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
-
-script:
-  - cd app && npm run build && npm run deploy
 
 
