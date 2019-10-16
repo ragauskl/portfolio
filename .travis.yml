@@ -16,10 +16,9 @@ before_install:
   - git config user.name "$GITHUB_USER"
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
-stages:
-  - install
-  - name: deploy_app
-    if: env(TRAVIS_PULL_REQUEST) != true && branch = master
+# stages:
+#   - name: deploy_app
+#     if: env(TRAVIS_PULL_REQUEST) != true && branch = master
 
 jobs:
   include:
