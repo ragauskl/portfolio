@@ -10,9 +10,10 @@ env:
   - NODE_ENV="ci"
 
 before_install:
-  - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > .npmrc
-  - echo "@prtf:registry=https://registry.lina.codes/" >> .npmrc
-  - echo "registry=https://registry.npmjs.org/" >> .npmrc
+  - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
+  - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
+  - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+  - cat ~/.npmrc
 
 branches:
   only:
