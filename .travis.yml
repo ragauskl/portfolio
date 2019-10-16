@@ -36,8 +36,6 @@ before_script:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 script:
-  - cd app
-  - npm run build
-  - npm run deploy
+  - cd app && npm run build && npm run deploy
 
 
