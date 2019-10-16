@@ -19,7 +19,7 @@ before_install:
 stages:
   - build_app
   - name: deploy_app
-    if: env(TRAVIS_PULL_REQUEST) != true && branch = master
+    if: env(TRAVIS_PULL_REQUEST) != true AND branch = master
 
 jobs:
   include:
