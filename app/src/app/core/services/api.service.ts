@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Api, ApiRoute, RequestOptions } from 'api-wrapper'
+import { Api, ApiRoute, RequestOptions } from '@prtf/shared'
 import { HttpClient, HttpEventType, HttpErrorResponse } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 import { Observable, of } from 'rxjs'

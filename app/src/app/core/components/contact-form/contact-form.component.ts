@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { ApiService } from '@core/services/api.service'
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
-import { ContactForm } from 'api-wrapper'
+import { ContactForm } from '@prtf/shared'
 import { handleError } from '@core/utils/app-error'
 
 type FormModel = {
