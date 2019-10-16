@@ -16,15 +16,17 @@ before_install:
   - git config user.name "$GITHUB_USER"
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
-# stages:
-#   - name: deploy_app
-#     if: env(TRAVIS_PULL_REQUEST) != true && branch = master
+stages:
+  - build_app
+  - name: deploy_app
+    if: env(TRAVIS_PULL_REQUEST) != true && branch = master
 
 jobs:
   include:
-    - stage: deploy_app
+    - stage: build_app
       script: cd app && npm run build
-      # && npm run deploy
+    - stage: deploy_app
+      script: cd app && npm run deploy
 
 branches:
   only:
