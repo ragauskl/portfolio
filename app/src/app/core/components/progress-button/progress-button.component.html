@@ -1,0 +1,4 @@
+<button type="submit" cdkFocusInitial mat-raised-button color="primary" [disabled]="disabled" (click)="onClick()">
+  <span *ngIf="!loading">{{text}}</span>
+  <mat-spinner diameter="17" *ngIf="loading"></mat-spinner>
+</button>

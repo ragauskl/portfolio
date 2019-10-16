@@ -8,13 +8,13 @@
   </button>
 
   <div>
-    <div *ngIf="!minimized" id="nav-direction">
+    <div *ngIf="!mobile" id="nav-direction">
       <!-- <span>Prev</span>
       <span>Next</span> -->
     </div>
   </div>
 </div>
 
-<div id="sidenav-menu" [@menuSlide]="(minimized ? 'min' : 'max') + '-' + (menuOpen ? 'open' : 'closed')">
+<div id="sidenav-menu" [@menuSlide]="(mobile ? 'min' : 'max') + '-' + (menuOpen ? 'open' : 'closed')">
   Comming soon..
 </div>

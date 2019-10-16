@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef } from '@angular/core'
+import { Component, HostListener } from '@angular/core'
 import { SidenavService } from '@core/services/sidenav.service'
 import { trigger, state, style, transition, animate } from '@angular/animations'
 
@@ -30,22 +30,20 @@ export class SidenavComponent {
     this.calculateType()
   }
   menuOpen = false
-  minimized = false
+  mobile = false
 
   get title (): string {
     return this._sidenavService.currentTitle
   }
 
   constructor (
-    private _el: ElementRef<HTMLElement>,
     private _sidenavService: SidenavService
   ) {
     this.calculateType()
   }
 
   calculateType () {
-    const { clientHeight, clientWidth } = this._el.nativeElement
-    this.minimized = clientHeight < clientWidth
+    this.mobile = window.innerWidth < 960
   }
 
   toggleMenu () {

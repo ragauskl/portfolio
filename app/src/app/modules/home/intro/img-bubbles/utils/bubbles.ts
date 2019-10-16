@@ -2,9 +2,6 @@ import { IconMeta, shuffle, SkillsConfig } from './bubble-utils'
 import Bubble from './bubble'
 import Noise from 'noisejs'
 
-// const NOISE_SPEED = 0.005 // The frequency. Smaller for flat slopes, higher for jagged spikes.
-// const NOISE_AMOUNT = 5    // The amplitude. The amount the noise affects the movement.
-
 export class Bubbles {
   get scrollSpeed () {
     return Math.max(Math.min(this.size * 0.002, 0.4), 0.05)

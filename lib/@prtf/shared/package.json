@@ -1,0 +1,23 @@
+{
+  "name": "@prtf/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "format": "tslint -p tsconfig.json -c tslint.json --fix",
+    "lint": "tslint -p tsconfig.json -c tslint.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "class-validator": "^0.10.1",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.11",
+    "ts-node": "^8.4.1",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.4.3"
+  }
+}
