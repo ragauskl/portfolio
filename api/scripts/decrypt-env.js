@@ -1,7 +1,7 @@
 const secureEnv = require('secure-env')
 const fs = require('fs')
 const envs = secureEnv({ secret: process.env.ENV_DECRYPTION_KEY })
-console.log('process.env.ENV_DECRYPTION_KEY:', process.env.ENV_DECRYPTION_KEY)
+
 const dotenv = Object.keys(envs).map(k =>
   `${k}=${envs[k]}`
 ).join('\n')

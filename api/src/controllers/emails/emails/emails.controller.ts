@@ -11,7 +11,6 @@ export class EmailsController {
   async sendEmail (
     @Body(new ValidationPipe()) contactForm: ContactForm
   ) {
-    console.log('contactForm:', contactForm)
     await Email.sendEmail(contactForm.name, contactForm.replyTo, contactForm.message)
   }
 }
