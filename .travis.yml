@@ -36,7 +36,7 @@ before_deploy:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 deploy:
-  - cd app
-  - npm run build
-  - npm run deploy
+  - provider: script
+  - script: cd app && npm run build && npm run deploy
+
 
