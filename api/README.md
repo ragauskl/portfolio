@@ -12,10 +12,11 @@
   heroku login
   heroku container:login
   heroku git:remote -a lina-codes-api
-  heroku container:push lina-codes-api --arg ENV_DECRYPTION_KEY=$ENV_DECRYPTION_KEY
-  heroku container:release lina-codes-api
+  heroku container:push web --arg ENV_DECRYPTION_KEY=$ENV_DECRYPTION_KEY
+  heroku container:release web
   ```
+
 * Logs
   ```sh
-  heroku logs --tail
+  heroku logs --tail (--dyno=web)
   ```
