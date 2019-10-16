@@ -14,14 +14,13 @@
     "build": "tsc -p tsconfig.build.json",
     "format": "tslint -p tsconfig.json -c tslint.json --fix",
     "lint": "tslint -p tsconfig.json -c tslint.json",
-    "prestart:prod": "rimraf dist && npm run build",
-    "i:lib": "rimraf lib && mkdirp ./lib/api-wrapper && cp -r ../api-wrapper/package*.json ../api-wrapper/dist ./lib/api-wrapper && npm i -S lib/api-wrapper/"
+    "prestart:prod": "rimraf dist && npm run build"
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-fastify": "^6.7.2",
-    "api-wrapper": "file:lib/api-wrapper",
+    "@prtf/shared": "^1.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.10.1",
     "cors": "^2.8.5",

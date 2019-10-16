@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Header } from '@nestjs/common'
 import { ValidationPipe } from '@pipes/validation.pipe'
 import Email from '@utils/email.util'
-import { ContactForm } from 'api-wrapper'
+import { ContactForm } from '@prtf/shared'
 
 @Controller()
 export class EmailsController {
