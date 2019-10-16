@@ -1,0 +1,11 @@
+@import 'mixins';
+
+:host {
+  max-height: 600px;
+}
+
+.contents {
+  width: var(--max-width);
+  height: 100%;
+  margin: auto;
+}

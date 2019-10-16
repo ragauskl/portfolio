@@ -4,10 +4,17 @@ import { HomeComponent } from './home.component'
 import { HomeRoutingModule } from './home.routing'
 import { CoreModule } from '@core/core.module'
 import { IntroComponent } from './intro/intro.component'
-import { WavesComponent } from './intro/waves/waves.component'
+import { WavesComponent } from './components/waves/waves.component'
 import { ImgBubblesComponent } from './intro/img-bubbles/img-bubbles.component'
+import { ContactMeComponent } from './contact-me/contact-me.component'
 @NgModule({
-  declarations: [HomeComponent, IntroComponent, WavesComponent, ImgBubblesComponent],
+  declarations: [
+    HomeComponent,
+    IntroComponent,
+    WavesComponent,
+    ImgBubblesComponent,
+    ContactMeComponent
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,

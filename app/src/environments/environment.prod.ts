@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: 'https://?'
+  api: 'https://lina-codes-api.herokuapp.com'
 }
