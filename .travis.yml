@@ -6,6 +6,7 @@ services:
 - docker
 
 before_install:
+  - printenv
   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
   - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
   - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
@@ -46,5 +47,4 @@ install:
   - cd ../app
   - npm i
   - cd ..
-
 
