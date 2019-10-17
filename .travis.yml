@@ -17,9 +17,10 @@ before_install:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 stages:
-  - build_app
+  - name: build_app
+    if: ((branch = master) AND (type = push)) OR ((branch = develop) AND (type = push))
   - name: deploy_app
-    if: (branch = master) AND (NOT (type IN (push, pull_request)))
+    if: (branch = master) AND (type = push)
 
 jobs:
   include:
