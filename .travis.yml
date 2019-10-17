@@ -6,7 +6,10 @@ services:
 - docker
 
 before_install:
-  - printenv
+  - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_EVENT_TYPE
+  - echo $TRAVIS_PULL_REQUEST
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
   - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
   - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
