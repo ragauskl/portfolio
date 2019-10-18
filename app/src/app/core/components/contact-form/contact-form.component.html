@@ -23,4 +23,14 @@
   </mat-form-field>
 </form>
 
-<app-progress-button #button [loading]="sending" (click)="sendForm()"></app-progress-button>
+<app-progress-button [loading]="sending" (click)="sendForm()"></app-progress-button>
+<app-submit-button
+idleText="Send"
+[error]="error"
+[valid]="form.valid"
+[loading]="sending"
+stopable=false
+multi=true
+(click)="sendForm()"
+(reset)="form.reset()"
+></app-submit-button>
