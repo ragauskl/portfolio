@@ -1,1 +1,8 @@
-<p>submit-button works!</p>
+<div class="button mat-elevation-z2" [class.valid]="valid" [class.errored]="!!error">
+  <div class="loader">
+    <mat-icon svgIcon="send"></mat-icon>
+  </div>
+  <div class="text-cont">
+    <span>{{idleText}}</span>
+  </div>
+</div>

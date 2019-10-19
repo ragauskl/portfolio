@@ -6,6 +6,22 @@
   transform: translate(-50%, -50%);
 }
 
+@mixin mat-icon ($size, $class: true) {
+  @if ($class) {
+    mat-icon {
+      font-size: $size;
+      width: $size;
+      height: $size;
+      line-height: $size;
+    }
+  } @else {
+    font-size: $size;
+    width: $size;
+    height: $size;
+    line-height: $size;
+  }
+}
+
 @mixin absolute-fill ($padding) {
   left: $padding;
   right: $padding;

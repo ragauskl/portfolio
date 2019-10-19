@@ -1,0 +1,63 @@
+@import 'mixins';
+
+$height: 3em;
+$primary: var(--primary);
+$secondary: var(--background);
+$text: var(--color);
+
+$borderRadius: 50px;
+
+.button {
+  position: relative;
+  text-transform: uppercase;
+  font-size: 14px;
+  height: $height;
+  min-width: calc(#{$height} * 3);
+  background: $secondary;
+
+  border-radius: $borderRadius;
+  border: 2px solid $primary;
+  padding: 2px;
+
+  @include flex(row, flex-start);
+  transition: background 0.1s ease-in-out;
+
+  &.valid:not(.errored) {
+    cursor: pointer;
+  }
+
+  &:hover:not(.valid) {
+    $primary: var(--warn);
+    border: 2px solid $primary;
+
+    .loader {
+      background: $primary;
+    }
+
+    .text-cont {
+      color: $primary;
+    }
+  }
+
+  .loader {
+    flex: 0 0 calc(#{$height} - 8px);
+    background: $primary;
+    color: $secondary;
+    height: calc(#{$height} - 8px);
+    font-size: inherit;
+    border-radius: $borderRadius;
+    @include flex();
+
+    mat-icon {
+      @include mat-icon(1.2em, false);
+      margin-right: 0.2em;
+    }
+  }
+
+  .text-cont {
+    flex: 0 1 65%;
+    font-weight: bold;
+    @include flex();
+    color: $primary;
+  }
+}

@@ -37,12 +37,13 @@ export class ContactFormComponent {
 
   async sendForm () {
     if (this.sending) return
-    if (!this.form.valid) return
+    // if (!this.form.valid) return
     this.error = undefined
 
     this.sending = true
     try {
-      await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
+      await new Promise(res => setTimeout(res, 1000))
+      // await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
     } catch (error) {
       handleError(error)
       this.error = error.message
