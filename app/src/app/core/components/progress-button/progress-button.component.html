@@ -1,4 +1,16 @@
-<button type="submit" cdkFocusInitial mat-raised-button color="primary" [disabled]="disabled" (click)="onClick()">
-  <span *ngIf="!loading">{{text}}</span>
-  <mat-spinner diameter="17" *ngIf="loading"></mat-spinner>
+<button type="submit" cdkFocusInitial mat-raised-button [color]="valid || !hovered ? 'primary' : 'warn'"
+[disabled]="disabled" (click)="onClick()"
+[@buttonShrink]="state" [class.valid]="valid">
+  <span [@textFade]="state">{{text}}</span>
+  <div class="absolute">
+    <div>
+      <div [@highlight]="state"></div>
+    </div>
+    <div>
+      <div class="loader" [@spinnerFade]="state"></div>
+    </div>
+    <div>
+      <div class="loader-track" [@spinnerFade]="state"></div>
+    </div>
+  </div>
 </button>

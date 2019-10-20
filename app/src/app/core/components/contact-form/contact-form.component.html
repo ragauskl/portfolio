@@ -23,14 +23,6 @@
   </mat-form-field>
 </form>
 
-<app-progress-button [loading]="sending" (click)="sendForm()"></app-progress-button>
-<app-submit-button
-[error]="error"
-[valid]="true || form.valid"
-[loading]="sending"
-stopable=false
-multi=true
-(submit)="sendForm()"
-(reset)="form.reset()"
-[form]="form"
-></app-submit-button>
+<app-progress-button [loading]="sending" (submit)="sendForm()"
+[form]="form" [valid]="form.valid" text="send">
+</app-progress-button>

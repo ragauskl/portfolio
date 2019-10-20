@@ -44,6 +44,7 @@ export class ContactFormComponent {
     try {
       await new Promise(res => setTimeout(res, 5000))
       // await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
+      // this.form.reset()
     } catch (error) {
       handleError(error)
       this.error = error.message
