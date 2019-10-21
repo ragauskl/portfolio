@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { trigger, state, style, transition, animate } from '@angular/animations'
+import { trigger, state, style, transition, animate, group, animateChild, query } from '@angular/animations'
 
 @Component({
   selector: 'app-form-overlay',
@@ -18,11 +18,30 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         opacity: 1,
         pointerEvents: 'initial'
       })),
+      transition('hidden => *', group([
+        query('@*', animateChild(), { optional: true }),
+        animate('100ms')
+      ])),
+      transition('* => hidden', group([
+        query('@*', animateChild(), { optional: true }),
+        animate('100ms')
+      ]))
+    ]),
+    trigger('scaleUp', [
+      state('hidden', style({
+        transform: 'scale(0.1)'
+      })),
+      state('errored', style({
+        transform: 'scale(1)'
+      })),
+      state('complete', style({
+        transform: 'scale(1)'
+      })),
       transition('hidden => *', [
-        animate('300ms')
+        animate('300ms 150ms')
       ]),
       transition('* => hidden', [
-        animate('200ms')
+        animate('400ms')
       ])
     ])
   ]
