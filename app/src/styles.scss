@@ -15,12 +15,13 @@
   --od-var: #e06c75;
   --od-cmt: #646464;
 
-  --background: white;
-  --color: var(--od-back);
+  --background: var(--od-light);
+  --color: var(--od-dark);
   // 500s
   --primary: #522546;
   --secondary: #26a69a;
   --warn: #ff9800;
+  --success: #369c50;
   --error: #f44336;
   // 900s
   --primary900: #280d20;
@@ -58,4 +59,8 @@ a {
 
 button {
   text-transform: uppercase;
+
+  &.mat-raised-button {
+    padding: 0 25px;
+  }
 }

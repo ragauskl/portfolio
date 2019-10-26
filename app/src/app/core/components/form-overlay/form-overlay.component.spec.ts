@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ProgressButtonComponent } from './progress-button.component'
+import { FormOverlayComponent } from './form-overlay.component'
 
-describe('ProgressButtonComponent', () => {
-  let component: ProgressButtonComponent
-  let fixture: ComponentFixture<ProgressButtonComponent>
+describe('FormOverlayComponent', () => {
+  let component: FormOverlayComponent
+  let fixture: ComponentFixture<FormOverlayComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressButtonComponent ]
+      declarations: [ FormOverlayComponent ]
     })
     .compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProgressButtonComponent)
+    fixture = TestBed.createComponent(FormOverlayComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

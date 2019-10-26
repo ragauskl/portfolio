@@ -30,6 +30,3 @@ $error-dark-component-theme: mat-dark-theme($error-primary, $light-accent, $ligh
     @include angular-material-theme($error-dark-component-theme);
   }
 }
-
-
-

@@ -16,6 +16,8 @@ type FormModel = {
 export class ContactFormComponent {
   form: FormGroup
   sending = false
+  error?: string
+  submitted = false
 
   constructor (
     private api: ApiService,
@@ -39,12 +41,18 @@ export class ContactFormComponent {
     if (this.sending) return
     if (!this.form.valid) return
 
+    this.error = undefined
+
     this.sending = true
     try {
       await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
-      this.form.reset()
+
+      this.submitted = true
     } catch (error) {
-      handleError(error)
+      handleError(error, { form: this.form.value })
+      // TEMP: Ignore errors
+      this.submitted = true
+      // this.error = error.message
     }
 
     this.sending = false
