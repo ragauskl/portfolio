@@ -22,7 +22,7 @@ before_install:
 
 stages:
   - name: build_app
-    if: ((branch = master) AND (type = push)) OR (head_branch = develop)
+    if: (head_branch = master) OR (head_branch = develop)
   - name: deploy_app
     if: (branch = master) AND (type = push)
 
@@ -31,7 +31,7 @@ jobs:
     - stage: build_app
       script: cd app && npm run build
     - stage: deploy_app
-      script: cd app && npm run deploy
+      script: cd app && npm run build && npm run deploy
 
 before_install:
   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
