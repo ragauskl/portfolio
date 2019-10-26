@@ -10,17 +10,63 @@ import { FormGroup } from '@angular/forms'
     trigger('buttonShrink', [
       state('idle', style({
         height: '2.5em',
-        minWidth: '5em'
+        minWidth: '5em',
+        opacity: 1
       })),
       state('loading', style({
         height: '2.5em',
         width: '2.5em',
+        padding: '0',
         minWidth: '0',
-        borderRadius: '50%'
+        borderRadius: '50px',
+        opacity: 0,
+        pointerEvents: 'none'
       })),
-      transition('idle <=> loading', group([
+      transition('idle => loading', group([
         query('@*', animateChild(), { optional: true }),
-        animate('170ms')
+        animate('170ms ease', keyframes([
+          style({
+            offset: 0,
+            height: '2.5em',
+            minWidth: '5em',
+            opacity: 1
+          }),
+          style({
+            offset: 0.99,
+            height: '2.5em',
+            width: '2.5em',
+            padding: '0',
+            minWidth: '0',
+            borderRadius: '50px'
+          }),
+          style({
+            offset: 1,
+            opacity: 0
+          })
+        ]))
+      ])),
+      transition('loading => idle', group([
+        query('@*', animateChild(), { optional: true }),
+        animate('170ms 100ms ease', keyframes([
+          style({
+            offset: 0,
+            opacity: 0
+          }),
+          style({
+            offset: 0.01,
+            height: '2.5em',
+            width: '2.5em',
+            padding: '0',
+            minWidth: '0',
+            borderRadius: '50px'
+          }),
+          style({
+            offset: 1,
+            height: '2.5em',
+            minWidth: '5em',
+            opacity: 1
+          })
+        ]))
       ]))
     ]),
     trigger('textFade', [

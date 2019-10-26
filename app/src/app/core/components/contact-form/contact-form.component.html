@@ -25,8 +25,8 @@
   </form>
 
   <app-progress-button [loading]="sending" (submit)="sendForm()"
-  [form]="form" [valid]="true || form.valid" text="send">
+  [form]="form" [valid]="form.valid" text="send">
   </app-progress-button>
 
-  <app-form-overlay [complete]="submitted" completeText="Email sent!" [error]="error"></app-form-overlay>
+  <app-form-overlay [complete]="submitted" completeText="Message Sent" [error]="error"></app-form-overlay>
 </div>

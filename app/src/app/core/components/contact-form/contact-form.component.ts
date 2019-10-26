@@ -39,17 +39,20 @@ export class ContactFormComponent {
 
   async sendForm () {
     if (this.sending) return
-    // if (!this.form.valid) return
+    if (!this.form.valid) return
+
     this.error = undefined
 
     this.sending = true
     try {
-      await new Promise(res => setTimeout(res, 5000))
-      // await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
+      await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
+
       this.submitted = true
     } catch (error) {
-      handleError(error)
-      this.error = error.message
+      handleError(error, { form: this.form.value })
+      // TEMP: Ignore errors
+      this.submitted = true
+      // this.error = error.message
     }
 
     this.sending = false

@@ -13,6 +13,6 @@ export class AppError extends Error {
   }
 }
 
-export function handleError (e: Error | AppError | any, ctx?: {action?: string, description?: string}) {
+export function handleError (e: Error | AppError | any, ctx?: {action?: string, description?: string, form?: any}) {
   if (!(e instanceof AppError) || !e.silent) console.error(e)
 }

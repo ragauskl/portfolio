@@ -49,7 +49,7 @@ import { trigger, state, style, transition, animate, group, animateChild, query 
 export class FormOverlayComponent {
   @Input() complete = false
   @Input() error?: string
-  @Input() completeText = 'Done!'
+  @Input() completeText = 'Done'
 
   // SOMEDAY: Add erred state with 'retry' option
   get state () {

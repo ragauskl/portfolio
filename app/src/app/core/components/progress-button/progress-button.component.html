@@ -2,15 +2,13 @@
 [disabled]="disabled" (click)="onClick()"
 [@buttonShrink]="state" [class.valid]="valid">
   <span [@textFade]="state">{{text}}</span>
-  <div class="absolute">
-    <div>
-      <div [@highlight]="state"></div>
-    </div>
-    <div>
-      <div class="loader" [@spinnerFade]="state"></div>
-    </div>
-    <div>
-      <div class="loader-track" [@spinnerFade]="state"></div>
-    </div>
-  </div>
 </button>
+<div class="spinner-container">
+  <div>
+      <div [@highlight]="state"></div>
+  </div>
+  <div class="spinner" [@spinnerFade]="state">
+      <div class="loader"></div>
+      <div class="loader-track" ></div>
+  </div>
+</div>
