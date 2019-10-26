@@ -38,10 +38,10 @@ import { trigger, state, style, transition, animate, group, animateChild, query 
         transform: 'scale(1)'
       })),
       transition('hidden => *', [
-        animate('300ms 150ms')
+        animate('300ms 150ms ease-in-out')
       ]),
       transition('* => hidden', [
-        animate('400ms')
+        animate('400ms ease-in-out')
       ])
     ])
   ]
@@ -49,7 +49,9 @@ import { trigger, state, style, transition, animate, group, animateChild, query 
 export class FormOverlayComponent {
   @Input() complete = false
   @Input() error?: string
+  @Input() completeText = 'Done!'
 
+  // SOMEDAY: Add erred state with 'retry' option
   get state () {
     return !this.complete ? 'hidden' : (this.error ? 'errored' : 'complete')
   }

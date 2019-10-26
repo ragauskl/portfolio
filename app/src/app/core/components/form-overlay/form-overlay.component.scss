@@ -24,9 +24,30 @@
   height: 13vw;
 
   .check-circle {
-    background: var(--od-str);
+    background: var(--success);
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    display: flex;
+
+    mat-icon {
+      margin: auto;
+      color: var(--background);
+      @include mat-icon(10vw, false);
+    }
+  }
+
+  @include break ('lt', 'm') {
+    width: 100px;
+    height: 100px;
+
+    .check-circle mat-icon {
+      @include mat-icon(90px, false);
+    }
+  }
+
+  p {
+    @include break-font(20px, 16px, 20px);
+    text-align: center;
   }
 }

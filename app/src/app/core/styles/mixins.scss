@@ -10,15 +10,13 @@
   @if ($class) {
     mat-icon {
       font-size: $size;
-      width: $size;
-      height: $size;
-      line-height: $size;
+      width: fit-content;
+      height: fit-content
     }
   } @else {
     font-size: $size;
-    width: $size;
-    height: $size;
-    line-height: $size;
+    width: fit-content;
+    height: fit-content;
   }
 }
 
