@@ -66,8 +66,6 @@ THE SOFTWARE.
 
 @angular/material/icon
 
-@angular/material/progress-spinner
-
 @angular/platform-browser
 MIT
 
