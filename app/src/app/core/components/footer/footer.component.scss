@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  height: 30px;
+  width: 100%;
+
+  small {
+    margin: auto;
+    color: var(--primary);
+    font-size: 12px;
+  }
+}

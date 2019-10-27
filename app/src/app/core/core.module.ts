@@ -5,14 +5,16 @@ import { SidenavComponent } from './components/sidenav/sidenav.component'
 import { AngularResizedEventModule } from 'angular-resize-event'
 import { ContactFormComponent } from './components/contact-form/contact-form.component'
 import { ReactiveFormsModule } from '@angular/forms'
-import { ProgressButtonComponent } from './components/progress-button/progress-button.component';
+import { ProgressButtonComponent } from './components/progress-button/progress-button.component'
 import { FormOverlayComponent } from './components/form-overlay/form-overlay.component'
+import { FooterComponent } from './components/footer/footer.component'
 @NgModule({
   declarations: [
     SidenavComponent,
     ContactFormComponent,
     ProgressButtonComponent,
-    FormOverlayComponent
+    FormOverlayComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { FormOverlayComponent } from './components/form-overlay/form-overlay.com
     AngularResizedEventModule,
     ContactFormComponent,
     ReactiveFormsModule,
-    ProgressButtonComponent
+    ProgressButtonComponent,
+    FooterComponent
   ]
 })
 export class CoreModule { }
