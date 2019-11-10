@@ -1,0 +1,137 @@
+{
+  "branches": [
+    {
+      "branch": "uni",
+      "origin": "master"
+    }, {
+      "branch": "sorion",
+      "origin": "uni"
+    }, {
+      "branch": "gsi",
+      "origin": "master"
+    }
+  ],
+  "commits": [
+    {
+      "date": "2011-Oct",
+      "branch": "master",
+      "comment": "Started learning C#",
+      "description": ""
+    }, {
+      "date": "2014-Sep",
+      "branch": "uni",
+      "comment": "Started University",
+      "description": ""
+    }, {
+      "date": "2014-Sep",
+      "branch": "uni",
+      "comment": "Started learning Python"
+    }, {
+      "date": "2014-Sep",
+      "branch": "uni",
+      "comment": "Started learning SQL"
+    }, {
+      "date": "2014-Sep",
+      "branch": "uni",
+      "comment": "Started learning Git"
+    }, {
+      "date": "2014-Sep",
+      "branch": "uni",
+      "comment": "Started learning Git"
+    }, {
+      "date": "2016-Jul",
+      "branch": "sorion",
+      "comment": "Software Engineer at Sorion Ltd"
+    }, {
+      "date": "2016-Jul",
+      "branch": "sorion",
+      "comment": "Started learning .Net"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Angular"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Javascript"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Node.js"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Google Cloud Platform"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Heroku"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Ionic"
+    }, {
+      "date": "2016-Nov",
+      "branch": "master",
+      "comment": "Started learning Cloudflare"
+    }, {
+      "date": "2016-Dec",
+      "branch": "master",
+      "comment": "Started learning Typescript"
+    }, {
+      "date": "2016-Dec",
+      "branch": "master",
+      "comment": "Started learning MongoDB"
+    }, {
+      "date": "2017-Oct",
+      "branch": "sorion",
+      "comment": "Left Sorion Ltd",
+      "closed": true
+    }, {
+      "date": "2018-May",
+      "branch": "uni",
+      "comment": "Graduated University with 1st",
+      "closed": true
+    }, {
+      "date": "2018-Jun",
+      "branch": "gsi",
+      "comment": "Full-stack Javascript Developer at Geospatial Insight Ltd"
+    }, {
+      "date": "2018-Jun",
+      "branch": "gsi",
+      "comment": "Started learning Postgres"
+    }, {
+      "date": "2018-Jun",
+      "branch": "gsi",
+      "comment": "Expanding skills of Google Cloud Platform"
+    }, {
+      "date": "2018-Nov",
+      "branch": "master",
+      "comment": "Started learning Go"
+    }, {
+      "date": "2018-Dec",
+      "branch": "gsi",
+      "comment": "Started learning Kubernetes"
+    }, {
+      "date": "2018-Dec",
+      "branch": "gsi",
+      "comment": "Started learning Serverless deployment"
+    }, {
+      "date": "2018-Dec",
+      "branch": "gsi",
+      "comment": "Started learning CI pipeline automation"
+    }, {
+      "date": "2018-Dec",
+      "branch": "gsi",
+      "comment": "Started learning Docker"
+    }, {
+      "date": "2019-Dec",
+      "branch": "master",
+      "comment": "Started learning NestJS"
+    }, {
+      "date": "2019-Dec",
+      "branch": "master",
+      "comment": "Started learning GraphQL"
+    }
+  ]
+}
