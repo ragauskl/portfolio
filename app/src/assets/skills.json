@@ -76,6 +76,9 @@
       "title": "Git",
       "src": "git-icon.jpg"
     }, {
+      "title": "Google Cloud Run",
+      "src": "cloud-run.jpg"
+    }, {
       "title": "Gitlab CI",
       "src": "gitlab.jpg"
     }, {
@@ -84,6 +87,9 @@
     }, {
       "title": "Heroku",
       "src": "heroku.jpg"
+    }, {
+      "title": "Google Cloud Tasks",
+      "src": "cloud-tasks.jpg"
     }, {
       "title": "Kubernetes",
       "src": "kubernetes-logo.jpg"
