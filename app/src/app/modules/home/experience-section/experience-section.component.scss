@@ -1,0 +1,12 @@
+@import "mixins";
+
+#experience-graph {
+  margin: auto;
+  max-height: 80%;
+
+  border: 1px solid red;
+  width: 80%;
+  height: 80%;
+  overflow: auto;
+  display: flex;
+}

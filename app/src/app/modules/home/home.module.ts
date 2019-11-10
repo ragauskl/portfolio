@@ -6,7 +6,8 @@ import { CoreModule } from '@core/core.module'
 import { IntroComponent } from './intro/intro.component'
 import { ImgBubblesComponent } from './intro/img-bubbles/img-bubbles.component'
 import { ContactMeComponent } from './contact-me/contact-me.component'
-import { WavesComponent } from './components/waves/waves.component'
+import { WavesComponent } from './components/waves/waves.component';
+import { ExperienceSectionComponent } from './experience-section/experience-section.component'
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { WavesComponent } from './components/waves/waves.component'
     IntroComponent,
     WavesComponent,
     ImgBubblesComponent,
-    ContactMeComponent
+    ContactMeComponent,
+    ExperienceSectionComponent
   ],
   imports: [
     CommonModule,
