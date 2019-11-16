@@ -1,12 +1,27 @@
 @import "mixins";
 
-#experience-graph {
-  margin: auto;
-  max-height: 80%;
-
-  border: 1px solid red;
-  width: 80%;
-  height: 80%;
+:host {
   overflow: auto;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  span {
+    margin-bottom: 20px;
+  }
+
+  #experience-graph {
+    max-height: 80%;
+    padding: 20px 0;
+    width: 80%;
+    height: 90%;
+    overflow-y: auto;
+
+    display: flex;
+    border: 1px dashed black;
+
+    > * {
+      margin: auto;
+    }
+  }
 }

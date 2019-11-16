@@ -1,14 +1,21 @@
 {
   "branches": [
     {
+      "branch": "master",
+      "color": "var(--od-dec)"
+    },
+    {
       "branch": "uni",
-      "origin": "master"
+      "origin": "master",
+      "color": "var(--od-fn)"
     }, {
       "branch": "sorion",
-      "origin": "uni"
+      "origin": "uni",
+      "color": "var(--od-obj)"
     }, {
       "branch": "gsi",
-      "origin": "master"
+      "origin": "master",
+      "color": "#009688"
     }
   ],
   "commits": [
