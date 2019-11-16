@@ -1,0 +1,77 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "0.0.1",
+    "title": "Portfolio",
+    "description": "",
+    "contact": {
+      "name": "Lina Ragauskaite",
+      "email": "ragauskl@gmail.com",
+      "url": "https://lina.codes/"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    },
+    {
+      "url": "https://lina-codes-api.herokuapp.com",
+      "description": "Live server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Emails"
+    }
+  ],
+  "paths": {
+    "/emails": {
+      "post": {
+        "tags": ["Emails"],
+        "summary": "Send email form",
+        "operationId": "sendEmail",
+        "requestBody": {
+          "description": "Email form",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema" : {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Email": {
+        "type": "object",
+        "required": ["name", "replyTo", "message"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "replyTo": {
+            "type": "string",
+            "example": "johndoe@gmail.com"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
