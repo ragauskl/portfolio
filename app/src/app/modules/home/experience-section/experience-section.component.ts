@@ -21,6 +21,9 @@ export class ExperienceSectionComponent implements OnInit {
 
       const parent = document.getElementById('experience-graph')
       const cellSize = 50
+      const height = rows * cellSize
+      const getX = (x) => cellSize * (x - 0.5)
+      const getY = (y) => height - (cellSize * (y - 0.5))
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
       const grid = this.GetGridTemplate(cellSize, rows, columns)
@@ -38,52 +41,127 @@ export class ExperienceSectionComponent implements OnInit {
         }
       )
 
-      // First commit must be on master
-      // If branch has closed commit, there must be at least one more previous commit
-      let activeBranches = new Set()
-      let y = -1
-      for (const commit of orderedCommits) {
-        y += 2
-        commit.y = y
+      const calculatePositions = () => {
+        // First commit must be on master
+        // If branch has closed commit, there must be at least one more previous commit
+        let activeBranches = new Set()
+        let y = -1
+        for (const commit of orderedCommits) {
+          y += 2
+          commit.y = y
 
-        const branch: BranchElement = json.branches.find(x => x.branch === commit.branch)
-        if (!branch) {
-          console.warn(`Branch '${commit.branch}' undefined.`)
-          continue
+          const branch: BranchElement = json.branches.find(x => x.branch === commit.branch)
+          if (!branch) {
+            console.warn(`Branch '${commit.branch}' undefined.`)
+            continue
+          }
+          activeBranches.add(branch.branch)
+
+          if (branch.x === undefined) branch.x = activeBranches.size
+          commit.x = branch.x
+
+          if (commit.closed) activeBranches.delete(branch.branch)
+          commit.color = branch.color
+          console.log('# Item info:', `${commit.date} ${commit.branch} x:${commit.x} y:${commit.y} ${commit.closed ? 'CLOSED' : ''}`)
         }
-        activeBranches.add(branch.branch)
-
-        if (branch.x === undefined) branch.x = activeBranches.size
-        commit.x = branch.x
-
-        if (commit.closed) activeBranches.delete(branch.branch)
-        commit.color = branch.color
-        console.log('# Item info:', `${commit.date} ${commit.branch} x:${commit.x} y:${commit.y} ${commit.closed ? 'CLOSED' : ''}`)
       }
 
-      const getCircle = () => {
-        const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        el.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
-        return el
-      }
-      const height = rows * cellSize
-      for (const commit of orderedCommits) {
-        const circle = getCircle()
-        circle.setAttributeNS(null, 'cx', `${cellSize * (commit.x - 0.5)}`)
-        circle.setAttributeNS(null, 'cy', `${
-          height - (
-            cellSize * (commit.y - 0.5)
-          )
-        }`)
-        circle.setAttributeNS(null, 'fill', commit.color || 'black')
-        circle.setAttribute('id', `commit_${commit.y}`)
-
-        circle.onmouseover = () => {
-          this.hovered = commit
+      const renderCommits = () => {
+        const getCircle = () => {
+          const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+          el.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
+          return el
         }
 
-        grid.appendChild(circle)
+        for (const commit of orderedCommits) {
+          const circle = getCircle()
+          circle.setAttributeNS(null, 'cx', `${getX(commit.x)}`)
+          circle.setAttributeNS(null, 'cy', `${getY(commit.y)}`)
+          circle.setAttributeNS(null, 'fill', commit.color || 'black')
+          circle.setAttribute('id', `commit_${commit.y}`)
+
+          circle.onmouseover = () => {
+            this.hovered = commit
+          }
+
+          grid.appendChild(circle)
+        }
       }
+
+      const renderBranches = () => {
+        const drawLine = (x1, y1, x2, y2) => {
+          const el = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+          el.setAttributeNS(null, 'stroke-width', `${cellSize * 0.2}`)
+          el.setAttributeNS(null, 'x1', `${getX(x1)}`)
+          el.setAttributeNS(null, 'y1', `${getY(y1)}`)
+          el.setAttributeNS(null, 'x2', `${getX(x2)}`)
+          el.setAttributeNS(null, 'y2', `${getY(y2)}`)
+          return el
+        }
+
+        const drawCurve = (x1, y1, x2, y2) => {
+          const el = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+          // M 0 200 C 0 150 50 150 50 100
+          const yDiff = (y2 - y1) / 2
+          const d = `M ${getX(x1)} ${getY(y1)} C ${getX(x1)} ${getY(y1 + yDiff)} ${getX(x2)} ${getY(y1 + yDiff)} ${getX(x2)} ${getY(y2)}`
+
+          el.setAttributeNS(null, 'stroke-width', `${cellSize * 0.2}`)
+          el.setAttributeNS(null, 'd', d)
+          el.setAttributeNS(null, 'fill', 'none')
+          return el
+        }
+
+        for (const el of json.branches) {
+          const commits = orderedCommits.filter(x => x.branch === el.branch)
+          const appendLine = (line) => {
+            line.setAttributeNS(null, 'stroke', el.color)
+            grid.appendChild(line)
+          }
+          const { x: startX, y: startY } = commits[0]
+          const { x: lastX, y: lastY } = commits[commits.length - 1]
+
+          // draw line
+          const line = drawLine(startX, startY, lastX, lastY)
+          appendLine(line)
+
+          if (el.origin) {
+            const origin = json.branches.find(x => x.branch === el.origin)
+            if (origin) {
+              const forkCommit = orderedCommits.slice(0, orderedCommits.indexOf(commits[0]))
+                .reverse()
+                .find(x => x.branch === origin.branch)
+              console.log('forkCommit:', forkCommit)
+              if (forkCommit) {
+                // const { x, y } = forkCommit
+                //   // draw curve from origin
+                // const curve = drawCurve(x ,y, startX, startY)
+                // appendLine(curve)
+                const curve = drawCurve(origin.x, startY - 2, startX, startY)
+                appendLine(curve)
+              }
+
+              const lastCommit = commits[commits.length - 1]
+              if (lastCommit.closed) {
+                // const endCommit = orderedCommits.slice(orderedCommits.indexOf(commits[commits.length - 1]))
+                // .find(x => x.branch === origin.branch)
+                // console.log('endCommit:', endCommit)
+                // if (endCommit) {
+                //   const { x, y } = endCommit
+                //     // draw curve to origin
+                //   const curve = drawCurve(lastX, lastY, x, y)
+                //   appendLine(curve)
+                // }
+                const curve = drawCurve(lastX, lastY, origin.x, lastY + 2)
+                appendLine(curve)
+              }
+            }
+          }
+        }
+      }
+
+      calculatePositions()
+      renderBranches()
+      renderCommits()
     })
   }
 
