@@ -23,5 +23,11 @@
     > * {
       margin: auto;
     }
+
   }
+}
+
+::ng-deep .commit-point {
+  transition: all 0.2s ease-in;
+  cursor: pointer;
 }

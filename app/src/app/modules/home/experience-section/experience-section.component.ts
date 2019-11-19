@@ -8,6 +8,7 @@ import moment from 'moment'
   styleUrls: ['./experience-section.component.scss']
 })
 export class ExperienceSectionComponent implements OnInit {
+  readonly drawGrid = false
   hovered: any
 
   constructor (
@@ -21,9 +22,9 @@ export class ExperienceSectionComponent implements OnInit {
 
       const parent = document.getElementById('experience-graph')
       const cellSize = 50
-      const height = rows * cellSize
-      const getX = (x) => cellSize * (x - 0.5)
-      const getY = (y) => height - (cellSize * (y - 0.5))
+      const height = rows * cellSize + 20
+      const getX = (x) => cellSize * (x - 0.5) + 10
+      const getY = (y) => height - (cellSize * (y - 0.5)) + 10
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
       const grid = this.GetGridTemplate(cellSize, rows, columns)
@@ -62,29 +63,42 @@ export class ExperienceSectionComponent implements OnInit {
 
           if (commit.closed) activeBranches.delete(branch.branch)
           commit.color = branch.color
-          console.log('# Item info:', `${commit.date} ${commit.branch} x:${commit.x} y:${commit.y} ${commit.closed ? 'CLOSED' : ''}`)
         }
       }
 
       const renderCommits = () => {
-        const getCircle = () => {
-          const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-          el.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
-          return el
-        }
-
         for (const commit of orderedCommits) {
-          const circle = getCircle()
+          const group = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+          circle.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
           circle.setAttributeNS(null, 'cx', `${getX(commit.x)}`)
           circle.setAttributeNS(null, 'cy', `${getY(commit.y)}`)
           circle.setAttributeNS(null, 'fill', commit.color || 'black')
           circle.setAttribute('id', `commit_${commit.y}`)
+          circle.classList.add('commit-point')
 
-          circle.onmouseover = () => {
+          const filler = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+          filler.setAttributeNS(null, 'r', `${cellSize * 0.35}`)
+          filler.setAttributeNS(null, 'cx', `${getX(commit.x)}`)
+          filler.setAttributeNS(null, 'cy', `${getY(commit.y)}`)
+          filler.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 0.95)')
+          filler.classList.add('commit-point')
+
+          group.onmouseover = () => {
             this.hovered = commit
+            circle.setAttributeNS(null, 'r', `${cellSize * 0.45 * 1.2}`)
+            filler.setAttributeNS(null, 'r', `${cellSize * 0.35 * 1.2}`)
           }
 
-          grid.appendChild(circle)
+          group.onmouseleave = () => {
+            circle.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
+            filler.setAttributeNS(null, 'r', `${cellSize * 0.35}`)
+          }
+
+          group.appendChild(circle)
+          group.appendChild(filler)
+
+          grid.appendChild(group)
         }
       }
 
@@ -111,6 +125,7 @@ export class ExperienceSectionComponent implements OnInit {
           return el
         }
 
+        const functions: {[key: number]: any[]} = {}
         for (const el of json.branches) {
           const commits = orderedCommits.filter(x => x.branch === el.branch)
           const appendLine = (line) => {
@@ -122,7 +137,8 @@ export class ExperienceSectionComponent implements OnInit {
 
           // draw line
           const line = drawLine(startX, startY, lastX, lastY)
-          appendLine(line)
+          if (!functions[el.x]) functions[el.x] = []
+          functions[el.x].push(() => appendLine(line))
 
           if (el.origin) {
             const origin = json.branches.find(x => x.branch === el.origin)
@@ -130,31 +146,22 @@ export class ExperienceSectionComponent implements OnInit {
               const forkCommit = orderedCommits.slice(0, orderedCommits.indexOf(commits[0]))
                 .reverse()
                 .find(x => x.branch === origin.branch)
-              console.log('forkCommit:', forkCommit)
+
               if (forkCommit) {
-                // const { x, y } = forkCommit
-                //   // draw curve from origin
-                // const curve = drawCurve(x ,y, startX, startY)
-                // appendLine(curve)
                 const curve = drawCurve(origin.x, startY - 2, startX, startY)
-                appendLine(curve)
+                functions[el.x].push(() => appendLine(curve))
               }
 
               const lastCommit = commits[commits.length - 1]
               if (lastCommit.closed) {
-                // const endCommit = orderedCommits.slice(orderedCommits.indexOf(commits[commits.length - 1]))
-                // .find(x => x.branch === origin.branch)
-                // console.log('endCommit:', endCommit)
-                // if (endCommit) {
-                //   const { x, y } = endCommit
-                //     // draw curve to origin
-                //   const curve = drawCurve(lastX, lastY, x, y)
-                //   appendLine(curve)
-                // }
                 const curve = drawCurve(lastX, lastY, origin.x, lastY + 2)
                 appendLine(curve)
+                functions[el.x].push(() => appendLine(curve))
               }
             }
+            Object.keys(functions).sort((a, b) => a <= b ? 1 : -1).forEach(x =>
+              functions[x].forEach(f => f())
+            )
           }
         }
       }
@@ -162,6 +169,7 @@ export class ExperienceSectionComponent implements OnInit {
       calculatePositions()
       renderBranches()
       renderCommits()
+
     })
   }
 
@@ -171,29 +179,31 @@ export class ExperienceSectionComponent implements OnInit {
     svg.setAttributeNS(null, 'height', `${size * rows + 1}px`)
     svg.style.margin = 'auto'
 
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-    const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern')
-    pattern.setAttributeNS(null, 'id', 'grid')
-    pattern.setAttributeNS(null, 'width', `${size}`)
-    pattern.setAttributeNS(null, 'height', `${size}`)
-    pattern.setAttributeNS(null, 'patternUnits', 'userSpaceOnUse')
+    if (this.drawGrid) {
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+      const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern')
+      pattern.setAttributeNS(null, 'id', 'grid')
+      pattern.setAttributeNS(null, 'width', `${size}`)
+      pattern.setAttributeNS(null, 'height', `${size}`)
+      pattern.setAttributeNS(null, 'patternUnits', 'userSpaceOnUse')
 
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    path.setAttributeNS(null, 'd', `M ${size} 0 L 0 0 0 ${size}`)
-    path.setAttributeNS(null, 'fill', 'none')
-    path.setAttributeNS(null, 'stroke', 'gray')
-    path.setAttributeNS(null, 'stroke-width', '1')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path.setAttributeNS(null, 'd', `M ${size} 0 L 0 0 0 ${size}`)
+      path.setAttributeNS(null, 'fill', 'none')
+      path.setAttributeNS(null, 'stroke', 'gray')
+      path.setAttributeNS(null, 'stroke-width', '1')
 
-    pattern.appendChild(path)
-    defs.appendChild(pattern)
-    svg.appendChild(defs)
+      pattern.appendChild(path)
+      defs.appendChild(pattern)
+      svg.appendChild(defs)
 
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttributeNS(null, 'fill', 'url(#grid)')
-    rect.setAttributeNS(null, 'width', '100%')
-    rect.setAttributeNS(null, 'height', '100%')
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      rect.setAttributeNS(null, 'fill', 'url(#grid)')
+      rect.setAttributeNS(null, 'width', '100%')
+      rect.setAttributeNS(null, 'height', '100%')
 
-    svg.appendChild(rect)
+      svg.appendChild(rect)
+    }
 
     return svg
   }
