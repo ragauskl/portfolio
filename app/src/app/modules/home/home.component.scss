@@ -8,6 +8,7 @@
   @include break('lt', 'm') {
     width: 100vw;
     height: calc(100vh - 64px);
+    min-width: 320px;
   }
 }
 
