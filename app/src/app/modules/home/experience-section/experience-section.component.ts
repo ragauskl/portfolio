@@ -22,12 +22,12 @@ export class ExperienceSectionComponent implements OnInit {
 
       const parent = document.getElementById('experience-graph')
       const cellSize = 50
-      const height = rows * cellSize + 20
+      const height = rows * cellSize
       const getX = (x) => cellSize * (x - 0.5) + 10
-      const getY = (y) => height - (cellSize * (y - 0.5)) + 10
+      const getY = (y) => height - (cellSize * (y - 0.5)) + 5
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
-      const grid = this.GetGridTemplate(cellSize, rows, columns)
+      const grid = this.GetGridTemplate(cellSize, rows + 0.2, columns)
       parent.appendChild(grid)
 
       const orderedCommits = json.commits.sort(
