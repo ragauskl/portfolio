@@ -1,21 +1,21 @@
-@import "mixins";
+@import 'abstracts';
 
 :host {
   overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(row, space-evenly, center);
 
-  span {
-    margin-bottom: 20px;
+  #graph-cards, #graph-container {
+    max-height: 80%;
+    height: 80%;
+    width: 40%;
+    position: relative;
   }
 
+  #graph-cards {
+    border: 1px dashed blue;
+  }
   #graph-container {
-    max-height: 80%;
-    height: 90%;
-    position: relative;
-
-    // border: 1px dashed black;
+    border: 1px dashed black;
   }
 
   #experience-graph {
@@ -23,13 +23,7 @@
     width: 100%;
     padding: 50px 0;
     overflow-y: auto;
-
     display: flex;
-
-    >* {
-      margin: auto;
-    }
-
   }
 
   #overflow-indicator {

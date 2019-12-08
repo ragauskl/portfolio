@@ -6,8 +6,9 @@ import { CoreModule } from '@core/core.module'
 import { IntroComponent } from './intro/intro.component'
 import { ImgBubblesComponent } from './intro/img-bubbles/img-bubbles.component'
 import { ContactMeComponent } from './contact-me/contact-me.component'
-import { WavesComponent } from './components/waves/waves.component';
+import { WavesComponent } from './components/waves/waves.component'
 import { ExperienceSectionComponent } from './experience-section/experience-section.component'
+import { CardCarouselComponent } from './experience-section/card-carousel/card-carousel.component'
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ExperienceSectionComponent } from './experience-section/experience-sect
     WavesComponent,
     ImgBubblesComponent,
     ContactMeComponent,
-    ExperienceSectionComponent
+    ExperienceSectionComponent,
+    CardCarouselComponent
   ],
   imports: [
     CommonModule,

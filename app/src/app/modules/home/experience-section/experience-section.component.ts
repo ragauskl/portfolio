@@ -10,6 +10,7 @@ import moment from 'moment'
 export class ExperienceSectionComponent implements OnInit {
   readonly drawGrid = false
   hovered: any
+  commits: Commit[] = []
 
   constructor (
     private http: HttpClient
@@ -30,7 +31,7 @@ export class ExperienceSectionComponent implements OnInit {
       const grid = this.GetGridTemplate(cellSize, rows + 0.2, columns)
       parent.appendChild(grid)
 
-      const orderedCommits = json.commits.sort(
+      this.commits = json.commits.sort(
         (a, b) => {
           const date1 = moment(a.date, 'YYYY-MMM')
           const date2 = moment(b.date, 'YYYY-MMM')
@@ -47,7 +48,7 @@ export class ExperienceSectionComponent implements OnInit {
         // If branch has closed commit, there must be at least one more previous commit
         let activeBranches = new Set()
         let y = -1
-        for (const commit of orderedCommits) {
+        for (const commit of this.commits) {
           y += 2
           commit.y = y
 
@@ -67,7 +68,7 @@ export class ExperienceSectionComponent implements OnInit {
       }
 
       const renderCommits = () => {
-        for (const commit of orderedCommits) {
+        for (const commit of this.commits) {
           const group = document.createElementNS('http://www.w3.org/2000/svg', 'g')
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
           circle.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
@@ -127,7 +128,7 @@ export class ExperienceSectionComponent implements OnInit {
 
         const functions: {[key: number]: any[]} = {}
         for (const el of json.branches) {
-          const commits = orderedCommits.filter(x => x.branch === el.branch)
+          const commits = this.commits.filter(x => x.branch === el.branch)
           const appendLine = (line) => {
             line.setAttributeNS(null, 'stroke', el.color)
             grid.appendChild(line)
@@ -143,7 +144,7 @@ export class ExperienceSectionComponent implements OnInit {
           if (el.origin) {
             const origin = json.branches.find(x => x.branch === el.origin)
             if (origin) {
-              const forkCommit = orderedCommits.slice(0, orderedCommits.indexOf(commits[0]))
+              const forkCommit = this.commits.slice(0, this.commits.indexOf(commits[0]))
                 .reverse()
                 .find(x => x.branch === origin.branch)
 

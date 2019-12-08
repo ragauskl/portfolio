@@ -1,3 +1,5 @@
+@import 'abstracts';
+
 ::ng-deep #waves-container {
   width: 100%;
   height: 100%;
@@ -12,6 +14,7 @@
     .wave {
       animation: wave 3s linear;
       animation-iteration-count: infinite;
+      @include color('fill', 'foreground-primary');
       fill: white;
     }
 

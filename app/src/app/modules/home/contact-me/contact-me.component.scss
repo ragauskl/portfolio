@@ -1,11 +1,11 @@
-@import 'mixins';
+@import 'abstracts';
 
 :host {
   max-height: 600px;
 }
 
 .contents {
-  width: var(--max-width);
+  width: 80%;
   height: 100%;
   margin: auto;
 }

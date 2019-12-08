@@ -1,4 +1,4 @@
-@import 'mixins';
+@import 'abstracts';
 
 :host {
   position: relative;
@@ -45,7 +45,7 @@
     }
 
     > *:hover {
-      color: var(--secondary);
+      @include color('color', 'secondary');
     }
 
     @include flex($direction: column, $justify: flex-end);
@@ -63,7 +63,7 @@
 }
 
 #sidenav-menu {
-  background: var(--od-v-dark);
+  @include color('background', 'od-v-dark');
   opacity: 0.9;
   height: 100%;
   width: 0;

@@ -1,4 +1,4 @@
-@import 'mixins';
+@import 'abstracts';
 
 :host {
   position: relative;
@@ -8,8 +8,8 @@
     align-items: stretch;
     width: 100%;
     height: 100%;
-    background: var(--od-dark);
-    color: var(--od-light);
+    @include color('background', 'background-primary');
+    @include color('color', 'foreground-primary');
 
     > * {
       overflow: hidden;
@@ -85,14 +85,15 @@
         height: 0.1em;
         width: 0em;
         opacity: 0.1;
-        background: white;
+        @include color('background', 'foreground-primary');
         transition: width 0.5s ease-in-out, opacity 0.5s ease;
       }
 
       .description {
         font-size: inherit;
         font-weight: lighter;
-        color: rgba(255, 255, 255, 0.7);
+        @include color('color', 'foreground-primary');
+        opacity: 0.7;
         text-align: center;
       }
     }

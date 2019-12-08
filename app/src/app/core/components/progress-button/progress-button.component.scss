@@ -1,4 +1,4 @@
-@import 'mixins';
+@import 'abstracts';
 
 :host {
   display: block;
@@ -38,13 +38,17 @@
   }
 
   .loader-track {
-    border: 7px solid var(--primary);
+    border-width: 7px;
+    border-style: solid;
+    @include color('border-color', 'primary');
     opacity: 0.1;
   }
 
   .loader {
     clip-path: polygon(53% 51%, 0% 100%, 100% 100%);
-    border: 7px solid var(--primary);
+    border-width: 7px;
+    border-style: solid;
+    @include color('border-color', 'primary');
     animation: rotate 1.1s infinite linear;
   }
 

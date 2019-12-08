@@ -1,4 +1,7 @@
-<span>Hovered: {{hovered | json}}</span>
+<div id="graph-cards">
+  <app-card-carousel [items]="commits"></app-card-carousel>
+</div>
+
 <div id="graph-container">
   <div id="experience-graph" class="less-scrollbar"></div>
   <div id="overflow-indicator"></div>
