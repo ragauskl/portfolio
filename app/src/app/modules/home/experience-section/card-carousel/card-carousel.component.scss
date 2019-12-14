@@ -11,6 +11,11 @@
 .carousel-card {
   width: 400px;
   height: 250px;
+  padding: 15px;
   @include color('color', 'foreground-secondary');
-  // @include absolute-centre(true, false);
+
+  &.focused {
+    @include color('color', 'foreground-primary');
+    @include color('background', 'background-primary');
+  }
 }

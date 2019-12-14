@@ -1,6 +1,8 @@
-<div #card class="carousel-card mat-elevation-z5" *ngFor="let card of cards">
-  <h5>{{card.title}}</h5>
-  <p>{{card.subtitle}}</p>
+<div class="carousel-card mat-elevation-z5"
+[class.focused]="card.index === 0"
+*ngFor="let card of cards">
+  <h3>{{card.title}}</h3>
+  <p><small>{{card.subtitle}}</small></p>
 
   <p>{{card.description}}</p>
 </div>

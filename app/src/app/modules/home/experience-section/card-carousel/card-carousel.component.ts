@@ -7,7 +7,7 @@ import { Commit } from '../experience-section.component'
   styleUrls: ['./card-carousel.component.scss']
 })
 export class CardCarouselComponent {
-  @Input() startingIndex = 0
+  @Input() startingIndex = 1
 
   private _previousSelectedIndex?: number
   private _selectedIndex?: number
@@ -30,16 +30,19 @@ export class CardCarouselComponent {
   }
   set items (items: Commit[]) {
     this._items = items
-    this.cards = this.items.map(x => {
+    let index = this.selectedIndex
+    if (index === undefined) index = this.startingIndex
+
+    this.cards = this.items.map((x, i) => {
       const card = new Card(
         x.comment,
         x.date,
-        x.description
+        x.description,
+        i - index
       )
 
       return card
     })
-    console.log('this.cards:', this.cards)
   }
 
   cards: Card[] = []
@@ -57,7 +60,8 @@ class Card {
   constructor (
     public readonly title: string,
     public readonly subtitle: string | undefined,
-    public readonly description: string
+    public readonly description: string,
+    public index: number
   ) {
 
   }
