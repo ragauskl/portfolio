@@ -1,5 +1,5 @@
 <div id="graph-cards">
-  <app-card-carousel [items]="commits"></app-card-carousel>
+  <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
 </div>
 
 <div id="graph-container">

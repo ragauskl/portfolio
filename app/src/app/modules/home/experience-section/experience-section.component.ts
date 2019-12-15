@@ -11,10 +11,15 @@ export class ExperienceSectionComponent implements OnInit {
   readonly drawGrid = false
   hovered: any
   commits: Commit[] = []
+  selectedIndex: number = 19
 
   constructor (
     private http: HttpClient
   ) {}
+
+  onSelectedChange (index: number) {
+    console.log('index:', index, this.selectedIndex)
+  }
 
   ngOnInit () {
     this.http.get('assets/history.json').subscribe((json: History) => {
@@ -89,6 +94,7 @@ export class ExperienceSectionComponent implements OnInit {
             this.hovered = commit
             circle.setAttributeNS(null, 'r', `${cellSize * 0.45 * 1.2}`)
             filler.setAttributeNS(null, 'r', `${cellSize * 0.35 * 1.2}`)
+            this.selectedIndex = this.commits.indexOf(commit)
           }
 
           group.onmouseleave = () => {

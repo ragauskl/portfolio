@@ -14,7 +14,7 @@
     .wave {
       animation: wave 3s linear;
       animation-iteration-count: infinite;
-      @include color('fill', 'foreground-primary');
+      fill: color('foreground-primary');
       fill: white;
     }
 

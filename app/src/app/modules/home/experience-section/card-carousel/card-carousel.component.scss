@@ -12,10 +12,30 @@
   width: 400px;
   height: 250px;
   padding: 15px;
-  @include color('color', 'foreground-secondary');
+  cursor: pointer;
+  transition: all 0.2s linear;
+
+  * {
+    visibility: hidden;
+  }
+
+  &#z1 {
+    background: color('background-primary');
+    filter: brightness(5) grayscale(1);
+  }
+
+  &#z2 {
+    background: color('background-primary');
+    filter: brightness(4.8) grayscale(1);
+  }
 
   &.focused {
-    @include color('color', 'foreground-primary');
-    @include color('background', 'background-primary');
+    cursor: default;
+    color: color('foreground-secondary');
+    background: color('background-secondary');
+
+    * {
+      visibility: visible;
+    }
   }
 }

@@ -27,21 +27,15 @@ $theme: (
   secondary-900: rgb(13, 123, 108)
 );
 
-// Exception: Mixing added here instead of mixins.scss
+// Exception: Function added here instead of mixins.scss
 // because this directly depends on root and $color
-@mixin color($property, $var, $important: false) {
+@function color($var) {
   $map: $theme;
   @if map-has-key($map, $var) == false {
     $map: $color;
   }
 
-  @if $important == false {
-    #{$property}: map-get($map, $var);
-    #{$property}: var(--#{$var}, map-get($map, $var));
-  } @else {
-    #{$property}: map-get($map, $var) !important;
-    #{$property}: var(--#{$var}, map-get($map, $var)) !important;
-  }
+  @return var(--#{$var}, map-get($map, $var))
 }
 
 $z-index: (

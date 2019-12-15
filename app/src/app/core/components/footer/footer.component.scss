@@ -7,7 +7,7 @@
 
   small {
     margin: auto;
-    @include color('color', 'foreground-secondary');
+    color: color('foreground-secondary');
     font-size: 12px;
   }
 }

@@ -45,7 +45,7 @@
     }
 
     > *:hover {
-      @include color('color', 'secondary');
+      color: color('secondary');
     }
 
     @include flex($direction: column, $justify: flex-end);
@@ -63,7 +63,7 @@
 }
 
 #sidenav-menu {
-  @include color('background', 'od-v-dark');
+  background: color('od-v-dark');
   opacity: 0.9;
   height: 100%;
   width: 0;

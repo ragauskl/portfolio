@@ -1,6 +1,10 @@
 <div class="carousel-card mat-elevation-z5"
-[class.focused]="card.index === 0"
-*ngFor="let card of cards">
+[class.focused]="card.zIndex === focusedIndex"
+[class.hide]="card.hide"
+[id]="'z' + abs(card.index)"
+[ngStyle]="card.style"
+*ngFor="let card of cards"
+(click)="card.zIndex !== focusedIndex && focusCard(card)">
   <h3>{{card.title}}</h3>
   <p><small>{{card.subtitle}}</small></p>
 
