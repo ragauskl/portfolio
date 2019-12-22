@@ -102,7 +102,8 @@
     }, {
       "date": "2018-Jun",
       "branch": "gsi",
-      "comment": "Full-stack Javascript Developer at Geospatial Insight Ltd"
+      "comment": "Full-stack Javascript Developer at Geospatial Insight Ltd",
+      "focused": true
     }, {
       "date": "2018-Jun",
       "branch": "gsi",
@@ -132,13 +133,18 @@
       "branch": "gsi",
       "comment": "Started learning Docker"
     }, {
-      "date": "2019-Dec",
+      "date": "2019-Jun",
       "branch": "master",
       "comment": "Started learning NestJS"
     }, {
-      "date": "2019-Dec",
+      "date": "2019-Jun",
       "branch": "master",
       "comment": "Started learning GraphQL"
+    }, {
+      "date": "2019-Dec",
+      "branch": "master",
+      "comment": "Started learning ELK stack",
+      "description": "Researching and implementing sandbox application with Elasticsearch, Logstash, Metricbeat and Kibana on a Kubernetes cluster."
     }
   ]
 }

@@ -99,6 +99,18 @@
     }, {
       "title": "Travis CI",
       "src": "travis-ci.jpg"
+    }, {
+      "title": "Elasticsearch",
+      "src": "elasticsearch.jpg"
+    }, {
+      "title": "Beats",
+      "src": "beats.jpg"
+    }, {
+      "title": "Logstash",
+      "src": "logstash.jpg"
+    }, {
+      "title": "Kibana",
+      "src": "kibana.jpg"
     }
   ]
 }

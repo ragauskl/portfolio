@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import moment from 'moment'
+import { Subject } from 'rxjs'
 
 @Component({
   selector: 'app-experience-section',
@@ -9,16 +10,22 @@ import moment from 'moment'
 })
 export class ExperienceSectionComponent implements OnInit {
   readonly drawGrid = false
-  hovered: any
   commits: Commit[] = []
+  nodes: GraphNode[] = []
   selectedIndex: number = 19
-
+  private _focusedNode?: GraphNode
   constructor (
     private http: HttpClient
   ) {}
 
   onSelectedChange (index: number) {
-    console.log('index:', index, this.selectedIndex)
+    const node = this.nodes.find(x => x.index === index)
+    if (!node) return
+
+    if (!node.focused) {
+      node.focused = true
+      this.CenterNode(node)
+    }
   }
 
   ngOnInit () {
@@ -73,40 +80,26 @@ export class ExperienceSectionComponent implements OnInit {
       }
 
       const renderCommits = () => {
-        for (const commit of this.commits) {
-          const group = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-          circle.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
-          circle.setAttributeNS(null, 'cx', `${getX(commit.x)}`)
-          circle.setAttributeNS(null, 'cy', `${getY(commit.y)}`)
-          circle.setAttributeNS(null, 'fill', commit.color || 'black')
-          circle.setAttribute('id', `commit_${commit.y}`)
-          circle.classList.add('commit-point')
+        this.nodes = this.commits.map((commit, i) => {
+          const node = new GraphNode(
+            commit,
+            cellSize,
+            { x: getX(commit.x), y: getY(commit.y) },
+            i
+          )
 
-          const filler = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-          filler.setAttributeNS(null, 'r', `${cellSize * 0.35}`)
-          filler.setAttributeNS(null, 'cx', `${getX(commit.x)}`)
-          filler.setAttributeNS(null, 'cy', `${getY(commit.y)}`)
-          filler.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 0.95)')
-          filler.classList.add('commit-point')
-
-          group.onmouseover = () => {
-            this.hovered = commit
-            circle.setAttributeNS(null, 'r', `${cellSize * 0.45 * 1.2}`)
-            filler.setAttributeNS(null, 'r', `${cellSize * 0.35 * 1.2}`)
-            this.selectedIndex = this.commits.indexOf(commit)
+          if (node.focused) {
+            this._focusedNode = node
+            this.selectedIndex = i
           }
 
-          group.onmouseleave = () => {
-            circle.setAttributeNS(null, 'r', `${cellSize * 0.45}`)
-            filler.setAttributeNS(null, 'r', `${cellSize * 0.35}`)
-          }
+          node.onFocusChange.subscribe(focused => this.NodeFocuseChanged(node, focused))
 
-          group.appendChild(circle)
-          group.appendChild(filler)
+          grid.appendChild(node.svgGroup)
+          return node
+        })
 
-          grid.appendChild(group)
-        }
+        if (this._focusedNode) this.CenterNode(this._focusedNode)
       }
 
       const renderBranches = () => {
@@ -180,6 +173,26 @@ export class ExperienceSectionComponent implements OnInit {
     })
   }
 
+  private NodeFocuseChanged (node: GraphNode, focused: boolean) {
+    if (focused) {
+      this.selectedIndex = node.index
+
+      if (this._focusedNode) this._focusedNode.focused = false
+      this._focusedNode = node
+    }
+  }
+
+  private CenterNode (node: GraphNode) {
+    const parent = document.getElementById('experience-graph')
+
+    const { y, height } = node.svgGroup.getBBox()
+
+    parent.scrollTo({
+      top: y + height * 2 - parent.clientHeight / 2,
+      behavior: 'smooth'
+    })
+  }
+
   private GetGridTemplate (size: number, rows: number, columns: number) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttributeNS(null, 'width', `${size * columns + 1}px`)
@@ -238,4 +251,70 @@ export interface Commit {
   x?: number
   y?: number
   color?: string
+  focused?: true
+  el?: SVGGElement
+}
+
+class GraphNode {
+  private _focused = false
+  get focused () {
+    return this._focused
+  }
+  set focused (val: boolean) {
+    if (val === this._focused) return
+    this._focused = val
+    this._focusChange.next(this._focused)
+
+    if (this._focused) {
+      this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45 * 1.2}`)
+      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35 * 1.2}`)
+    } else {
+      this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45}`)
+      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35}`)
+    }
+  }
+
+  svgGroup: SVGGElement
+  private _svgCircle: SVGCircleElement
+  private _svgFiller: SVGCircleElement
+
+  private _focusChange = new Subject<boolean>()
+  get onFocusChange () {
+    return this._focusChange.asObservable()
+  }
+
+  constructor (
+    public commit: Commit,
+    private size: number,
+    position: {x: number, y: number},
+    public index: number
+  ) {
+    this.svgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+
+    this._svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    this._svgCircle.setAttributeNS(null, 'r', `${size * 0.45}`)
+    this._svgCircle.setAttributeNS(null, 'cx', `${position.x}`)
+    this._svgCircle.setAttributeNS(null, 'cy', `${position.y}`)
+    this._svgCircle.setAttributeNS(null, 'fill', commit.color || 'black')
+    this._svgCircle.setAttribute('id', `commit_${commit.y}`)
+    this._svgCircle.classList.add('commit-point')
+
+    this._svgFiller = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    this._svgFiller.setAttributeNS(null, 'r', `${size * 0.35}`)
+    this._svgFiller.setAttributeNS(null, 'cx', `${position.x}`)
+    this._svgFiller.setAttributeNS(null, 'cy', `${position.y}`)
+    this._svgFiller.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 0.95)')
+    this._svgFiller.classList.add('commit-point')
+
+    this.svgGroup.onmouseover = () => {
+      this.focused = true
+    }
+
+    // this.svgGroup.onmouseleave = () => {}
+
+    this.svgGroup.appendChild(this._svgCircle)
+    this.svgGroup.appendChild(this._svgFiller)
+
+    this.focused = !!commit.focused
+  }
 }
