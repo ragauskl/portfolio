@@ -7,14 +7,16 @@ import { ContactFormComponent } from './components/contact-form/contact-form.com
 import { ReactiveFormsModule } from '@angular/forms'
 import { ProgressButtonComponent } from './components/progress-button/progress-button.component'
 import { FormOverlayComponent } from './components/form-overlay/form-overlay.component'
-import { FooterComponent } from './components/footer/footer.component'
+import { FooterComponent } from './components/footer/footer.component';
+import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
 @NgModule({
   declarations: [
     SidenavComponent,
     ContactFormComponent,
     ProgressButtonComponent,
     FormOverlayComponent,
-    FooterComponent
+    FooterComponent,
+    ArrowScrollComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { FooterComponent } from './components/footer/footer.component'
     ContactFormComponent,
     ReactiveFormsModule,
     ProgressButtonComponent,
-    FooterComponent
+    FooterComponent,
+    ArrowScrollComponent
   ]
 })
 export class CoreModule { }

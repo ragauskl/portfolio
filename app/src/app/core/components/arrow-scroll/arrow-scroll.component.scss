@@ -1,0 +1,96 @@
+@import 'abstracts';
+
+.overflow-content-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.overflow-content {
+  width: 100%;
+  height: fit-content;
+  padding: 50px 0;
+}
+
+.overflow-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 8px;
+  left: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      white 0,
+      rgba(255, 255, 255, 0.7) 30px,
+      transparent 50px, calc(100% - 50px),
+      rgba(255, 255, 255, 0.7) calc(100% - 30px),
+      white 100%);
+}
+
+.arrow-top,
+.arrow-bottom {
+  @include absolute-centre(true, false);
+  height: 30px;
+  opacity: 0.6;
+  cursor: pointer;
+
+  polygon {
+    animation: canScroll 3s infinite;
+
+    &:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+  }
+}
+
+.arrow-top {
+  transform: rotate(180deg);
+}
+
+.overflow-top, .overflow-bottom {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+
+  &:hover {
+    .arrow-top,
+    .arrow-bottom {
+      opacity: 1;
+
+      polygon {
+        animation: canScroll 0.6s infinite ease-in-out;
+
+        &:nth-child(2) {
+          animation-delay: -0.1s;
+        }
+      }
+    }
+  }
+}
+
+.overflow {
+  &-top {
+    top: 0;
+  }
+
+  &-bottom {
+    bottom: 0;
+  }
+}
+
+@keyframes canScroll {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

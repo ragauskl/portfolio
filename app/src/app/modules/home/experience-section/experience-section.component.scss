@@ -18,26 +18,7 @@
   #experience-graph {
     height: 100%;
     width: 100%;
-    padding: 50px 0;
-    overflow-y: auto;
     display: flex;
-  }
-
-  #overflow-indicator {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 8px;
-    left: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      white 0,
-      rgba(255, 255, 255, 0.7) 30px,
-      transparent 50px, calc(100% - 50px),
-      rgba(255, 255, 255, 0.7) calc(100% - 30px),
-      white 100%
-    );
   }
 }
 

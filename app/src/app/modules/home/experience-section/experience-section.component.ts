@@ -183,7 +183,7 @@ export class ExperienceSectionComponent implements OnInit {
   }
 
   private CenterNode (node: GraphNode) {
-    const parent = document.getElementById('experience-graph')
+    const parent = document.getElementById('experience-graph-container')
 
     const { y, height } = node.svgGroup.getBBox()
 
