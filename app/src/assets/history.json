@@ -2,7 +2,7 @@
   "branches": [
     {
       "branch": "master",
-      "color": "var(--od-dec)"
+      "color": "var(--od-dark)"
     },
     {
       "branch": "uni",

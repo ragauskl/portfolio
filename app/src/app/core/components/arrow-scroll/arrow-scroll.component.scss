@@ -17,7 +17,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 8px;
+  right: 0;
   left: 0;
   pointer-events: none;
   background: linear-gradient(to bottom,
@@ -32,7 +32,7 @@
 .arrow-bottom {
   @include absolute-centre(true, false);
   height: 30px;
-  opacity: 0.6;
+  opacity: 0.3;
   cursor: pointer;
 
   polygon {

@@ -14,6 +14,7 @@ export class ExperienceSectionComponent implements OnInit {
   nodes: GraphNode[] = []
   selectedIndex: number = 19
   private _focusedNode?: GraphNode
+  private readonly _ySkip = 1.2
   constructor (
     private http: HttpClient
   ) {}
@@ -31,7 +32,7 @@ export class ExperienceSectionComponent implements OnInit {
   ngOnInit () {
     this.http.get('assets/history.json').subscribe((json: History) => {
       const columns = json.branches.length
-      const rows = json.commits.length * 2 - 1
+      const rows = json.commits.length * this._ySkip - 1
 
       const parent = document.getElementById('experience-graph')
       const cellSize = 50
@@ -40,7 +41,7 @@ export class ExperienceSectionComponent implements OnInit {
       const getY = (y) => height - (cellSize * (y - 0.5)) + 5
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
-      const grid = this.GetGridTemplate(cellSize, rows + 0.2, columns)
+      const grid = this.GetGridTemplate(cellSize, rows + 2, columns)
       parent.appendChild(grid)
 
       this.commits = json.commits.sort(
@@ -61,7 +62,7 @@ export class ExperienceSectionComponent implements OnInit {
         let activeBranches = new Set()
         let y = -1
         for (const commit of this.commits) {
-          y += 2
+          y += this._ySkip
           commit.y = y
 
           const branch: BranchElement = json.branches.find(x => x.branch === commit.branch)
@@ -79,7 +80,7 @@ export class ExperienceSectionComponent implements OnInit {
         }
       }
 
-      const renderCommits = () => {
+      const createNodes = () => {
         this.nodes = this.commits.map((commit, i) => {
           const node = new GraphNode(
             commit,
@@ -95,10 +96,21 @@ export class ExperienceSectionComponent implements OnInit {
 
           node.onFocusChange.subscribe(focused => this.NodeFocuseChanged(node, focused))
 
-          grid.appendChild(node.svgGroup)
           return node
         })
 
+      }
+
+      const renderTitles = () => {
+        for (const node of this.nodes) {
+          grid.appendChild(node.titleGroup)
+        }
+      }
+
+      const renderNodes = () => {
+        for (const node of this.nodes) {
+          grid.appendChild(node.nodeGroup)
+        }
         if (this._focusedNode) this.CenterNode(this._focusedNode)
       }
 
@@ -148,13 +160,13 @@ export class ExperienceSectionComponent implements OnInit {
                 .find(x => x.branch === origin.branch)
 
               if (forkCommit) {
-                const curve = drawCurve(origin.x, startY - 2, startX, startY)
+                const curve = drawCurve(origin.x, startY - this._ySkip, startX, startY)
                 functions[el.x].push(() => appendLine(curve))
               }
 
               const lastCommit = commits[commits.length - 1]
               if (lastCommit.closed) {
-                const curve = drawCurve(lastX, lastY, origin.x, lastY + 2)
+                const curve = drawCurve(lastX, lastY, origin.x, lastY + this._ySkip)
                 appendLine(curve)
                 functions[el.x].push(() => appendLine(curve))
               }
@@ -167,8 +179,10 @@ export class ExperienceSectionComponent implements OnInit {
       }
 
       calculatePositions()
+      createNodes()
+      renderTitles()
       renderBranches()
-      renderCommits()
+      renderNodes()
 
     })
   }
@@ -185,7 +199,7 @@ export class ExperienceSectionComponent implements OnInit {
   private CenterNode (node: GraphNode) {
     const parent = document.getElementById('experience-graph-container')
 
-    const { y, height } = node.svgGroup.getBBox()
+    const { y, height } = node.nodeGroup.getBBox()
 
     parent.scrollTo({
       top: y + height * 2 - parent.clientHeight / 2,
@@ -195,7 +209,8 @@ export class ExperienceSectionComponent implements OnInit {
 
   private GetGridTemplate (size: number, rows: number, columns: number) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    svg.setAttributeNS(null, 'width', `${size * columns + 1}px`)
+    // svg.setAttributeNS(null, 'width', `${size * columns + 1}px`)
+    svg.setAttributeNS(null, 'width', `100%`)
     svg.setAttributeNS(null, 'height', `${size * rows + 1}px`)
     svg.style.margin = 'auto'
 
@@ -268,13 +283,18 @@ class GraphNode {
     if (this._focused) {
       this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45 * 1.2}`)
       this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35 * 1.2}`)
+      this._titleBackground.style.opacity = '0.3'
     } else {
       this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45}`)
       this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35}`)
+      this._titleBackground.style.opacity = '0.1'
     }
   }
 
-  svgGroup: SVGGElement
+  titleGroup: SVGGElement
+  private _titleBackground: SVGRectElement
+
+  nodeGroup: SVGGElement
   private _svgCircle: SVGCircleElement
   private _svgFiller: SVGCircleElement
 
@@ -289,8 +309,37 @@ class GraphNode {
     position: {x: number, y: number},
     public index: number
   ) {
-    this.svgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+    this.titleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+    this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    this._titleBackground.setAttributeNS(null, 'x', `${position.x}`)
+    this._titleBackground.setAttributeNS(null, 'y', `${position.y - size * 0.45}`)
+    this._titleBackground.setAttributeNS(null, 'width', `calc(100% - ${position.x})`)
+    this._titleBackground.setAttributeNS(null, 'height', `${size * 0.9}`)
+    this._titleBackground.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
+    this._titleBackground.setAttributeNS(null, 'rx', `${size * 0.1}`)
+    this._titleBackground.style.opacity = '0.1'
 
+    const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    titleEdge.setAttributeNS(null, 'x', `calc(100% - 10)`)
+    titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.45}`)
+    titleEdge.setAttributeNS(null, 'width', `10`)
+    titleEdge.setAttributeNS(null, 'height', `${size * 0.9}`)
+    titleEdge.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
+
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+    title.innerHTML = commit.comment
+    title.setAttributeNS(null, 'x', `97%`)
+    title.setAttributeNS(null, 'y', `${position.y}`)
+    title.setAttributeNS(null, 'dominant-baseline', `middle`)
+    title.setAttributeNS(null, 'text-anchor', `end`)
+    title.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
+    title.style.fontWeight = 'bold'
+
+    this.titleGroup.appendChild(this._titleBackground)
+    this.titleGroup.appendChild(title)
+    this.titleGroup.appendChild(titleEdge)
+
+    this.nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
     this._svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     this._svgCircle.setAttributeNS(null, 'r', `${size * 0.45}`)
     this._svgCircle.setAttributeNS(null, 'cx', `${position.x}`)
@@ -306,14 +355,13 @@ class GraphNode {
     this._svgFiller.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 0.95)')
     this._svgFiller.classList.add('commit-point')
 
-    this.svgGroup.onmouseover = () => {
+    this.nodeGroup.onmouseover = () => {
       this.focused = true
     }
 
     // this.svgGroup.onmouseleave = () => {}
-
-    this.svgGroup.appendChild(this._svgCircle)
-    this.svgGroup.appendChild(this._svgFiller)
+    this.nodeGroup.appendChild(this._svgCircle)
+    this.nodeGroup.appendChild(this._svgFiller)
 
     this.focused = !!commit.focused
   }
