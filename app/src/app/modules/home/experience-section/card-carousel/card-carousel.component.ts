@@ -76,7 +76,8 @@ export class CardCarouselComponent implements OnInit {
         x.description,
         i - index,
         // top most index - offset (0 for focused, <0 for before and >0 for after)
-        this.focusedIndex - Math.abs(i - index)
+        this.focusedIndex - Math.abs(i - index),
+        x.color || 'transparent'
       )
 
       return card
@@ -133,6 +134,9 @@ class Card {
       opacity: this.hide ? 0 : 1,
       'pointer-events': this.hide ? 'none' : 'initial'
     }
+    if (this.styleIndex === 0) {
+      style['border-top'] = `5px solid ${this.color}`
+    }
 
     return style
   }
@@ -141,6 +145,7 @@ class Card {
     public readonly subtitle: string | undefined,
     public readonly description: string,
     public index: number,
-    public zIndex: number
+    public zIndex: number,
+    public color: string
   ) {}
 }

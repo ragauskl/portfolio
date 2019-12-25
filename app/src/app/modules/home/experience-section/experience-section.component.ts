@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import moment from 'moment'
 import { Subject } from 'rxjs'
+import color from 'color'
+// TODO:
+// Blend in the header
+// Align text on left - date on right
+// Switch to dark mode?
+// Thinner graph
+// Flexible layout
 
 @Component({
   selector: 'app-experience-section',
@@ -14,7 +21,7 @@ export class ExperienceSectionComponent implements OnInit {
   nodes: GraphNode[] = []
   selectedIndex: number = 19
   private _focusedNode?: GraphNode
-  private readonly _ySkip = 1.2
+  private readonly _ySkip = 2
   constructor (
     private http: HttpClient
   ) {}
@@ -35,7 +42,7 @@ export class ExperienceSectionComponent implements OnInit {
       const rows = json.commits.length * this._ySkip - 1
 
       const parent = document.getElementById('experience-graph')
-      const cellSize = 50
+      const cellSize = 30
       const height = rows * cellSize
       const getX = (x) => cellSize * (x - 0.5) + 10
       const getY = (y) => height - (cellSize * (y - 0.5)) + 5
@@ -282,12 +289,14 @@ class GraphNode {
 
     if (this._focused) {
       this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45 * 1.2}`)
-      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35 * 1.2}`)
-      this._titleBackground.style.opacity = '0.3'
+      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35 * 1.1}`)
+      this._svgFiller.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 1)')
+      this._titleBackground.style.opacity = '0.2'
     } else {
       this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45}`)
       this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35}`)
-      this._titleBackground.style.opacity = '0.1'
+      this._svgFiller.setAttributeNS(null, 'fill', 'transparent')
+      this._titleBackground.style.opacity = '0.05'
     }
   }
 
@@ -311,19 +320,19 @@ class GraphNode {
   ) {
     this.titleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
     this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    this._titleBackground.setAttributeNS(null, 'x', `${position.x}`)
-    this._titleBackground.setAttributeNS(null, 'y', `${position.y - size * 0.45}`)
-    this._titleBackground.setAttributeNS(null, 'width', `calc(100% - ${position.x})`)
-    this._titleBackground.setAttributeNS(null, 'height', `${size * 0.9}`)
+    this._titleBackground.setAttributeNS(null, 'x', `${position.x - size * 0.6} `)
+    this._titleBackground.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
+    this._titleBackground.setAttributeNS(null, 'width', `110%`)
+    this._titleBackground.setAttributeNS(null, 'height', `${size * 1.5}`)
     this._titleBackground.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
-    this._titleBackground.setAttributeNS(null, 'rx', `${size * 0.1}`)
-    this._titleBackground.style.opacity = '0.1'
+    this._titleBackground.setAttributeNS(null, 'rx', `${size}`)
+    this._titleBackground.style.opacity = '0.05'
 
     const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    titleEdge.setAttributeNS(null, 'x', `calc(100% - 10)`)
-    titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.45}`)
-    titleEdge.setAttributeNS(null, 'width', `10`)
-    titleEdge.setAttributeNS(null, 'height', `${size * 0.9}`)
+    titleEdge.setAttributeNS(null, 'x', `calc(100% - 5)`)
+    titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
+    titleEdge.setAttributeNS(null, 'width', `5`)
+    titleEdge.setAttributeNS(null, 'height', `${size * 1.5}`)
     titleEdge.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
 
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text')
@@ -332,8 +341,8 @@ class GraphNode {
     title.setAttributeNS(null, 'y', `${position.y}`)
     title.setAttributeNS(null, 'dominant-baseline', `middle`)
     title.setAttributeNS(null, 'text-anchor', `end`)
-    title.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
-    title.style.fontWeight = 'bold'
+    title.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
+    // title.style.fontWeight = 'bold'
 
     this.titleGroup.appendChild(this._titleBackground)
     this.titleGroup.appendChild(title)
@@ -352,7 +361,7 @@ class GraphNode {
     this._svgFiller.setAttributeNS(null, 'r', `${size * 0.35}`)
     this._svgFiller.setAttributeNS(null, 'cx', `${position.x}`)
     this._svgFiller.setAttributeNS(null, 'cy', `${position.y}`)
-    this._svgFiller.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 0.95)')
+    this._svgFiller.setAttributeNS(null, 'fill', 'transparent')
     this._svgFiller.classList.add('commit-point')
 
     this.nodeGroup.onmouseover = () => {

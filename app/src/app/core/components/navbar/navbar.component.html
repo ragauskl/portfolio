@@ -1,0 +1,15 @@
+<div id=navbar-wrap>
+  <div id="nav-title">
+    <span>{{title}}</span>
+  </div>
+
+  <button mat-icon-button color="primary" aria-label="menu" (click)="toggleMenu()">
+    <mat-icon>{{menuOpen ? 'close' : 'menu'}}</mat-icon>
+  </button>
+
+  <div></div>
+</div>
+
+<div id="navbar-menu" [@menuSlide]="menuOpen ? 'open' : 'closed'">
+  Comming soon..
+</div>

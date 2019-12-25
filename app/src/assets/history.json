@@ -2,16 +2,16 @@
   "branches": [
     {
       "branch": "master",
-      "color": "var(--od-dark)"
+      "color": "rgb(27, 29, 31)"
     },
     {
       "branch": "uni",
       "origin": "master",
-      "color": "var(--od-fn)"
+      "color": "rgb(86, 182, 194)"
     }, {
       "branch": "sorion",
       "origin": "uni",
-      "color": "var(--od-obj)"
+      "color": "rgb(229, 192, 123)"
     }, {
       "branch": "gsi",
       "origin": "master",
@@ -42,13 +42,9 @@
       "branch": "uni",
       "comment": "Started learning Git"
     }, {
-      "date": "2014-Sep",
-      "branch": "uni",
-      "comment": "Started learning Git"
-    }, {
       "date": "2016-Jul",
       "branch": "sorion",
-      "comment": "Software Engineer at Sorion Ltd"
+      "comment": "Jr Software Engineer at Sorion Ltd"
     }, {
       "date": "2016-Jul",
       "branch": "sorion",

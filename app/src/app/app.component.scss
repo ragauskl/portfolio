@@ -2,22 +2,14 @@
 
 :host {
   display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
 
-  app-sidenav {
-    height: 100%;
-    width: 64px;
+  app-nav {
+    width: 100%;
+    min-height: 0;
+    height: 64px;
     z-index: 10;
-  }
-
-  @include break('lt', 'm') {
-    flex-direction: column;
-
-    app-sidenav {
-      width: 100%;
-      min-height: 0;
-      height: 64px;
-    }
   }
 }

@@ -1,8 +1,8 @@
-<div id="graph-cards">
-  <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
-</div>
-
 <div id="graph-container">
   <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
   </app-arrow-scroll>
+</div>
+
+<div id="graph-cards">
+  <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
 </div>

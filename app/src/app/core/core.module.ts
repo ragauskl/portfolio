@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { MaterialModule } from './lib/material.module'
-import { SidenavComponent } from './components/sidenav/sidenav.component'
+import { NavBarComponent } from './components/navbar/navbar.component'
 import { AngularResizedEventModule } from 'angular-resize-event'
 import { ContactFormComponent } from './components/contact-form/contact-form.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ProgressButtonComponent } from './components/progress-button/progress-button.component'
 import { FormOverlayComponent } from './components/form-overlay/form-overlay.component'
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from './components/footer/footer.component'
 import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
 @NgModule({
   declarations: [
-    SidenavComponent,
+    NavBarComponent,
     ContactFormComponent,
     ProgressButtonComponent,
     FormOverlayComponent,
@@ -26,7 +26,7 @@ import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.com
   ],
   exports: [
     MaterialModule,
-    SidenavComponent,
+    NavBarComponent,
     AngularResizedEventModule,
     ContactFormComponent,
     ReactiveFormsModule,

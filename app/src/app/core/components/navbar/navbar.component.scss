@@ -4,18 +4,13 @@
   position: relative;
 }
 
-#sidenav-wrap {
+#navbar-wrap {
   width: 100%;
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
-  @include flex($direction: column, $justify: space-between);
-  font-size: large;
-
-  @include break('lt', 'm') {
-    flex-direction: row;
-    font-size: medium;
-  }
+  @include flex($direction: row, $justify: space-between);
+  font-size: medium;
 
   > div {
     flex: 0 0 calc((100% - 40px - 10%) / 2);
@@ -28,13 +23,6 @@
 
   #nav-title, #nav-direction {
     text-transform: uppercase;
-    span {
-      writing-mode: vertical-rl;
-
-      @include break('lt', 'm') {
-        writing-mode: initial;
-      }
-    }
   }
 
   #nav-direction {
@@ -48,28 +36,21 @@
       color: color('secondary');
     }
 
-    @include flex($direction: column, $justify: flex-end);
+    @include flex($direction: row, $justify: flex-end);
     > *:not(:last-child) {
-      margin-bottom: 10px;
-    }
-    @include break('lt', 'm') {
-        flex-direction: row;
-        > *:not(:last-child) {
-          margin-bottom: 0;
-          margin-right: 10px;
-        }
+      margin-right: 10px;
     }
   }
 }
 
-#sidenav-menu {
+#navbar-menu {
   background: color('od-v-dark');
   opacity: 0.9;
-  height: 100%;
-  width: 0;
+  height: 0;
+  width: 100%;
   position: fixed;
-  top: 0;
-  left: 64px;
+  top: 64px;
+  left: 0;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -77,11 +58,4 @@
   color: white;
   font-weight: bold;
   overflow: hidden;
-
-  @include break('lt', 'm') {
-    width: 100%;
-    height: 0;
-    top: 64px;
-    left: 0;
-  }
 }
