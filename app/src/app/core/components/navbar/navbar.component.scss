@@ -2,6 +2,7 @@
 
 :host {
   position: relative;
+  background: color('od-dark');
 }
 
 #navbar-wrap {
@@ -13,7 +14,6 @@
   font-size: medium;
 
   > div {
-    flex: 0 0 calc((100% - 40px - 10%) / 2);
     display: flex;
   }
 
@@ -43,19 +43,22 @@
   }
 }
 
-#navbar-menu {
-  background: color('od-v-dark');
-  opacity: 0.9;
-  height: 0;
-  width: 100%;
-  position: fixed;
-  top: 64px;
-  left: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  overflow: hidden;
+#logo-container {
+  height: 100%;
+  @include fxFlex(row);
+
+  img {
+    position: relative;
+    @include break-font(45px);
+    margin: auto;
+    object-fit: contain;
+
+    @include break-prop('height', (
+      'xs': 70%,
+      's': 80%,
+      'm': 90%,
+      'l': 100%,
+      'xl': 100%
+    ))
+  }
 }

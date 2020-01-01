@@ -1,2 +1,4 @@
-<app-nav *ngIf="showMenu" class="mat-elevation-z5"></app-nav>
+<app-nav *ngIf="showMenu" [class.mat-elevation-z5]="scrollOffset" [style.height]="128 - scrollOffset * 0.3 + 'px'"></app-nav>
+<div id="header-placeholder" [style.height]="minTop(128 - scrollOffset * 0.3) + 'px'"></div>
+
 <router-outlet></router-outlet>

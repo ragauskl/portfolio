@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
 import { ThemeService } from '@core/services/theme.service'
 import { environment } from 'environments/environment'
 import { MatIconRegistry } from '@angular/material/icon'
@@ -10,9 +10,14 @@ import { DomSanitizer } from '@angular/platform-browser'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @ViewChild('outlet', { static: true }) outlet: ElementRef
   get showMenu () {
     return !window.location.href.endsWith('browser-not-supported') &&
       !window.location.href.includes('error')
+  }
+
+  get scrollOffset () {
+    return document.scrollingElement.scrollTop
   }
 
   constructor (
@@ -27,6 +32,10 @@ export class AppComponent {
     this.RegisterCustomIcons([
       ['send', 'icons/action/send.svg']
     ])
+  }
+
+  minTop (val: number) {
+    return Math.max(56, val)
   }
 
   private RegisterCustomIcons (icons: [string, string][]) {

@@ -3,13 +3,22 @@
 :host {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
 
   app-nav {
     width: 100%;
-    min-height: 0;
-    height: 64px;
+    min-height: 56px;
+    max-height: 128px;
     z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: box-shadow 0.5s linear, height 0.1s linear;
   }
+
+  #header-placeholder {
+    background: color('od-dark');
+    width: 100%;
+  }
+
 }

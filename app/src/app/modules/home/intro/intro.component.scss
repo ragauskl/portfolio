@@ -17,26 +17,6 @@
   }
 }
 
-#logo-container {
-  flex: 0 15%;
-  @include fxFlex(row);
-
-  img {
-    position: relative;
-    @include break-font(45px);
-    margin: auto;
-    object-fit: contain;
-
-    @include break-prop('height', (
-      'xs': 70%,
-      's': 80%,
-      'm': 90%,
-      'l': 100%,
-      'xl': 100%
-    ))
-  }
-}
-
 #description-container {
   flex-grow: 1;
   @include fxFlex(row);

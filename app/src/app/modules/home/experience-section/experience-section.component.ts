@@ -4,7 +4,8 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import color from 'color'
 // TODO:
-// Blend in the header
+// Make text label elements clickable
+// Add scroll to 'experience'
 // Align text on left - date on right
 // Switch to dark mode?
 // Thinner graph
