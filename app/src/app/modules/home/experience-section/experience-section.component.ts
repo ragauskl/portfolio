@@ -4,7 +4,6 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import color from 'color'
 // TODO:
-// Make text label elements clickable
 // Add scroll to 'experience'
 // Align text on left - date on right
 // Switch to dark mode?
@@ -320,6 +319,8 @@ class GraphNode {
     public index: number
   ) {
     this.titleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+    this.titleGroup.style.cursor = 'pointer'
+
     this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     this._titleBackground.setAttributeNS(null, 'x', `${position.x - size * 0.6} `)
     this._titleBackground.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
@@ -366,6 +367,10 @@ class GraphNode {
     this._svgFiller.classList.add('commit-point')
 
     this.nodeGroup.onmouseover = () => {
+      this.focused = true
+    }
+
+    this.titleGroup.onclick = () => {
       this.focused = true
     }
 

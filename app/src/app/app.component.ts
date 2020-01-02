@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
+import { Component, ViewChild, ElementRef } from '@angular/core'
 import { ThemeService } from '@core/services/theme.service'
 import { environment } from 'environments/environment'
 import { MatIconRegistry } from '@angular/material/icon'
@@ -16,6 +16,9 @@ export class AppComponent {
       !window.location.href.includes('error')
   }
 
+  get headerHeight () {
+    return Math.max(56, 128 - this.scrollOffset * 0.3)
+  }
   get scrollOffset () {
     return document.scrollingElement.scrollTop
   }
@@ -32,10 +35,6 @@ export class AppComponent {
     this.RegisterCustomIcons([
       ['send', 'icons/action/send.svg']
     ])
-  }
-
-  minTop (val: number) {
-    return Math.max(56, val)
   }
 
   private RegisterCustomIcons (icons: [string, string][]) {
