@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { NavBarService } from '@core/services/navbar.service'
-import { trigger, state, style, transition, animate } from '@angular/animations'
+import { Section } from '@core/model/section'
 
 @Component({
   selector: 'app-nav',
@@ -8,11 +8,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavBarComponent {
-  get title (): string {
-    return this._navbarService.currentTitle
-  }
-
+  section = Section
   constructor (
-    private _navbarService: NavBarService
+    public navBar: NavBarService
   ) {}
 }

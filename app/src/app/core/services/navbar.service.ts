@@ -1,8 +1,34 @@
 import { Injectable } from '@angular/core'
+import { Section } from '@core/model/section'
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavBarService {
   currentTitle = 'Home'
+
+  scrollTo (section: keyof typeof Section) {
+    const el = document.getElementById(section)
+    const { top } = this.relativeBoundingClientRect(el, document.scrollingElement)
+
+    const target = top - 128
+
+    document.scrollingElement.scrollTo({
+      top: target,
+      behavior: 'smooth'
+    })
+  }
+
+  relativeBoundingClientRect (child: HTMLElement, parent: Element) {
+    const parentPos = parent.getBoundingClientRect()
+    const childPos = child.getBoundingClientRect()
+
+    const relativePos: any = {}
+
+    relativePos.top = childPos.top - parentPos.top,
+    relativePos.right = childPos.right - parentPos.right,
+    relativePos.bottom = childPos.bottom - parentPos.bottom,
+    relativePos.left = childPos.left - parentPos.left
+    return relativePos
+  }
 }
