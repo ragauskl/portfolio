@@ -45,7 +45,11 @@
 
 #logo-container {
   height: 100%;
-  @include fxFlex(row);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
 
   img {
     position: relative;
@@ -60,5 +64,22 @@
       'l': 100%,
       'xl': 100%
     ))
+  }
+}
+
+.sections {
+  @include break-font(17px);
+  color: color('foreground-primary');
+  height: 100%;
+  padding: 7px 0;
+  @include fxFlex(row, 20px, center, flex-start);
+
+  a {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    &:hover {
+      opacity: 1;
+    }
   }
 }

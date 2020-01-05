@@ -2,12 +2,12 @@
   <div id="nav-title">
   </div>
 
-  <div id="logo-container">
+  <div id="logo-container" (click)="navBar.scrollTo(null)">
     <img src="assets/logo/logo-dark.jpg" alt="Lina Ragauskaite">
   </div>
 
-  <div>
+  <div class="sections">
     <a (click)="navBar.scrollTo(section.experience)">Experience</a>
-    <a (click)="navBar.scrollTo(section.contact)">Contact Me</a>
+    <a (click)="navBar.scrollTo(section.contact)">Contact</a>
   </div>
 </div>

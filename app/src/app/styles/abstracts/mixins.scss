@@ -83,3 +83,15 @@
     }
   }
 }
+
+@mixin item-space ($direction: row, $distance: 20px) {
+  @if $direction == row {
+    > *:not(:last-child) {
+      margin-right: $distance;
+    }
+  } @else if $direction == column {
+    > *:not(:last-child) {
+      margin-bottom: $distance;
+    }
+  }
+}

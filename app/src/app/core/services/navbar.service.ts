@@ -7,9 +7,10 @@ import { Section } from '@core/model/section'
 export class NavBarService {
   currentTitle = 'Home'
 
-  scrollTo (section: keyof typeof Section) {
+  scrollTo (section: keyof typeof Section | null) {
     const el = document.getElementById(section)
-    const { top } = this.relativeBoundingClientRect(el, document.scrollingElement)
+    const { top } = section ? this.relativeBoundingClientRect(el, document.scrollingElement) :
+      { top: 128 }
 
     const target = top - 128
 

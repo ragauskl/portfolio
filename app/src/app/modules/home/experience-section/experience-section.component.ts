@@ -4,10 +4,7 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import color from 'color'
 // TODO:
-// Add scroll to 'experience'
 // Align text on left - date on right
-// Switch to dark mode?
-// Thinner graph
 // Flexible layout
 
 @Component({

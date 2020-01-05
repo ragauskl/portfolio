@@ -76,7 +76,7 @@ $breakpoints: (
     'xs': snap($size * 0.6, $min, $max),
     's': snap($size * 0.8, $min, $max),
     'm': $size,
-    'l': snap($size * 1.2, $min, $max),
-    'xl': snap($size * 1.4, $min, $max)
+    'l': snap($size * 1.1, $min, $max),
+    'xl': snap($size * 1.2, $min, $max)
   ))
 }

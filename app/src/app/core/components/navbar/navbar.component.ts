@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { NavBarService } from '@core/services/navbar.service'
 import { Section } from '@core/model/section'
 
@@ -9,6 +9,7 @@ import { Section } from '@core/model/section'
 })
 export class NavBarComponent {
   section = Section
+
   constructor (
     public navBar: NavBarService
   ) {}
