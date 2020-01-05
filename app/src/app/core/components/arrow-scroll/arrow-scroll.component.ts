@@ -27,4 +27,8 @@ export class ArrowScrollComponent {
   scrollSpeed (by: number) {
     this._scrollBy += by
   }
+
+  scrollBy (by: number) {
+    this.scrollRef.nativeElement.scrollTop += by
+  }
 }

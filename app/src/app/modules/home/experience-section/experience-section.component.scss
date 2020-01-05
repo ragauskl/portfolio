@@ -22,3 +22,17 @@
   transition: all 0.2s ease-in;
   cursor: pointer;
 }
+
+:host ::ng-deep {
+  .graph-title-wrap {
+    @include fxFlex(row, null, flex-start);
+    height: 100%;
+
+    .graph-title {
+      font-size: 15px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+}

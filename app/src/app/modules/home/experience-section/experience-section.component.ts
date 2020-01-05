@@ -345,32 +345,39 @@ class GraphNode {
     this._titleBackground.style.opacity = '0.05'
 
     const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    titleEdge.setAttributeNS(null, 'x', `calc(100% - 5)`)
+    titleEdge.setAttributeNS(null, 'x', `calc(100% - 5px)`)
     titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
     titleEdge.setAttributeNS(null, 'width', `5`)
     titleEdge.setAttributeNS(null, 'height', `${size * 1.5}`)
     titleEdge.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
 
-    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+    const forTitle = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+    forTitle.setAttributeNS(null, 'width', `calc(97% - 70px - ${textX + size}px)`)
+    forTitle.setAttributeNS(null, 'height', `${size}`)
+    forTitle.setAttributeNS(null, 'x', `${textX + size * 0.75}`)
+    forTitle.setAttributeNS(null, 'y', `${position.y - size / 2}`)
+
+    const titleObj = document.createElement('div')
+    titleObj.className = 'graph-title-wrap'
+    forTitle.append(titleObj)
+
+    const title = document.createElement('span')
+    title.style.color = `${color(commit.color).darken(0.2).hex() || 'black'}`
     title.innerHTML = commit.comment
-    title.setAttributeNS(null, 'x', `${textX + size}`)
-    title.setAttributeNS(null, 'y', `${position.y}`)
-    title.setAttributeNS(null, 'dominant-baseline', `middle`)
-    title.style.fontSize = '15px'
-    // title.setAttributeNS(null, 'text-anchor', `end`)
-    title.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
+    title.className = 'graph-title'
+    titleObj.appendChild(title)
 
     const date = document.createElementNS('http://www.w3.org/2000/svg', 'text')
     date.innerHTML = moment(commit.date, 'YYYY-MMM').format('MMM YYYY')
     date.setAttributeNS(null, 'x', `97%`)
     date.setAttributeNS(null, 'y', `${position.y}`)
     date.setAttributeNS(null, 'dominant-baseline', `middle`)
-    date.style.fontSize = '15px'
     date.setAttributeNS(null, 'text-anchor', `end`)
     date.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
+    date.style.fontSize = '15px'
 
     this.titleGroup.appendChild(this._titleBackground)
-    this.titleGroup.appendChild(title)
+    this.titleGroup.appendChild(forTitle)
     this.titleGroup.appendChild(date)
     this.titleGroup.appendChild(titleEdge)
 
