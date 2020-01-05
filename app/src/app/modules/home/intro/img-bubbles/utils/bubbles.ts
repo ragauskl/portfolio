@@ -53,7 +53,7 @@ export class Bubbles {
   }
 
   updateSize () {
-    this.size = Math.round(this.el.clientHeight * 0.33)
+    this.size = Math.round(this.el.clientHeight * 0.34)
   }
 
   updatePadding () {
@@ -216,7 +216,7 @@ export class Bubbles {
   }
 
   private *nextScale (): IterableIterator<number> {
-    const scales = shuffle([0.95, 0.85, 0.75, 0.65, 0.55]) // shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
+    const scales = shuffle([0.85, 0.75, 0.65, 0.55]) // shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
     const usedScales = []
 
     while (true) {
