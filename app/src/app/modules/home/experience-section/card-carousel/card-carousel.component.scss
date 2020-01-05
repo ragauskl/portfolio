@@ -8,6 +8,10 @@
   overflow: hidden;
   // Index 1 so that separate card indexing would be contained
   z-index: 1;
+
+  * {
+    user-select: none;
+  }
 }
 
 .carousel-card {

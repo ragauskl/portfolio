@@ -9,6 +9,8 @@ import { ProgressButtonComponent } from './components/progress-button/progress-b
 import { FormOverlayComponent } from './components/form-overlay/form-overlay.component'
 import { FooterComponent } from './components/footer/footer.component'
 import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
+import { RenderedDirective } from './directives/rendered.directive'
+
 @NgModule({
   declarations: [
     NavBarComponent,
@@ -16,7 +18,8 @@ import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.com
     ProgressButtonComponent,
     FormOverlayComponent,
     FooterComponent,
-    ArrowScrollComponent
+    ArrowScrollComponent,
+    RenderedDirective
   ],
   imports: [
     CommonModule,
@@ -32,7 +35,8 @@ import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.com
     ReactiveFormsModule,
     ProgressButtonComponent,
     FooterComponent,
-    ArrowScrollComponent
+    ArrowScrollComponent,
+    RenderedDirective
   ]
 })
 export class CoreModule { }

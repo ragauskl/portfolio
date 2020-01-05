@@ -9,6 +9,10 @@
     height: 80%;
     width: 40%;
     position: relative;
+
+    &.compact {
+      width: 80%;
+    }
   }
 
   #experience-graph {
@@ -33,6 +37,23 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+    }
+  }
+
+  .mat-tab-group {
+    .mat-tab-header {
+      .mat-tab-label {
+        min-width: 50%;
+      }
+    }
+
+    .mat-tab-body {
+      width: 90vw;
+      height: 75vh;
+
+      .mat-tab-body-content {
+        @include flex;
+      }
     }
   }
 }

@@ -129,7 +129,7 @@ class Card {
       position: 'absolute',
       'z-index': this.zIndex,
       left: '50%',
-      top: `${50 + this.styleIndex * 5}%`,
+      top: `calc(50% + ${this.styleIndex * 50}px)`,
       transform: `translate(-50%, -50%) scale(${Math.max(0, 1 - Math.abs(this.styleIndex) / 10)})`,
       opacity: this.hide ? 0 : 1,
       'pointer-events': this.hide ? 'none' : 'initial'

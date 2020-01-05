@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef } from '@angular/core'
-import { ThemeService } from '@core/services/theme.service'
 import { environment } from 'environments/environment'
 import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
@@ -24,7 +23,6 @@ export class AppComponent {
   }
 
   constructor (
-    private themeService: ThemeService,
     private _matIconRegistry: MatIconRegistry,
     private _domSanitizer: DomSanitizer
   ) {

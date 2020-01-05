@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { ThemeService } from '@core/services/theme.service'
 import { NavBarService } from '@core/services/navbar.service'
 import { Section } from '@core/model/section'
 
@@ -12,7 +11,6 @@ export class HomeComponent {
   section = Section
 
   constructor (
-    public theme: ThemeService,
     public navBar: NavBarService
   ) {}
 }

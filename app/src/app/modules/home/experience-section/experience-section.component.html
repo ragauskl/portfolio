@@ -1,8 +1,28 @@
-<div id="graph-container">
-  <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
-  </app-arrow-scroll>
-</div>
+<ng-container *ngIf="!viewService.tablet">
+  <ng-container *ngTemplateOutlet="graph"></ng-container>
+  <ng-container *ngTemplateOutlet="cards"></ng-container>
+</ng-container>
 
-<div id="graph-cards">
-  <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
-</div>
+<ng-container *ngIf="viewService.tablet">
+  <mat-tab-group (selectedIndexChange)="$event === 0 && onTabChange()">
+    <mat-tab label="Graph View">
+      <ng-container *ngTemplateOutlet="graph"></ng-container>
+    </mat-tab>
+    <mat-tab label="Card View">
+      <ng-container *ngTemplateOutlet="cards"></ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+
+<ng-template #graph>
+  <div id="graph-container" [class.compact]="viewService.tablet">
+    <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
+    </app-arrow-scroll>
+  </div>
+</ng-template>
+
+<ng-template #cards>
+  <div id="graph-cards" [class.compact]="viewService.tablet">
+    <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
+  </div>
+</ng-template>
