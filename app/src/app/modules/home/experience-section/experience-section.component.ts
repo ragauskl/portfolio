@@ -4,7 +4,6 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import color from 'color'
 // TODO:
-// Align text on left - date on right
 // Flexible layout
 
 @Component({
@@ -84,12 +83,29 @@ export class ExperienceSectionComponent implements OnInit {
         }
       }
 
+      const findMaxXAtY = (y: number, startX: number) => {
+        let maxX: number | undefined
+
+        for (const el of json.branches) {
+          const commits = this.commits.filter(x => x.branch === el.branch)
+          const compareX = commits[0].x
+          if (compareX <= startX) continue
+
+          if (commits.some(c => c.y < y) && commits.some(c => c.y > y)) {
+            if (!maxX || maxX < compareX) maxX = compareX
+            continue
+          }
+        }
+        return maxX
+      }
+
       const createNodes = () => {
         this.nodes = this.commits.map((commit, i) => {
           const node = new GraphNode(
             commit,
             cellSize,
             { x: getX(commit.x), y: getY(commit.y) },
+            getX(findMaxXAtY(commit.y, commit.x) || commit.x),
             i
           )
 
@@ -313,6 +329,7 @@ class GraphNode {
     public commit: Commit,
     private size: number,
     position: {x: number, y: number},
+    textX: number,
     public index: number
   ) {
     this.titleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
@@ -336,15 +353,25 @@ class GraphNode {
 
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'text')
     title.innerHTML = commit.comment
-    title.setAttributeNS(null, 'x', `97%`)
+    title.setAttributeNS(null, 'x', `${textX + size}`)
     title.setAttributeNS(null, 'y', `${position.y}`)
     title.setAttributeNS(null, 'dominant-baseline', `middle`)
-    title.setAttributeNS(null, 'text-anchor', `end`)
+    title.style.fontSize = '15px'
+    // title.setAttributeNS(null, 'text-anchor', `end`)
     title.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
-    // title.style.fontWeight = 'bold'
+
+    const date = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+    date.innerHTML = moment(commit.date, 'YYYY-MMM').format('MMM YYYY')
+    date.setAttributeNS(null, 'x', `97%`)
+    date.setAttributeNS(null, 'y', `${position.y}`)
+    date.setAttributeNS(null, 'dominant-baseline', `middle`)
+    date.style.fontSize = '15px'
+    date.setAttributeNS(null, 'text-anchor', `end`)
+    date.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
 
     this.titleGroup.appendChild(this._titleBackground)
     this.titleGroup.appendChild(title)
+    this.titleGroup.appendChild(date)
     this.titleGroup.appendChild(titleEdge)
 
     this.nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
