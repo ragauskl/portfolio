@@ -7,6 +7,7 @@ import { ViewService } from '@core/services/view.service'
 import { auditTime } from 'rxjs/operators'
 // TODO:
 // Hide header and switch on graph click with option to go back
+// Improve graph button design
 
 @Component({
   selector: 'app-experience-section',
