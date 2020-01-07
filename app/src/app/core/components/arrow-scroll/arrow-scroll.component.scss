@@ -1,9 +1,15 @@
 @import 'abstracts';
 
+:host {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .overflow-content-container {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
 }
 
@@ -15,8 +21,8 @@
 
 .overflow-indicator {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: -1px;
+  bottom: -1px;
   right: 0;
   left: 0;
   pointer-events: none;

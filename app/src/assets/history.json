@@ -22,7 +22,7 @@
     {
       "date": "2011-Oct",
       "branch": "master",
-      "comment": "Started learning C++",
+      "comment": "Learning C++",
       "description": ""
     }, {
       "date": "2014-Sep",
@@ -32,15 +32,15 @@
     }, {
       "date": "2014-Sep",
       "branch": "uni",
-      "comment": "Started learning Python"
+      "comment": "Learning Python"
     }, {
       "date": "2014-Sep",
       "branch": "uni",
-      "comment": "Started learning SQL"
+      "comment": "Learning SQL"
     }, {
       "date": "2014-Sep",
       "branch": "uni",
-      "comment": "Started learning Git"
+      "comment": "Learning Git"
     }, {
       "date": "2016-Jul",
       "branch": "sorion",
@@ -48,43 +48,43 @@
     }, {
       "date": "2016-Jul",
       "branch": "sorion",
-      "comment": "Started learning .Net"
+      "comment": "Learning .Net"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Angular"
+      "comment": "Learning Angular"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning JavaScript"
+      "comment": "Learning JavaScript"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Node.js"
+      "comment": "Learning Node.js"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Google Cloud Platform"
+      "comment": "Learning Google Cloud Platform"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Heroku"
+      "comment": "Learning Heroku"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Ionic"
+      "comment": "Learning Ionic"
     }, {
       "date": "2016-Nov",
       "branch": "master",
-      "comment": "Started learning Cloudflare"
+      "comment": "Learning Cloudflare"
     }, {
       "date": "2016-Dec",
       "branch": "master",
-      "comment": "Started learning Typescript"
+      "comment": "Learning Typescript"
     }, {
       "date": "2016-Dec",
       "branch": "master",
-      "comment": "Started learning MongoDB"
+      "comment": "Learning MongoDB"
     }, {
       "date": "2017-Oct",
       "branch": "sorion",
@@ -103,7 +103,7 @@
     }, {
       "date": "2018-Jun",
       "branch": "gsi",
-      "comment": "Started learning Postgres"
+      "comment": "Learning Postgres"
     }, {
       "date": "2018-Jun",
       "branch": "gsi",
@@ -111,35 +111,35 @@
     }, {
       "date": "2018-Nov",
       "branch": "master",
-      "comment": "Started learning Go"
+      "comment": "Learning Go"
     }, {
       "date": "2018-Dec",
       "branch": "gsi",
-      "comment": "Started learning Kubernetes"
+      "comment": "Learning Kubernetes"
     }, {
       "date": "2018-Dec",
       "branch": "gsi",
-      "comment": "Started learning Serverless deployment"
+      "comment": "Learning Serverless deployment"
     }, {
       "date": "2018-Dec",
       "branch": "gsi",
-      "comment": "Started learning CI pipeline automation"
+      "comment": "Learning CI pipeline automation"
     }, {
       "date": "2018-Dec",
       "branch": "gsi",
-      "comment": "Started learning Docker"
+      "comment": "Learning Docker"
     }, {
       "date": "2019-Jun",
       "branch": "master",
-      "comment": "Started learning NestJS"
+      "comment": "Learning NestJS"
     }, {
       "date": "2019-Jun",
       "branch": "master",
-      "comment": "Started learning GraphQL"
+      "comment": "Learning GraphQL"
     }, {
       "date": "2019-Dec",
       "branch": "master",
-      "comment": "Started learning ELK stack",
+      "comment": "Learning ELK stack",
       "description": "Researching and implementing sandbox application with Elasticsearch, Logstash, Metricbeat and Kibana on a Kubernetes cluster."
     }
   ]

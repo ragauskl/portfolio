@@ -1,6 +1,16 @@
 @import 'abstracts';
 
 :host {
+  @include flex(column, center, center);
+
+  h1 {
+    flex: 0 0 auto;
+  }
+}
+
+.experience-panel {
+  flex: 0 1 100%;
+  width: 100%;
   overflow: auto;
   @include flex(row, space-evenly, center);
 
@@ -11,7 +21,7 @@
     position: relative;
 
     &.compact {
-      width: 80%;
+      width: 95%;
     }
   }
 

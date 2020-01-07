@@ -13,6 +13,7 @@ export class ArrowScrollComponent {
 
   private scrollSubscription?: Subscription
   private _scrollBy = 0
+
   scrollDirection (direction: 1 | 0 | -1) {
     if (this.scrollSubscription) this.scrollSubscription.unsubscribe()
     this._scrollBy = direction
@@ -20,6 +21,11 @@ export class ArrowScrollComponent {
     if (direction) {
       this.scrollSubscription = interval(1).subscribe(() => {
         this.scrollRef.nativeElement.scrollTop += this._scrollBy
+        if (this._scrollBy < 0 && this.scrollRef.nativeElement.scrollTop <= 0) {
+          this.scrollDirection(0)
+        } else if (this._scrollBy > 0 && this.scrollRef.nativeElement.scrollTop >= this.scrollRef.nativeElement.scrollHeight - this.scrollRef.nativeElement.clientHeight) {
+          this.scrollDirection(0)
+        }
       })
     }
   }

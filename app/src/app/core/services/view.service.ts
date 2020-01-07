@@ -4,6 +4,7 @@ import { fromEvent } from 'rxjs'
 @Injectable({
   providedIn: 'root'
 })
+
 export class ViewService {
   private _mobile = false
   get mobile () {

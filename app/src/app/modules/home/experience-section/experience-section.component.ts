@@ -6,7 +6,7 @@ import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import { auditTime } from 'rxjs/operators'
 // TODO:
-// Flexible layout
+// Hide header and switch on graph click with option to go back
 
 @Component({
   selector: 'app-experience-section',
@@ -25,7 +25,9 @@ export class ExperienceSectionComponent implements OnInit {
   constructor (
     private http: HttpClient,
     public viewService: ViewService
-  ) {}
+  ) {
+    window['y'] = this
+  }
 
   onSelectedChange (index: number) {
     const node = this.nodes.find(x => x.index === index)
@@ -80,6 +82,11 @@ export class ExperienceSectionComponent implements OnInit {
           )
         }
       )
+
+    // Temp fix
+    for (const commit of this.commits) {
+      commit.focused = this.commits.indexOf(commit) === this.selectedIndex ? true : undefined
+    }
 
     const calculatePositions = () => {
         // First commit must be on master
@@ -366,9 +373,9 @@ class GraphNode {
     this._titleBackground.style.opacity = '0.05'
 
     const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    titleEdge.setAttributeNS(null, 'x', `calc(100% - 5px)`)
+    titleEdge.setAttributeNS(null, 'x', `99%`)
     titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
-    titleEdge.setAttributeNS(null, 'width', `5`)
+    titleEdge.setAttributeNS(null, 'width', `1%`)
     titleEdge.setAttributeNS(null, 'height', `${size * 1.5}`)
     titleEdge.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
 

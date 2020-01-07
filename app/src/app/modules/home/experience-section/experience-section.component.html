@@ -1,28 +1,32 @@
-<ng-container *ngIf="!viewService.tablet">
-  <ng-container *ngTemplateOutlet="graph"></ng-container>
-  <ng-container *ngTemplateOutlet="cards"></ng-container>
-</ng-container>
+<h1>Experience</h1>
 
-<ng-container *ngIf="viewService.tablet">
-  <mat-tab-group (selectedIndexChange)="$event === 0 && onTabChange()">
-    <mat-tab label="Graph View">
-      <ng-container *ngTemplateOutlet="graph"></ng-container>
-    </mat-tab>
-    <mat-tab label="Card View">
-      <ng-container *ngTemplateOutlet="cards"></ng-container>
-    </mat-tab>
-  </mat-tab-group>
-</ng-container>
+<div class="experience-panel">
+  <ng-container *ngIf="!viewService.mobile">
+    <ng-container *ngTemplateOutlet="graph"></ng-container>
+    <ng-container *ngTemplateOutlet="cards"></ng-container>
+  </ng-container>
 
-<ng-template #graph>
-  <div id="graph-container" [class.compact]="viewService.tablet">
-    <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
-    </app-arrow-scroll>
-  </div>
-</ng-template>
+  <ng-container *ngIf="viewService.mobile">
+    <mat-tab-group (selectedIndexChange)="$event === 0 && onTabChange()">
+      <mat-tab label="Graph View">
+        <ng-container *ngTemplateOutlet="graph"></ng-container>
+      </mat-tab>
+      <mat-tab label="Card View">
+        <ng-container *ngTemplateOutlet="cards"></ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
 
-<ng-template #cards>
-  <div id="graph-cards" [class.compact]="viewService.tablet">
-    <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel >
-  </div>
-</ng-template>
+  <ng-template #graph>
+    <div id="graph-container" [class.compact]="viewService.mobile">
+      <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
+      </app-arrow-scroll>
+    </div>
+  </ng-template>
+
+  <ng-template #cards>
+    <div id="graph-cards" [class.compact]="viewService.mobile">
+      <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel>
+    </div>
+  </ng-template>
+</div>

@@ -1,12 +1,15 @@
-<div class="carousel-card mat-elevation-z5"
-[class.focused]="card.zIndex === focusedIndex"
-[class.hide]="card.hide"
-[id]="'z' + abs(card.index)"
-[ngStyle]="card.style"
-*ngFor="let card of cards"
-(click)="card.zIndex !== focusedIndex && focusCard(card)">
-  <h3>{{card.title}}</h3>
-  <p><small>{{card.subtitle}}</small></p>
+<div class="position-wrapper"
+  *ngFor="let card of cards"
+  [id]="'z' + abs(card.index)"
+  [class.focused]="card.zIndex === focusedIndex"
+  [ngStyle]="card.style">
+    <div class="ratio-wrapper">
+      <div class="carousel-card mat-elevation-z5"
+      (click)="card.zIndex !== focusedIndex && focusCard(card, 'a')">
+        <h3>{{card.title}}</h3>
+        <p><small>{{card.subtitle}}</small></p>
 
-  <p>{{card.description}}</p>
+        <p>{{card.description}}</p>
+      </div>
+  </div>
 </div>

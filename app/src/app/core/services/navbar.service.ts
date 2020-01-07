@@ -12,7 +12,7 @@ export class NavBarService {
     const { top } = section ? this.relativeBoundingClientRect(el, document.scrollingElement) :
       { top: 128 }
 
-    const target = top - 128
+    const target = top - 128 + (top < document.scrollingElement.scrollTop + document.scrollingElement.clientHeight ? 55 : 0)
 
     document.scrollingElement.scrollTo({
       top: target,

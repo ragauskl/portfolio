@@ -24,7 +24,7 @@ export class CardCarouselComponent implements OnInit {
   }
   set selectedIndex (val: number) {
     this._selectedIndex = val
-    this._focusCard.next()
+    this._focusCard.next('change')
   }
 
   private _items: Commit[] = []
@@ -39,12 +39,13 @@ export class CardCarouselComponent implements OnInit {
   cards: Card[] = []
 
   ngOnInit () {
+    window['x'] = this
     this.RenderCards()
 
     this._focusCard.pipe(
       auditTime(10)
-    ).subscribe(() => {
-      if (this.cards.length) this.focusCard(this.currentIndex)
+    ).subscribe((x) => {
+      if (this.cards.length) this.focusCard(this.currentIndex, x)
     })
 
     this._loaded = true
@@ -68,7 +69,6 @@ export class CardCarouselComponent implements OnInit {
     const items = [...this.items]
     if (this._reversed) items.reverse()
     let index = this.currentIndex
-
     this.cards = items.map((x, i) => {
       const card = new Card(
         x.comment,
@@ -85,7 +85,7 @@ export class CardCarouselComponent implements OnInit {
     if (this._selectedIndex === undefined) this.SetSelectedIndex(index)
   }
 
-  focusCard (target: Card | number) {
+  focusCard (target: Card | number, o: any) {
     const index = typeof target === 'number' ?
       target : this.cards.findIndex(x => x === target)
     if (index === undefined) return
@@ -100,6 +100,7 @@ export class CardCarouselComponent implements OnInit {
 
   private SetSelectedIndex (index: number) {
     if (index < 0 || !this._loaded) return
+
     this._selectedIndex = this._reversed ?
     this.ReverseIndex(index) : index
 
@@ -126,7 +127,6 @@ class Card {
   }
   get style () {
     const style = {
-      position: 'absolute',
       'z-index': this.zIndex,
       left: '50%',
       top: `calc(50% + ${this.styleIndex * 50}px)`,
