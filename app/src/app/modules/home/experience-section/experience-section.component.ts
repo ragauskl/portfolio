@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import moment from 'moment'
 import { Subject, fromEvent } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import { auditTime } from 'rxjs/operators'
+import { MatTabGroup } from '@angular/material/tabs'
 // TODO:
-// Hide header and switch on graph click with option to go back
 // Improve graph button design
 
 @Component({
@@ -22,6 +22,8 @@ export class ExperienceSectionComponent implements OnInit {
   private _focusedNode?: GraphNode
   private readonly _ySkip = 2
   private history!: History
+
+  @ViewChild('matTabGroup', { static: false }) matTabGroup?: MatTabGroup
 
   constructor (
     private http: HttpClient,
@@ -65,7 +67,7 @@ export class ExperienceSectionComponent implements OnInit {
     const cellSize = 30
     const height = rows * cellSize
     const getX = (x) => cellSize * (x - 0.5) + 10
-    const getY = (y) => height - (cellSize * (y - 0.5)) + 5
+    const getY = (y) => height - (cellSize * (y - this._ySkip)) + 5
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
     const grid = this.GetGridTemplate(cellSize, rows + 2, columns)
@@ -241,7 +243,15 @@ export class ExperienceSectionComponent implements OnInit {
 
       if (this._focusedNode) this._focusedNode.focused = false
       this._focusedNode = node
+
+      if (this.matTabGroup) {
+        if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+      }
     }
+  }
+
+  selectTab (i: 0 | 1) {
+    if (this.matTabGroup) this.matTabGroup.selectedIndex = i
   }
 
   private CenterNode (node: GraphNode, onInit = false) {
@@ -434,7 +444,6 @@ class GraphNode {
       this.focused = true
     }
 
-    // this.svgGroup.onmouseleave = () => {}
     this.nodeGroup.appendChild(this._svgCircle)
     this.nodeGroup.appendChild(this._svgFiller)
 

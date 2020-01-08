@@ -25,6 +25,40 @@
     }
   }
 
+  .arrow-back {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 50%;
+    opacity: 0.3;
+    cursor: pointer;
+    transform: translateY(-50%) rotate(90deg);
+
+    polygon {
+      animation: canScroll 3s infinite ease-in-out;
+
+      &:nth-child(2) {
+        animation-delay: -0.1s;
+      }
+    }
+
+    @keyframes canScroll {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+    }
+  }
+
   #experience-graph {
     height: 100%;
     width: 100%;
@@ -52,13 +86,11 @@
 
   .mat-tab-group {
     .mat-tab-header {
-      .mat-tab-label {
-        min-width: 50%;
-      }
+      display: none;
     }
 
     .mat-tab-body {
-      width: 90vw;
+      width: 80vw;
       height: 75vh;
 
       .mat-tab-body-content {

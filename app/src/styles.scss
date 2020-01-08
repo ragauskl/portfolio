@@ -78,3 +78,15 @@ button {
     background-color:  rgba($color: #626768, $alpha: 0.3);
   }
 }
+
+h1 {
+  @include break-font(32px, null, 32px);
+}
+
+h3 {
+  @include break-font(19px, 13px, 19px);
+}
+
+small {
+  @include break-font(13px, null, 13px);
+}
