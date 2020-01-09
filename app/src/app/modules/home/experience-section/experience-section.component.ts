@@ -6,8 +6,6 @@ import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import { auditTime } from 'rxjs/operators'
 import { MatTabGroup } from '@angular/material/tabs'
-// TODO:
-// Improve graph button design
 
 @Component({
   selector: 'app-experience-section',
@@ -161,7 +159,7 @@ export class ExperienceSectionComponent implements OnInit {
 
     const renderNodes = () => {
       for (const node of this.nodes) {
-        grid.appendChild(node.nodeGroup)
+        grid.appendChild(node.nodeObj)
       }
       if (this._focusedNode) this.CenterNode(this._focusedNode)
     }
@@ -258,7 +256,7 @@ export class ExperienceSectionComponent implements OnInit {
     const parent = document.getElementById('experience-graph-container')
     if (!parent) return
 
-    const { y, height } = node.nodeGroup.getBBox()
+    const { y, height } = node.nodeObj.getBBox()
 
     parent.scrollTo({
       top: y + height * 2 - parent.clientHeight / 2,
@@ -340,24 +338,18 @@ class GraphNode {
     this._focusChange.next(this._focused)
 
     if (this._focused) {
-      this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45 * 1.2}`)
-      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35 * 1.1}`)
-      this._svgFiller.setAttributeNS(null, 'fill', 'rgba(255, 255, 255, 1)')
-      this._titleBackground.style.opacity = '0.2'
+      this.nodeObj.classList.add('focused')
     } else {
-      this._svgCircle.setAttributeNS(null, 'r', `${this.size * 0.45}`)
-      this._svgFiller.setAttributeNS(null, 'r', `${this.size * 0.35}`)
-      this._svgFiller.setAttributeNS(null, 'fill', 'transparent')
-      this._titleBackground.style.opacity = '0.05'
+      this.nodeObj.classList.remove('focused')
     }
   }
 
   titleGroup: SVGGElement
   private _titleBackground: SVGRectElement
 
-  nodeGroup: SVGGElement
-  private _svgCircle: SVGCircleElement
-  private _svgFiller: SVGCircleElement
+  nodeObj: SVGForeignObjectElement
+
+  col: color
 
   private _focusChange = new Subject<boolean>()
   get onFocusChange () {
@@ -367,52 +359,87 @@ class GraphNode {
   constructor (
     public commit: Commit,
     private size: number,
-    position: {x: number, y: number},
-    textX: number,
+    private position: {x: number, y: number},
+    private textX: number,
     public index: number
   ) {
+    this.col = color(this.commit.color || 'black').rgb()
+    this.CreateTitleGroup()
+    this.CreateBubble()
+
+    this.focused = !!commit.focused
+  }
+
+  private CreateBubble () {
+    this.nodeObj = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+    this.nodeObj.setAttributeNS(null, 'width', `${this.size}`)
+    this.nodeObj.setAttributeNS(null, 'height', `${this.size}`)
+    this.nodeObj.setAttributeNS(null, 'x', `${this.position.x - this.size / 2}`)
+    this.nodeObj.setAttributeNS(null, 'y', `${this.position.y - this.size / 2}`)
+    // this.nodeGroup.appendChild(bubbleFor)
+    this.nodeObj.classList.add('graph-node-obj')
+
+    const nodeEl = document.createElement('div')
+    nodeEl.className = 'graph-node'
+    nodeEl.style.background = `${this.col.toString()}`
+
+    const lightDiv = document.createElement('div')
+    lightDiv.className = 'graph-node-light'
+    nodeEl.appendChild(lightDiv)
+
+    const bubbleFiller = document.createElement('div')
+    bubbleFiller.className = 'graph-node-filler'
+    nodeEl.appendChild(bubbleFiller)
+
+    this.nodeObj.append(nodeEl)
+    nodeEl.onmouseover = () => {
+      this.focused = true
+    }
+  }
+
+  private CreateTitleGroup () {
     this.titleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
     this.titleGroup.style.cursor = 'pointer'
 
     this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    this._titleBackground.setAttributeNS(null, 'x', `${position.x - size * 0.6} `)
-    this._titleBackground.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
+    this._titleBackground.setAttributeNS(null, 'x', `${this.position.x - this.size * 0.6} `)
+    this._titleBackground.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.75}`)
     this._titleBackground.setAttributeNS(null, 'width', `110%`)
-    this._titleBackground.setAttributeNS(null, 'height', `${size * 1.5}`)
-    this._titleBackground.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
-    this._titleBackground.setAttributeNS(null, 'rx', `${size}`)
+    this._titleBackground.setAttributeNS(null, 'height', `${this.size * 1.5}`)
+    this._titleBackground.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`)
+    this._titleBackground.setAttributeNS(null, 'rx', `${this.size}`)
     this._titleBackground.style.opacity = '0.05'
 
     const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     titleEdge.setAttributeNS(null, 'x', `99%`)
-    titleEdge.setAttributeNS(null, 'y', `${position.y - size * 0.75}`)
+    titleEdge.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.75}`)
     titleEdge.setAttributeNS(null, 'width', `1%`)
-    titleEdge.setAttributeNS(null, 'height', `${size * 1.5}`)
-    titleEdge.setAttributeNS(null, 'fill', `${commit.color || 'black'}`)
+    titleEdge.setAttributeNS(null, 'height', `${this.size * 1.5}`)
+    titleEdge.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`)
 
     const forTitle = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
-    forTitle.setAttributeNS(null, 'width', `calc(97% - 70px - ${textX + size}px)`)
-    forTitle.setAttributeNS(null, 'height', `${size}`)
-    forTitle.setAttributeNS(null, 'x', `${textX + size * 0.75}`)
-    forTitle.setAttributeNS(null, 'y', `${position.y - size / 2}`)
+    forTitle.setAttributeNS(null, 'width', `calc(97% - 70px - ${this.textX + this.size}px)`)
+    forTitle.setAttributeNS(null, 'height', `${this.size}`)
+    forTitle.setAttributeNS(null, 'x', `${this.textX + this.size * 0.75}`)
+    forTitle.setAttributeNS(null, 'y', `${this.position.y - this.size / 2}`)
 
     const titleObj = document.createElement('div')
     titleObj.className = 'graph-title-wrap'
     forTitle.append(titleObj)
 
     const title = document.createElement('span')
-    title.style.color = `${color(commit.color).darken(0.2).hex() || 'black'}`
-    title.innerHTML = commit.comment
+    title.style.color = `${color(this.commit.color).darken(0.2).hex() || 'black'}`
+    title.innerHTML = this.commit.comment
     title.className = 'graph-title'
     titleObj.appendChild(title)
 
     const date = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-    date.innerHTML = moment(commit.date, 'YYYY-MMM').format('MMM YYYY')
+    date.innerHTML = moment(this.commit.date, 'YYYY-MMM').format('MMM YYYY')
     date.setAttributeNS(null, 'x', `97%`)
-    date.setAttributeNS(null, 'y', `${position.y}`)
+    date.setAttributeNS(null, 'y', `${this.position.y}`)
     date.setAttributeNS(null, 'dominant-baseline', `middle`)
     date.setAttributeNS(null, 'text-anchor', `end`)
-    date.setAttributeNS(null, 'fill', `${color(commit.color).darken(0.2).hex() || 'black'}`)
+    date.setAttributeNS(null, 'fill', `${color(this.commit.color).darken(0.2).hex() || 'black'}`)
     date.style.fontSize = '15px'
 
     this.titleGroup.appendChild(this._titleBackground)
@@ -420,33 +447,8 @@ class GraphNode {
     this.titleGroup.appendChild(date)
     this.titleGroup.appendChild(titleEdge)
 
-    this.nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-    this._svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    this._svgCircle.setAttributeNS(null, 'r', `${size * 0.45}`)
-    this._svgCircle.setAttributeNS(null, 'cx', `${position.x}`)
-    this._svgCircle.setAttributeNS(null, 'cy', `${position.y}`)
-    this._svgCircle.setAttributeNS(null, 'fill', commit.color || 'black')
-    this._svgCircle.setAttribute('id', `commit_${commit.y}`)
-    this._svgCircle.classList.add('commit-point')
-
-    this._svgFiller = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    this._svgFiller.setAttributeNS(null, 'r', `${size * 0.35}`)
-    this._svgFiller.setAttributeNS(null, 'cx', `${position.x}`)
-    this._svgFiller.setAttributeNS(null, 'cy', `${position.y}`)
-    this._svgFiller.setAttributeNS(null, 'fill', 'transparent')
-    this._svgFiller.classList.add('commit-point')
-
-    this.nodeGroup.onmouseover = () => {
-      this.focused = true
-    }
-
     this.titleGroup.onclick = () => {
       this.focused = true
     }
-
-    this.nodeGroup.appendChild(this._svgCircle)
-    this.nodeGroup.appendChild(this._svgFiller)
-
-    this.focused = !!commit.focused
   }
 }

@@ -66,11 +66,6 @@
   }
 }
 
-::ng-deep .commit-point {
-  transition: all 0.2s ease-in;
-  cursor: pointer;
-}
-
 :host ::ng-deep {
   .graph-title-wrap {
     @include fxFlex(row, null, flex-start);
@@ -81,6 +76,45 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+    }
+  }
+
+
+  .graph-node {
+    @include fxFlex(row, center, center);
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border-radius: 50%;
+    transform: scale(0.85);
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+
+    .graph-node-light {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(white, transparent);
+      opacity: 0.4;
+    }
+
+    .graph-node-filler {
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+      opacity: 0.3;
+      background: white;
+    }
+  }
+
+  foreignObject.focused {
+    .graph-node {
+      transform: scale(1);
+      .graph-node-filler {
+        opacity: 0.8;
+      }
     }
   }
 
