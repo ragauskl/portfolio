@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core'
 import { Commit } from '../experience-section.component'
 import { Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
-
+import moment from 'moment'
 @Component({
   selector: 'app-card-carousel',
   templateUrl: './card-carousel.component.html',
@@ -72,7 +72,7 @@ export class CardCarouselComponent implements OnInit {
     this.cards = items.map((x, i) => {
       const card = new Card(
         x.comment,
-        x.date,
+        moment(x.date, 'YYYY-MMM').format('MMM YYYY'),
         x.description,
         i - index,
         // top most index - offset (0 for focused, <0 for before and >0 for after)
