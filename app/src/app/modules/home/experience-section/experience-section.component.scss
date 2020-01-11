@@ -98,11 +98,10 @@
       right: 0;
       background: linear-gradient(white, transparent);
       opacity: 0.4;
+      border-radius: 50%;
     }
 
     .graph-node-filler {
-      width: 70%;
-      height: 70%;
       border-radius: 50%;
       opacity: 0.3;
       background: white;

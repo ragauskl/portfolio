@@ -327,6 +327,14 @@ export interface Commit {
   el?: SVGGElement
 }
 
+function matchEveniness (target: number, input: number) {
+  if (Math.round(target) % 2 === 0) {
+    if (Math.round(input) % 2 !== 0) input--
+  } else {
+    if (Math.round(input) % 2 === 0) input--
+  }
+  return input
+}
 class GraphNode {
   private _focused = false
   get focused () {
@@ -389,6 +397,8 @@ class GraphNode {
 
     const bubbleFiller = document.createElement('div')
     bubbleFiller.className = 'graph-node-filler'
+    bubbleFiller.style.width = `${matchEveniness(this.size, this.size * 0.7)}px`
+    bubbleFiller.style.height = `${matchEveniness(this.size, this.size * 0.7)}px`
     nodeEl.appendChild(bubbleFiller)
 
     this.nodeObj.append(nodeEl)
@@ -402,17 +412,17 @@ class GraphNode {
     this.titleGroup.style.cursor = 'pointer'
 
     this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    this._titleBackground.setAttributeNS(null, 'x', `${this.position.x - this.size * 0.6} `)
-    this._titleBackground.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.75}`)
+    this._titleBackground.setAttributeNS(null, 'x', `${this.position.x - this.size * 0.65} `)
+    this._titleBackground.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.73}`)
     this._titleBackground.setAttributeNS(null, 'width', `110%`)
     this._titleBackground.setAttributeNS(null, 'height', `${this.size * 1.5}`)
-    this._titleBackground.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`)
+    this._titleBackground.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`) // this.commit.color ||
     this._titleBackground.setAttributeNS(null, 'rx', `${this.size}`)
     this._titleBackground.style.opacity = '0.05'
 
     const titleEdge = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     titleEdge.setAttributeNS(null, 'x', `99%`)
-    titleEdge.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.75}`)
+    titleEdge.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.73}`)
     titleEdge.setAttributeNS(null, 'width', `1%`)
     titleEdge.setAttributeNS(null, 'height', `${this.size * 1.5}`)
     titleEdge.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`)
