@@ -6,8 +6,22 @@
     <img src="assets/logo/logo-dark.jpg" alt="Lina Ragauskaite">
   </div>
 
-  <div class="sections">
-    <a (click)="navBar.scrollTo(section.experience)">Experience</a>
-    <a (click)="navBar.scrollTo(section.contact)">Contact</a>
+  <div class="menu">
+    <div class="sections" *ngIf="!viewService.mobile">
+      <a (click)="navBar.scrollTo(section.experience)">Experience</a>
+      <a (click)="navBar.scrollTo(section.contact)">Contact</a>
+    </div>
+
+    <div id="menu-backdrop" [class.expanded]="menuOpen" [no-scroll]="menuOpen">
+      <mat-icon svgIcon="menu" *ngIf="viewService.mobile && !menuOpen" (click)="menuOpen = true"></mat-icon>
+      <mat-icon *ngIf="menuOpen" (click)="menuOpen = false">close</mat-icon>
+
+      <div class="sections" *ngIf="menuOpen">
+        <a (click)="menuOpen = false; navBar.scrollTo(section.experience)">Experience</a>
+        <a (click)="menuOpen = false; navBar.scrollTo(section.contact)">Contact</a>
+      </div>
+    </div>
   </div>
 </div>
+
+

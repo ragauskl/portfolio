@@ -50,36 +50,68 @@
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
+  height: 100%;
 
   img {
     position: relative;
     @include break-font(45px);
-    margin: auto;
     object-fit: contain;
-
+    margin: auto;
     @include break-prop('height', (
-      'xs': 70%,
+      'xs': 80%,
       's': 80%,
       'm': 90%,
       'l': 100%,
       'xl': 100%
-    ))
+    ));
   }
 }
 
-.sections {
-  @include break-font(17px);
+.menu {
   color: color('foreground-primary');
   height: 100%;
-  padding: 7px 0;
   @include fxFlex(row, 20px, center, flex-start);
 
-  a {
+  a, mat-icon {
     cursor: pointer;
     opacity: 0.7;
     transition: opacity 0.2s;
     &:hover {
       opacity: 1;
+    }
+  }
+
+  mat-icon {
+    @include mat-icon(30px, false);
+  }
+}
+
+.sections {
+  @include break-font(17px);
+  @include fxFlex(row, 20px, center, center);
+}
+
+#menu-backdrop {
+  &.expanded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    opacity: 0.9;
+    overflow: hidden;
+    padding: 10px 2%;
+    @include flex(column, flex-start);
+
+    mat-icon {
+      align-self: flex-end;
+    }
+
+    .sections {
+      width: 90%;
+      @include break-font(30px);
+      @include fxFlex(column, 20px, flex-start, flex-start);
     }
   }
 }

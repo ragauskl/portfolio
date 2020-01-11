@@ -49,13 +49,15 @@
   @if ($class) {
     mat-icon {
       font-size: $size;
-      width: fit-content;
-      height: fit-content
+      width: $size;
+      height: $size;
+      line-height: $size;
     }
   } @else {
     font-size: $size;
-    width: fit-content;
-    height: fit-content;
+    width: $size;
+    height: $size;
+    line-height: $size;
   }
 }
 

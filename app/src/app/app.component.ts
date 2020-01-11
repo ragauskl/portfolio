@@ -16,7 +16,7 @@ export class AppComponent {
   }
 
   get headerHeight () {
-    return Math.max(56, 128 - this.scrollOffset * 0.3)
+    return Math.max(50, 100 - this.scrollOffset * 0.3)
   }
   get scrollOffset () {
     return document.scrollingElement.scrollTop
@@ -31,7 +31,8 @@ export class AppComponent {
     }
 
     this.RegisterCustomIcons([
-      ['send', 'icons/action/send.svg']
+      ['send', 'icons/action/send.svg'],
+      ['menu', 'icons/action/menu.svg']
     ])
   }
 

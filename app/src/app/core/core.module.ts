@@ -10,6 +10,7 @@ import { FormOverlayComponent } from './components/form-overlay/form-overlay.com
 import { FooterComponent } from './components/footer/footer.component'
 import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
 import { RenderedDirective } from './directives/rendered.directive'
+import { NoScrollDirective } from './directives/no-scroll.directive'
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RenderedDirective } from './directives/rendered.directive'
     FormOverlayComponent,
     FooterComponent,
     ArrowScrollComponent,
-    RenderedDirective
+    RenderedDirective,
+    NoScrollDirective
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { RenderedDirective } from './directives/rendered.directive'
     ProgressButtonComponent,
     FooterComponent,
     ArrowScrollComponent,
-    RenderedDirective
+    RenderedDirective,
+    NoScrollDirective
   ]
 })
 export class CoreModule { }
