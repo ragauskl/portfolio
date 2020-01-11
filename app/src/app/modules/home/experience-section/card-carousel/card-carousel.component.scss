@@ -21,13 +21,11 @@
   max-width: 420px;
 
   &#z1 {
-    background: color('background-primary');
-    filter: brightness(5) grayscale(1);
+    background: #fafafa;
   }
 
   &#z2 {
-    background: color('background-primary');
-    filter: brightness(4.8) grayscale(1);
+    background: #ededed;
   }
 
   .ratio-wrapper {
