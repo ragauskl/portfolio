@@ -9,7 +9,10 @@
         <h3>{{card.title}}</h3>
         <p><small>{{card.subtitle}}</small></p>
 
-        <p [innerHTML]="card.description"></p>
+        <app-scroll-block class="card-description" contentClass="mini-scrollbar">
+          <p [innerHTML]="card.description"></p>
+        </app-scroll-block>
+
       </div>
   </div>
 </div>

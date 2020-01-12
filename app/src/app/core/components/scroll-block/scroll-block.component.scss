@@ -1,0 +1,50 @@
+@import 'abstracts';
+
+:host {
+  display: block;
+  position: relative;
+}
+.overflow-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.overflow-indicator {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  right: 0;
+  left: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      white 0,
+      rgba(255, 255, 255, 0.7) 30px,
+      transparent 50px, calc(100% - 50px),
+      rgba(255, 255, 255, 0.7) calc(100% - 30px),
+      white 100%);
+}
+
+
+.overflow-top, .overflow-bottom {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overflow {
+  &-top {
+    top: 0;
+    background: linear-gradient(to bottom,
+      white,
+      transparent);
+  }
+
+  &-bottom {
+    bottom: 0;
+    background: linear-gradient(to top,
+    white,
+    transparent);
+  }
+}

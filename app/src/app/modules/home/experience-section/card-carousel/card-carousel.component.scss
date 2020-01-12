@@ -47,6 +47,14 @@
       * {
         visibility: hidden;
       }
+
+      .card-description {
+        height: 60%;
+
+        p {
+          margin: 0;
+        }
+      }
     }
   }
 

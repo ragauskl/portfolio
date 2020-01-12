@@ -1,0 +1,9 @@
+<div class="overflow-content {{contentClass}}" #scroll>
+  <ng-content></ng-content>
+</div>
+
+<div class="overflow-top" *ngIf="scroll.scrollTop">
+</div>
+
+<div class="overflow-bottom" *ngIf="scroll.scrollTop < scroll.scrollHeight - scroll.clientHeight">
+</div>

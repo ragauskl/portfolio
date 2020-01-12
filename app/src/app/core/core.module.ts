@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component'
 import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
 import { RenderedDirective } from './directives/rendered.directive'
 import { NoScrollDirective } from './directives/no-scroll.directive'
+import { ScrollBlockComponent } from './components/scroll-block/scroll-block.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NoScrollDirective } from './directives/no-scroll.directive'
     FooterComponent,
     ArrowScrollComponent,
     RenderedDirective,
-    NoScrollDirective
+    NoScrollDirective,
+    ScrollBlockComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,8 @@ import { NoScrollDirective } from './directives/no-scroll.directive'
     FooterComponent,
     ArrowScrollComponent,
     RenderedDirective,
-    NoScrollDirective
+    NoScrollDirective,
+    ScrollBlockComponent
   ]
 })
 export class CoreModule { }
