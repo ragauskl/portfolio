@@ -30,6 +30,10 @@ export class ArrowScrollComponent {
     }
   }
 
+  left (e) {
+    console.log(e)
+  }
+
   scrollSpeed (by: number) {
     this._scrollBy += by
   }

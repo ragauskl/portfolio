@@ -39,7 +39,6 @@ export class CardCarouselComponent implements OnInit {
   cards: Card[] = []
 
   ngOnInit () {
-    window['x'] = this
     this.RenderCards()
 
     this._focusCard.pipe(
@@ -114,7 +113,7 @@ export class CardCarouselComponent implements OnInit {
 
 class Card {
   get hide () {
-    return Math.abs(this.index) > 2
+    return Math.abs(this._index) > 2
   }
   /*
   Style index is used to avoid creating styles that
@@ -123,29 +122,48 @@ class Card {
   container
   */
   get styleIndex () {
-    return Math.min(3, Math.max(-3, this.index))
+    return Math.min(3, Math.max(-3, this._index))
   }
-  get style () {
-    const style = {
-      'z-index': this.zIndex,
-      left: '50%',
-      top: `calc(50% + ${this.styleIndex * 50}px)`,
-      transform: `translate(-50%, -50%) scale(${Math.max(0, 1 - Math.abs(this.styleIndex) / 10)})`,
-      opacity: this.hide ? 0 : 1,
-      'pointer-events': this.hide ? 'none' : 'initial'
-    }
-    if (this.styleIndex === 0) {
-      style['border-top'] = `5px solid ${this.color}`
-    }
 
-    return style
+  style = {}
+
+  get index () {
+    return this._index
   }
+  set index (val: number) {
+    this._index = val
+  }
+
+  get zIndex () {
+    return this._zIndex
+  }
+  set zIndex (val: number) {
+    this._zIndex = val
+    this.generateStyle()
+  }
+
   constructor (
     public readonly title: string,
     public readonly subtitle: string | undefined,
     public readonly description: string,
-    public index: number,
-    public zIndex: number,
+    private _index: number,
+    private _zIndex: number,
     public color: string
-  ) {}
+  ) {
+    this.generateStyle()
+  }
+
+  generateStyle () {
+    this.style = {
+      'z-index': this._zIndex,
+      left: '50%',
+      top: `calc(50% + ${this.styleIndex * 50}px)`,
+      transform: `translate(-50%, -50%) scale(${Math.max(0, 1 - Math.abs(this.styleIndex) / 10)})`,
+      opacity: this.hide ? 0 : 1,
+      ...(this.hide ? { 'pointer-events': 'none' } : {})
+    }
+    if (this.styleIndex === 0) {
+      this.style['border-top'] = `5px solid ${this.color}`
+    }
+  }
 }

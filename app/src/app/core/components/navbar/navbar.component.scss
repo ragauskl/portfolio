@@ -92,17 +92,39 @@
 }
 
 #menu-backdrop {
+  z-index: 10;
+
+  * {
+    z-index: 2;
+  }
+
+  #backdrop {
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: all 0.3s ease-in;
+    background: black;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
   &.expanded {
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: black;
-    opacity: 0.9;
     overflow: hidden;
     padding: 10px 2%;
     @include flex(column, flex-start);
+
+    #backdrop {
+      transform: scale(50);
+    }
 
     mat-icon {
       align-self: flex-end;
@@ -110,6 +132,7 @@
 
     .sections {
       width: 90%;
+      margin-top: 15%;
       @include break-font(30px);
       @include fxFlex(column, 20px, flex-start, flex-start);
     }

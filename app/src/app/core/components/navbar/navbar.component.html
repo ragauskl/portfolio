@@ -13,10 +13,12 @@
     </div>
 
     <div id="menu-backdrop" [class.expanded]="menuOpen" [no-scroll]="menuOpen">
+      <div id="backdrop"></div>
       <mat-icon svgIcon="menu" *ngIf="viewService.mobile && !menuOpen" (click)="menuOpen = true"></mat-icon>
       <mat-icon *ngIf="menuOpen" (click)="menuOpen = false">close</mat-icon>
 
       <div class="sections" *ngIf="menuOpen">
+        <a (click)="menuOpen = false; navBar.scrollTo(null)">Intro</a>
         <a (click)="menuOpen = false; navBar.scrollTo(section.experience)">Experience</a>
         <a (click)="menuOpen = false; navBar.scrollTo(section.contact)">Contact</a>
       </div>

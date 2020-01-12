@@ -32,20 +32,17 @@
     top: 50%;
     opacity: 0.3;
     cursor: pointer;
-    transform: translateY(-50%) rotate(90deg);
+    transform: translate(-50%, -50%) rotate(90deg);
+    width: 10%;
+    max-width: 30px;
 
     polygon {
-      animation: canScroll 3s infinite ease-in-out;
-
-      &:nth-child(2) {
-        animation-delay: -0.1s;
-      }
+      animation: canGoBack 3s infinite ease-in-out;
     }
 
-    @keyframes canScroll {
+    @keyframes canGoBack {
       0% {
-        opacity: 0;
-        transform: translateY(-10px);
+        opacity: 0.3;
       }
 
       50% {
@@ -53,8 +50,7 @@
       }
 
       100% {
-        opacity: 0;
-        transform: translateY(10px);
+        opacity: 0.3;
       }
     }
   }

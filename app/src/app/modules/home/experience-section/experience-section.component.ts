@@ -13,6 +13,7 @@ import { MatTabGroup } from '@angular/material/tabs'
   styleUrls: ['./experience-section.component.scss']
 })
 export class ExperienceSectionComponent implements OnInit {
+  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
   readonly drawGrid = false
   commits: Commit[] = []
   nodes: GraphNode[] = []
@@ -48,11 +49,21 @@ export class ExperienceSectionComponent implements OnInit {
   }
 
   ngOnInit () {
+    // tslint:disable-next-line
     this.RenderGraph()
 
     fromEvent(window, 'resize').pipe(
       auditTime(500)
     ).subscribe(() => this.RenderGraph())
+  }
+
+  swipe (eType: string) {
+    if (!this.matTabGroup) return
+    if (eType === this.SWIPE_ACTION.RIGHT && this.matTabGroup.selectedIndex > 0) {
+      this.matTabGroup.selectedIndex--
+    } else if (eType === this.SWIPE_ACTION.LEFT && this.matTabGroup.selectedIndex < 1) {
+      this.matTabGroup.selectedIndex++
+    }
   }
 
   private async RenderGraph () {
@@ -132,6 +143,7 @@ export class ExperienceSectionComponent implements OnInit {
     const createNodes = () => {
       this.nodes = this.commits.map((commit, i) => {
         const node = new GraphNode(
+            this.viewService,
             commit,
             cellSize,
             { x: getX(commit.x), y: getY(commit.y) },
@@ -378,6 +390,7 @@ class GraphNode {
   }
 
   constructor (
+    private viewService: ViewService,
     public commit: Commit,
     private size: number,
     private position: {x: number, y: number},
@@ -416,8 +429,9 @@ class GraphNode {
 
     this.nodeObj.append(nodeEl)
     nodeEl.onmouseover = () => {
-      this.focused = true
+      if (!this.viewService.mobile) this.focused = true
     }
+    nodeEl.onclick = () => this.focused = true
   }
 
   private CreateTitleGroup () {
