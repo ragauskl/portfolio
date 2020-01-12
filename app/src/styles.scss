@@ -90,3 +90,7 @@ h3 {
 small {
   @include break-font(13px, null, 13px);
 }
+
+p {
+  @include break-font(17px, 11px, 17px);
+}

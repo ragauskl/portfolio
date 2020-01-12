@@ -5,5 +5,5 @@
 <div class="overflow-top" *ngIf="scroll.scrollTop">
 </div>
 
-<div class="overflow-bottom" *ngIf="scroll.scrollTop < scroll.scrollHeight - scroll.clientHeight">
+<div class="overflow-bottom" *ngIf="scroll.scrollTop + 2 < scroll.scrollHeight - scroll.clientHeight">
 </div>

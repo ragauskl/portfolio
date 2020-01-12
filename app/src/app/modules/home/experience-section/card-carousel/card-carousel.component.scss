@@ -14,11 +14,15 @@
   }
 }
 
+h3, p {
+  margin: 10px 0;
+}
+
 .position-wrapper {
   position: absolute;
   width: 90%;
   transition: all 0.2s linear;
-  max-width: 420px;
+  max-width: 450px;
 
   &#z1 {
     background: #fafafa;
@@ -30,7 +34,7 @@
 
   .ratio-wrapper {
     width: 100%;
-    padding-top: 65%; /* 4:3 Aspect Ratio */
+    padding-top: 75%; /* 4:3 Aspect Ratio */
     position: relative;
     min-height: 200px;
 
@@ -49,7 +53,7 @@
       }
 
       .card-description {
-        height: 60%;
+        height: calc(100% - 100px);
 
         p {
           margin: 0;

@@ -145,6 +145,11 @@ export class ExperienceSectionComponent implements OnInit {
         }
 
         node.onFocusChange.subscribe(focused => this.NodeFocuseChanged(node, focused))
+        node.onClick.subscribe(() => {
+          if (this.matTabGroup) {
+            if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+          }
+        })
 
         return node
       })
@@ -341,7 +346,10 @@ class GraphNode {
     return this._focused
   }
   set focused (val: boolean) {
-    if (val === this._focused) return
+    if (val === this._focused) {
+      this._click.next()
+      return
+    }
     this._focused = val
     this._focusChange.next(this._focused)
 
@@ -362,6 +370,11 @@ class GraphNode {
   private _focusChange = new Subject<boolean>()
   get onFocusChange () {
     return this._focusChange.asObservable()
+  }
+
+  private _click = new Subject<boolean>()
+  get onClick () {
+    return this._click.asObservable()
   }
 
   constructor (
