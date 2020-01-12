@@ -27,9 +27,7 @@ export class ExperienceSectionComponent implements OnInit {
   constructor (
     private http: HttpClient,
     public viewService: ViewService
-  ) {
-    window['y'] = this
-  }
+  ) {}
 
   onSelectedChange (index: number) {
     const node = this.nodes.find(x => x.index === index)
