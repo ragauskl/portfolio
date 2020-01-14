@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import moment from 'moment'
-import { Subject, fromEvent } from 'rxjs'
+import { Subject, fromEvent, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import { auditTime } from 'rxjs/operators'
@@ -12,7 +12,8 @@ import { MatTabGroup } from '@angular/material/tabs'
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss']
 })
-export class ExperienceSectionComponent implements OnInit {
+export class ExperienceSectionComponent implements OnInit, OnDestroy {
+  private _subscriptions = new Subscription()
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
   readonly drawGrid = false
   commits: Commit[] = []
@@ -27,7 +28,11 @@ export class ExperienceSectionComponent implements OnInit {
   constructor (
     private http: HttpClient,
     public viewService: ViewService
-  ) {}
+  ) {
+    this._subscriptions.add(
+      viewService.viewModeChange.subscribe(() => this.RenderGraph())
+    )
+  }
 
   onSelectedChange (index: number) {
     const node = this.nodes.find(x => x.index === index)
@@ -47,12 +52,16 @@ export class ExperienceSectionComponent implements OnInit {
   }
 
   ngOnInit () {
-    // tslint:disable-next-line
-    this.RenderGraph()
+    // // tslint:disable-next-line
+    // this.RenderGraph()
 
-    fromEvent(window, 'resize').pipe(
-      auditTime(500)
-    ).subscribe(() => this.RenderGraph())
+    // fromEvent(window, 'resize').pipe(
+    //   auditTime(500)
+    // ).subscribe(() => this.RenderGraph())
+  }
+
+  ngOnDestroy () {
+    this._subscriptions.unsubscribe()
   }
 
   swipe (eType: string) {
@@ -71,9 +80,9 @@ export class ExperienceSectionComponent implements OnInit {
     const rows = this.history.commits.length * this._ySkip - 1
 
     const parent = document.getElementById('experience-graph')
-    const cellSize = 30
+    const cellSize = this.viewService.mobile ? 20 : 30
     const height = rows * cellSize
-    const getX = (x) => cellSize * (x - 0.5) + 10
+    const getX = (x) => cellSize * (x - 0.5) + 5
     const getY = (y) => height - (cellSize * (y - this._ySkip)) + 5
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
@@ -466,6 +475,7 @@ class GraphNode {
     title.style.color = `${color(this.commit.color).darken(0.2).hex() || 'black'}`
     title.innerHTML = this.commit.comment
     title.className = 'graph-title'
+    title.style.fontSize = `${this.size / 2}px`
     titleObj.appendChild(title)
 
     const date = document.createElementNS('http://www.w3.org/2000/svg', 'text')
@@ -475,7 +485,7 @@ class GraphNode {
     date.setAttributeNS(null, 'dominant-baseline', `middle`)
     date.setAttributeNS(null, 'text-anchor', `end`)
     date.setAttributeNS(null, 'fill', `${color(this.commit.color).darken(0.2).hex() || 'black'}`)
-    date.style.fontSize = '15px'
+    date.style.fontSize = `${this.size / 2}px`
 
     this.titleGroup.appendChild(this._titleBackground)
     this.titleGroup.appendChild(forTitle)

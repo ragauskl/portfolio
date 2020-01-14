@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core'
-import { fromEvent } from 'rxjs'
+import { fromEvent, Subject, BehaviorSubject } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ViewService {
-  private _mobile = false
   get mobile () {
-    return this._mobile
+    return this._viewMode === 'mobile'
   }
 
-  private _tablet = false
   get tablet () {
-    return this._tablet
+    return this._viewMode === 'tablet'
+  }
+
+  private _viewMode: 'desktop' | 'mobile' | 'tablet'
+  private _viewModeChange: BehaviorSubject<'desktop' | 'mobile' | 'tablet'>
+  get viewModeChange () {
+    return this._viewModeChange.asObservable()
   }
 
   constructor () {
-    this.calculateType()
+    this.calculateType(false)
+    this._viewModeChange = new BehaviorSubject(this._viewMode)
     fromEvent(window, 'resize').subscribe(() => this.calculateType())
   }
 
-  calculateType () {
-    this._mobile = window.innerWidth < 960
-    this._tablet = window.innerWidth < 1280
+  calculateType (emit: boolean = true) {
+    this._viewMode = window.innerWidth < 960 ? 'mobile' :
+      window.innerWidth < 1280 ? 'tablet' : 'desktop'
+
+    if (emit) this._viewModeChange.next(this._viewMode)
   }
 }
