@@ -4,7 +4,6 @@ import moment from 'moment'
 import { Subject, fromEvent, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
-import { auditTime } from 'rxjs/operators'
 import { MatTabGroup } from '@angular/material/tabs'
 
 @Component({
@@ -12,7 +11,7 @@ import { MatTabGroup } from '@angular/material/tabs'
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss']
 })
-export class ExperienceSectionComponent implements OnInit, OnDestroy {
+export class ExperienceSectionComponent implements OnDestroy {
   private _subscriptions = new Subscription()
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
   readonly drawGrid = false
@@ -49,15 +48,6 @@ export class ExperienceSectionComponent implements OnInit, OnDestroy {
       const node = this.nodes.find(x => x.focused)
       if (node) this.CenterNode(node, true)
     }, 200)
-  }
-
-  ngOnInit () {
-    // // tslint:disable-next-line
-    // this.RenderGraph()
-
-    // fromEvent(window, 'resize').pipe(
-    //   auditTime(500)
-    // ).subscribe(() => this.RenderGraph())
   }
 
   ngOnDestroy () {

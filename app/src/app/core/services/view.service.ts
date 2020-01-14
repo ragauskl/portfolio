@@ -19,7 +19,8 @@ export class ViewService {
   get viewModeChange () {
     return this._viewModeChange.asObservable()
   }
-
+  // TODO: If size changed by a lot - trigger event - to rerender
+  // Improve card sizing
   constructor () {
     this.calculateType(false)
     this._viewModeChange = new BehaviorSubject(this._viewMode)
