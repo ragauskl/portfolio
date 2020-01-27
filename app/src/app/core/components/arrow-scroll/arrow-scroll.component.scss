@@ -28,9 +28,9 @@
   pointer-events: none;
   background: linear-gradient(to bottom,
       white 0,
-      rgba(255, 255, 255, 0.7) 30px,
-      transparent 50px, calc(100% - 50px),
-      rgba(255, 255, 255, 0.7) calc(100% - 30px),
+      rgba(255, 255, 255, 0.7) 25px,
+      transparent 50px, transparent calc(100% - 50px),
+      rgba(255, 255, 255, 0.7) calc(100% - 25px),
       white 100%);
 }
 

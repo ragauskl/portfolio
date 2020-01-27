@@ -12,6 +12,7 @@ import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.com
 import { RenderedDirective } from './directives/rendered.directive'
 import { NoScrollDirective } from './directives/no-scroll.directive'
 import { ScrollBlockComponent } from './components/scroll-block/scroll-block.component'
+import { TrackScrollDirective } from './directives/track-scroll.directive'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ScrollBlockComponent } from './components/scroll-block/scroll-block.com
     ArrowScrollComponent,
     RenderedDirective,
     NoScrollDirective,
-    ScrollBlockComponent
+    ScrollBlockComponent,
+    TrackScrollDirective
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { ScrollBlockComponent } from './components/scroll-block/scroll-block.com
     ArrowScrollComponent,
     RenderedDirective,
     NoScrollDirective,
-    ScrollBlockComponent
+    ScrollBlockComponent,
+    TrackScrollDirective
   ]
 })
 export class CoreModule { }

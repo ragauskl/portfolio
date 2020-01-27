@@ -21,7 +21,9 @@ h3, p {
 .position-wrapper {
   position: absolute;
   width: 90%;
-  transition: all 0.2s linear;
+  left: 50%;
+  top: 50%;
+  transition: transform 0.2s linear, opacity 0.2s linear;
   max-width: 450px;
 
   &#z1 {

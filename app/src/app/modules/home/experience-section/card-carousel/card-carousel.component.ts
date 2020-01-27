@@ -156,11 +156,14 @@ class Card {
   generateStyle () {
     this.style = {
       'z-index': this._zIndex,
-      left: '50%',
-      top: `calc(50% + ${this.styleIndex * 50}px)`,
-      transform: `translate(-50%, -50%) scale(${Math.max(0, 1 - Math.abs(this.styleIndex) / 10)})`,
-      opacity: this.hide ? 0 : 1,
-      ...(this.hide ? { 'pointer-events': 'none' } : {})
+      transform: `translate(-50%, ${-50 + (this._index * 20)}%) scale(${
+        Math.max(0, 1 - Math.abs(this.styleIndex) / 10)
+      })`
+    }
+
+    if (this.hide) {
+      this.style['opacity'] = 0
+      this.style['pointer-events'] = 'none'
     }
     if (this.styleIndex === 0) {
       this.style['border-top'] = `5px solid ${this.color}`

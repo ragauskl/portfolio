@@ -8,7 +8,7 @@ export class BrowserService {
   private logos = 'assets/icons/browsers'
   browsers = [{
     name: 'Firefox',
-    supported: false,
+    supported: true,
     src: `${this.logos}/firefox.svg`,
     href: 'https://www.mozilla.org/en-GB/firefox/new/'
   }, {
@@ -23,7 +23,7 @@ export class BrowserService {
     href: 'https://brave.com/xsc238'
   }, {
     name: 'Safari',
-    supported: true,
+    supported: false,
     src: `${this.logos}/safari.svg`,
     href: 'https://www.apple.com/uk/safari/'
   }, {
