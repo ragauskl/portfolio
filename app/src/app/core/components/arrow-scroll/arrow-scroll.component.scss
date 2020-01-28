@@ -58,15 +58,17 @@
   width: 100%;
   position: absolute;
 
-  &:hover {
-    .arrow-top,
-    .arrow-bottom {
+  .arrow-top,
+  .arrow-bottom {
+
+    &.active {
       opacity: 1;
 
       polygon {
         animation: none;
       }
     }
+
   }
 }
 

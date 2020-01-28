@@ -38,7 +38,6 @@ export class ImgBubblesComponent implements AfterViewInit {
   }
 
   async toggleAnimation (animate: boolean) {
-    console.log('animate:', animate)
     if (!animate) await this.bubbles.stopAnimation()
     else this.bubbles.startAnimation()
   }
