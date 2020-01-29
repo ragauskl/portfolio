@@ -44,11 +44,13 @@ export default class Bubble {
     this.elContainer.appendChild(this.el)
 
     const iLeft = document.createElement('img')
-    iLeft.src = itemLeft.src
-    iLeft.className = 'back'
+    // iLeft.src = itemLeft.src
+    iLeft.classList.add('back', 'sprite', itemLeft.sprite)
+
     this.backImage = iLeft
     const iRight = document.createElement('img')
-    iRight.src = itemRight.src
+    // iRight.src = itemRight.src
+    iRight.classList.add('sprite', itemRight.sprite)
 
     iLeft.draggable = iRight.draggable = false
 

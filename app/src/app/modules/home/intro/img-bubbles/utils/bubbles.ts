@@ -235,7 +235,8 @@ export class Bubbles {
       if (i === this.skills.development.length) i = 0
       yield {
         src: `assets/icons/skills/jpg/development/${this.skills.development[i].src}`,
-        title: this.skills.development[i].title
+        title: this.skills.development[i].title,
+        sprite: this.skills.development[i].sprite
       }
     }
   }
@@ -248,7 +249,8 @@ export class Bubbles {
       if (i === this.skills.devops.length) i = 0
       yield {
         src: `assets/icons/skills/jpg/devops/${this.skills.devops[i].src}`,
-        title: this.skills.devops[i].title
+        title: this.skills.devops[i].title,
+        sprite: this.skills.devops[i].sprite
       }
     }
   }

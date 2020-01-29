@@ -23,7 +23,7 @@ export class BrowserService {
     href: 'https://brave.com/xsc238'
   }, {
     name: 'Safari',
-    supported: false,
+    supported: true,
     src: `${this.logos}/safari.svg`,
     href: 'https://www.apple.com/uk/safari/'
   }, {

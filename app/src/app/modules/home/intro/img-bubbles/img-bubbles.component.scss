@@ -76,3 +76,50 @@
     }
   }
 }
+
+::ng-deep {
+  // Generated @ https://instantsprite.com/ with positions adjusted to % instead of fixed
+.sprite {
+  background-image: url('assets/icons/skills/jpg/sprite.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.sprite.angular { background-position: 0 0; }
+.sprite.electron { background-position: 0 calc(100% / 36); }
+.sprite.gopher { background-position: 0 calc(100% / 36 * 2); }
+.sprite.graphql { background-position: 0 calc(100% / 36 * 3); }
+.sprite.ionic { background-position: 0 calc(100% / 36 * 4); }
+.sprite.jasmine { background-position: 0 calc(100% / 36 * 5); }
+.sprite.javascript { background-position: 0 calc(100% / 36 * 6); }
+.sprite.mocha { background-position: 0 calc(100% / 36 * 7); }
+.sprite.mongodb { background-position: 0 calc(100% / 36 * 8); }
+.sprite.nestjs { background-position: 0 calc(100% / 36 * 9); }
+.sprite.nodejs { background-position: 0 calc(100% / 36 * 10); }
+.sprite.postgresql { background-position: 0 calc(100% / 36 * 11); }
+.sprite.reactivex { background-position: 0 calc(100% / 36 * 12); }
+.sprite.swagger { background-position: 0 calc(100% / 36 * 13); }
+.sprite.typescript { background-position: 0 calc(100% / 36 * 14); }
+.sprite.logstash { background-position: 0 calc(100% / 36 * 15); }
+.sprite.stackdriver { background-position: 0 calc(100% / 36 * 16); }
+.sprite.travis-ci { background-position: 0 calc(100% / 36 * 17); }
+.sprite.beats { background-position: 0 calc(100% / 36 * 18); }
+.sprite.cloud-datastore { background-position: 0 calc(100% / 36 * 19); }
+.sprite.cloudflare { background-position: 0 calc(100% / 36 * 20); }
+.sprite.cloud-functions { background-position: 0 calc(100% / 36 * 21); }
+.sprite.cloud-pubsub { background-position: 0 calc(100% / 36 * 22); }
+.sprite.cloud-run { background-position: 0 calc(100% / 36 * 23); }
+.sprite.cloud-sql { background-position: 0 calc(100% / 36 * 24); }
+.sprite.cloud-storage { background-position: 0 calc(100% / 36 * 25); }
+.sprite.cloud-tasks { background-position: 0 calc(100% / 36 * 26); }
+.sprite.compute-engine { background-position: 0 calc(100% / 36 * 27); }
+.sprite.container-registry { background-position: 0 calc(100% / 36 * 28); }
+.sprite.docker { background-position: 0 calc(100% / 36 * 29); }
+.sprite.elasticsearch { background-position: 0 calc(100% / 36 * 30); }
+.sprite.git-icon { background-position: 0 calc(100% / 36 * 31); }
+.sprite.gitlab { background-position: 0 calc(100% / 36 * 32); }
+.sprite.google-cloud { background-position: 0 calc(100% / 36 * 33); }
+.sprite.heroku { background-position: 0 calc(100% / 36 * 34); }
+.sprite.kibana { background-position: 0 calc(100% / 36 * 35); }
+.sprite.kubernetes-logo { background-position: 0 calc(100%); }
+}
