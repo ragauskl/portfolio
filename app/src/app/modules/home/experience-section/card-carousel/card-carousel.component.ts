@@ -154,9 +154,10 @@ class Card {
   }
 
   generateStyle () {
+    const multiplier = window.innerWidth < 600 ? 13 : 20
     this.style = {
       'z-index': this._zIndex,
-      transform: `translate(-50%, ${-50 + (this._index * 20)}%) scale(${
+      transform: `translate(-50%, ${-50 + (this._index * multiplier)}%) scale(${
         Math.max(0, 1 - Math.abs(this.styleIndex) / 10)
       })`
     }

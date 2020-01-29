@@ -39,7 +39,9 @@ h3, p {
     padding-top: 75%; /* 4:3 Aspect Ratio */
     position: relative;
     min-height: 200px;
-
+    @include break('lt', 's') {
+      min-height: 300px;
+    }
 
     .carousel-card {
       position: absolute;
@@ -50,12 +52,20 @@ h3, p {
       padding: 15px 30px;
       cursor: pointer;
 
+      @include break('lt', 's') {
+        padding: 7.5px 15px;
+      }
+
       * {
         visibility: hidden;
       }
 
       .card-description {
         height: calc(100% - 100px);
+
+        @include break('lt', 's') {
+          height: calc(100% - 80px);
+        }
 
         p {
           margin: 0;
