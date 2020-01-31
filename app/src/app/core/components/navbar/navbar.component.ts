@@ -15,6 +15,9 @@ export class NavBarComponent {
   get menuOpen () {
     return this._menuOpen && this.viewService.mobile
   }
+  get ratio () {
+    return window.devicePixelRatio
+  }
   set menuOpen (val: boolean) {
     this._menuOpen = val
   }

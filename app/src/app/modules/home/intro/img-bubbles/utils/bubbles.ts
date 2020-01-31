@@ -3,16 +3,20 @@ import Bubble from './bubble'
 import Noise from 'noisejs'
 
 export class Bubbles {
+  pixelRatioMultiplier = Math.max(window.devicePixelRatio - 1, 1)
+
   get scrollSpeed () {
-    return Math.max(Math.min(this.size * 0.002, 0.4), 0.05)
+    return Math.max(Math.min(this.size * 0.002, 0.4), 0.05) * this.pixelRatioMultiplier
   }
 
   get noiseAmount () {
-    return this.size * 0.03
+    return this.size * 0.03 * this.pixelRatioMultiplier
   }
 
   get noiseSpeed () {
-    return this.noiseAmount / 1000
+    let baseSpeed = this.noiseAmount / 1000
+    // if (window.innerWidth < 700) baseSpeed += 0.03
+    return baseSpeed
   }
 
   list: Bubble[] = []
@@ -120,6 +124,7 @@ export class Bubbles {
     this.state = 'running'
     this.nextFrame()
   }
+
   nextFrame () {
     if (this.state !== 'running') {
       this.state = 'stopped'
