@@ -16,7 +16,7 @@ export class NavBarComponent {
     return this._menuOpen && this.viewService.mobile
   }
   get ratio () {
-    return window.devicePixelRatio
+    return document.scrollingElement.scrollTop
   }
   set menuOpen (val: boolean) {
     this._menuOpen = val

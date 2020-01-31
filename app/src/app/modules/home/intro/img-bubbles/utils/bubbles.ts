@@ -14,9 +14,7 @@ export class Bubbles {
   }
 
   get noiseSpeed () {
-    let baseSpeed = this.noiseAmount / 1000
-    // if (window.innerWidth < 700) baseSpeed += 0.03
-    return baseSpeed
+    return this.noiseAmount / 1000
   }
 
   list: Bubble[] = []
