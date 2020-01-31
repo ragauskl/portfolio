@@ -112,8 +112,10 @@ export class CardCarouselComponent implements OnInit {
 }
 
 class Card {
+  readonly maxBehind = 3
+  readonly maxIndex = this.maxBehind - 1
   get hide () {
-    return Math.abs(this._index) > 2
+    return Math.abs(this._index) >= this.maxBehind
   }
   /*
   Style index is used to avoid creating styles that
@@ -122,7 +124,7 @@ class Card {
   container
   */
   get styleIndex () {
-    return Math.min(3, Math.max(-3, this._index))
+    return Math.min(this.maxIndex, Math.max(-this.maxIndex, this._index))
   }
 
   style = {}
@@ -156,16 +158,12 @@ class Card {
   generateStyle () {
     const multiplier = window.innerWidth < 600 ? 13 : 20
     this.style = {
-      'z-index': this._zIndex,
-      transform: `translate(-50%, ${-50 + (this._index * multiplier)}%) scale(${
+      'z-index': -Math.abs(this.styleIndex),
+      transform: `translate(-50%, ${-50 + (this.styleIndex * multiplier)}%) scale(${
         Math.max(0, 1 - Math.abs(this.styleIndex) / 10)
       })`
     }
 
-    if (this.hide) {
-      this.style['opacity'] = 0
-      this.style['pointer-events'] = 'none'
-    }
     if (this.styleIndex === 0) {
       this.style['border-top'] = `5px solid ${this.color}`
     }

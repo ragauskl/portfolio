@@ -2,8 +2,9 @@
   *ngFor="let card of cards"
   [id]="'z' + abs(card.index)"
   [class.focused]="card.zIndex === focusedIndex"
+  [class.hide]="card.hide"
   [ngStyle]="card.style">
-    <div class="ratio-wrapper">
+    <div class="ratio-wrapper" *ngIf="!card.hide">
       <div class="carousel-card mat-elevation-z5"
       (click)="card.zIndex !== focusedIndex && focusCard(card, 'a')">
         <h3>{{card.title}}</h3>
