@@ -22,10 +22,6 @@ export class AppComponent {
     private _matIconRegistry: MatIconRegistry,
     private _domSanitizer: DomSanitizer
   ) {
-    if (environment.production) {
-      // TODO: Inject google analytics
-    }
-
     this.RegisterCustomIcons([
       ['send', 'icons/action/send.svg'],
       ['menu', 'icons/action/menu.svg']
