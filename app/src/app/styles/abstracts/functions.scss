@@ -1,0 +1,26 @@
+@import './variables';
+
+@function z($layer) {
+  @return map-get($z-index, $layer);
+};
+
+@function snap($value, $min: null, $max: null) {
+  $result: $value;
+  @if $min != null {
+    $result: max($result, $min)
+  }
+  @if $max != null {
+    $result: min($result, $max)
+  }
+  @return $result
+};
+
+// Lighten a color
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+};
+
+// Darken a color
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+};

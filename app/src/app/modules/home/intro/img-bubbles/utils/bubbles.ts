@@ -3,12 +3,14 @@ import Bubble from './bubble'
 import Noise from 'noisejs'
 
 export class Bubbles {
+  pixelRatioMultiplier = Math.max(window.devicePixelRatio - 1, 1)
+
   get scrollSpeed () {
-    return Math.max(Math.min(this.size * 0.002, 0.4), 0.05)
+    return Math.max(Math.min(this.size * 0.002, 0.4), 0.05) * this.pixelRatioMultiplier
   }
 
   get noiseAmount () {
-    return this.size * 0.03
+    return this.size * 0.03 * this.pixelRatioMultiplier
   }
 
   get noiseSpeed () {
@@ -53,7 +55,7 @@ export class Bubbles {
   }
 
   updateSize () {
-    this.size = Math.round(this.el.clientHeight * 0.33)
+    this.size = Math.round(this.el.clientHeight * 0.34)
   }
 
   updatePadding () {
@@ -120,6 +122,7 @@ export class Bubbles {
     this.state = 'running'
     this.nextFrame()
   }
+
   nextFrame () {
     if (this.state !== 'running') {
       this.state = 'stopped'
@@ -216,7 +219,7 @@ export class Bubbles {
   }
 
   private *nextScale (): IterableIterator<number> {
-    const scales = shuffle([0.95, 0.85, 0.75, 0.65, 0.55]) // shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
+    const scales = shuffle([0.85, 0.75, 0.65, 0.55]) // shuffle([1, 0.9, 0.8, 0.7, 0.6, 0.5])
     const usedScales = []
 
     while (true) {
@@ -235,7 +238,8 @@ export class Bubbles {
       if (i === this.skills.development.length) i = 0
       yield {
         src: `assets/icons/skills/jpg/development/${this.skills.development[i].src}`,
-        title: this.skills.development[i].title
+        title: this.skills.development[i].title,
+        sprite: this.skills.development[i].sprite
       }
     }
   }
@@ -248,7 +252,8 @@ export class Bubbles {
       if (i === this.skills.devops.length) i = 0
       yield {
         src: `assets/icons/skills/jpg/devops/${this.skills.devops[i].src}`,
-        title: this.skills.devops[i].title
+        title: this.skills.devops[i].title,
+        sprite: this.skills.devops[i].sprite
       }
     }
   }

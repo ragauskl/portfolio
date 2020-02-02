@@ -1,5 +1,4 @@
-@import 'typography';
-@import 'mixins';
+@import 'abstracts';
 
 :host {
   @include flex;
@@ -11,19 +10,19 @@
   }
 
   #coverContainer {
-    @include absolute-fill(0);
+    @include absolute-fill;
     margin: auto;
     padding: $margin;
 
     #imageRef {
-      @include absolute-fill(0);
+      @include absolute-fill;
     }
 
     #shatterContainer {
-      @include absolute-fill($margin);
+      @include absolute-fill($margin, $margin, 'edge');
 
       #textSpan {
-        @include absolute-center;
+        @include absolute-centre(true, true);
         @include font-decoration;
         left: 52%;
         cursor: pointer;

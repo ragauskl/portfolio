@@ -161,8 +161,4 @@ export class ProgressButtonComponent {
       this.submit.emit()
     }
   }
-
-  log (e) {
-    console.log(e)
-  }
 }

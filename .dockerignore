@@ -1,0 +1,6 @@
+**/node_modules
+**/dist
+.git
+
+# Ignore folders that do not contain ci deployable data
+design

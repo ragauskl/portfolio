@@ -7,11 +7,16 @@ export interface SkillsConfig {
 export interface Skill {
   title: string
   src: string
+  sprite: string
 }
 
 export type Coordinate = {x: number, y: number}
 
-export type IconMeta = {src: string, title: string}
+export type IconMeta = {
+  src: string
+  title: string
+  sprite: string
+}
 
 export function polarToCartesian (centerX, centerY, radius, angleInDegrees) {
   let angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0

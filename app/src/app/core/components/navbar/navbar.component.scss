@@ -1,0 +1,169 @@
+@import 'abstracts';
+
+:host {
+  position: relative;
+  background: color('od-dark');
+}
+
+#navbar-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 10px 2%;
+  box-sizing: border-box;
+  @include flex($direction: row, $justify: space-between);
+  font-size: medium;
+
+  > div {
+    display: flex;
+  }
+
+  > button {
+    flex: 0 0 40px;
+  }
+
+  #nav-title, #nav-direction {
+    text-transform: uppercase;
+  }
+
+  #nav-direction {
+    > * {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    > *:hover {
+      color: color('secondary');
+    }
+
+    @include flex($direction: row, $justify: flex-end);
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+#logo-container {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  height: 100%;
+
+  img {
+    position: relative;
+    @include break-font(45px);
+    object-fit: contain;
+    margin: auto;
+    @include break-prop('height', (
+      'xs': 50%,
+      's': 50%,
+      'm': 60%,
+      'l': 70%,
+      'xl': 70%
+    ));
+  }
+}
+
+.menu {
+  color: color('foreground-primary');
+  height: 100%;
+  @include fxFlex(row, 20px, center, flex-start);
+
+  a, mat-icon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  mat-icon {
+    @include mat-icon(30px, false);
+  }
+}
+
+.sections {
+  @include break-font(17px);
+  @include fxFlex(row, 20px, center, center);
+  // Min height of header minus padding, to center text in navbar, but not
+  // when it's expanded (scroll: 0)
+  height: 30px;
+
+  a {
+    opacity: 1;
+    animation: render 0.2s 1;
+    // Hide until backdrop animation is done
+    @keyframes render {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+#menu-backdrop {
+  z-index: 10;
+
+  * {
+    z-index: 2;
+  }
+
+  #backdrop {
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: all 0.3s ease-out;
+    background: black;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &.expanded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    padding: 10px 2%;
+    @include flex(column, flex-start);
+
+    #backdrop {
+      @media (orientation: landscape) {
+        transform: scale(2);
+        width: 150vw;
+        height: 150vw;
+      }
+
+      @media (orientation: portrait) {
+        transform: scale(2);
+        width: 150vh;
+        height: 150vh;
+      }
+    }
+
+    mat-icon {
+      align-self: flex-end;
+      // To account for removed scrollbar
+      margin-right: 10px;
+    }
+
+    .sections {
+      width: 90%;
+      margin-top: 15%;
+      @include break-font(30px);
+      @include fxFlex(column, 20px, flex-start, flex-start);
+    }
+  }
+}

@@ -1,98 +1,148 @@
 {
-  "development": [
-    {
-      "title": "Angular",
-      "src": "angular.jpg"
-    }, {
-      "title": "Electron",
-      "src": "electron.jpg"
-    }, {
-      "title": "Go Lang",
-      "src": "gopher.jpg"
-    }, {
-      "title": "GraphQL",
-      "src": "graphql.jpg"
-    }, {
-      "title": "Ionic",
-      "src": "ionic.jpg"
-    }, {
-      "title": "Jasmine",
-      "src": "jasmine.jpg"
-    }, {
-      "title": "JavaScript",
-      "src": "javascript.jpg"
-    }, {
-      "title": "Mocha",
-      "src": "mocha.jpg"
-    }, {
-      "title": "MongoDB",
-      "src": "mongodb.jpg"
-    }, {
-      "title": "NestJS",
-      "src": "nestjs.jpg"
-    }, {
-      "title": "Node.js",
-      "src": "nodejs.jpg"
-    }, {
-      "title": "Postgres SQL",
-      "src": "postgresql.jpg"
-    }, {
-      "title": "RxJS",
-      "src": "reactivex.jpg"
-    }, {
-      "title": "Swagger",
-      "src": "swagger.jpg"
-    }, {
-      "title": "TypeScript",
-      "src": "typescript.jpg"
-    }
-  ],
-  "devops": [
-    {
-     "title": "GC Datastore",
-     "src": "cloud-datastore.jpg"
-    }, {
-      "title": "GC Functions",
-      "src": "cloud-functions.jpg"
-    }, {
-      "title": "GC PubSub",
-      "src": "cloud-pubsub.jpg"
-    }, {
-      "title": "GC SQL",
-      "src": "cloud-sql.jpg"
-    }, {
-      "title": "Cloudflare",
-      "src": "cloudflare.jpg"
-    }, {
-      "title": "GC Compute",
-      "src": "compute-engine.jpg"
-    }, {
-      "title": "GC Container Registry",
-      "src": "container-registry.jpg"
-    }, {
-      "title": "Docker",
-      "src": "docker.jpg"
-    }, {
-      "title": "Git",
-      "src": "git-icon.jpg"
-    }, {
-      "title": "Gitlab CI",
-      "src": "gitlab.jpg"
-    }, {
-      "title": "Google Cloud Platform",
-      "src": "google-cloud.jpg"
-    }, {
-      "title": "Heroku",
-      "src": "heroku.jpg"
-    }, {
-      "title": "Kubernetes",
-      "src": "kubernetes-logo.jpg"
-    }, {
-      "title": "GC Stackdriver",
-      "src": "stackdriver.jpg"
-    }, {
-      "title": "Travis CI",
-      "src": "travis-ci.jpg"
-    }
-  ]
+  "development": [{
+    "title": "Angular",
+    "src": "angular.jpg",
+    "sprite": "angular"
+  }, {
+    "title": "Electron",
+    "src": "electron.jpg",
+    "sprite": "electron"
+  }, {
+    "title": "Go Lang",
+    "src": "gopher.jpg",
+    "sprite": "gopher"
+  }, {
+    "title": "GraphQL",
+    "src": "graphql.jpg",
+    "sprite": "graphql"
+  }, {
+    "title": "Ionic",
+    "src": "ionic.jpg",
+    "sprite": "ionic"
+  }, {
+    "title": "Jasmine",
+    "src": "jasmine.jpg",
+    "sprite": "jasmine"
+  }, {
+    "title": "JavaScript",
+    "src": "javascript.jpg",
+    "sprite": "javascript"
+  }, {
+    "title": "Mocha",
+    "src": "mocha.jpg",
+    "sprite": "mocha"
+  }, {
+    "title": "MongoDB",
+    "src": "mongodb.jpg",
+    "sprite": "mongodb"
+  }, {
+    "title": "NestJS",
+    "src": "nestjs.jpg",
+    "sprite": "nestjs"
+  }, {
+    "title": "Node.js",
+    "src": "nodejs.jpg",
+    "sprite": "nodejs"
+  }, {
+    "title": "Postgres SQL",
+    "src": "postgresql.jpg",
+    "sprite": "postgresql"
+  }, {
+    "title": "RxJS",
+    "src": "reactivex.jpg",
+    "sprite": "reactivex"
+  }, {
+    "title": "Swagger",
+    "src": "swagger.jpg",
+    "sprite": "swagger"
+  }, {
+    "title": "TypeScript",
+    "src": "typescript.jpg",
+    "sprite": "typescript"
+  }],
+  "devops": [{
+    "title": "GC Datastore",
+    "src": "cloud-datastore.jpg",
+    "sprite": "cloud-datastore"
+  }, {
+    "title": "GC Functions",
+    "src": "cloud-functions.jpg",
+    "sprite": "cloud-functions"
+  }, {
+    "title": "GC PubSub",
+    "src": "cloud-pubsub.jpg",
+    "sprite": "cloud-pubsub"
+  }, {
+    "title": "GC SQL",
+    "src": "cloud-sql.jpg",
+    "sprite": "cloud-sql"
+  }, {
+    "title": "Cloudflare",
+    "src": "cloudflare.jpg",
+    "sprite": "cloudflare"
+  }, {
+    "title": "GC Compute",
+    "src": "compute-engine.jpg",
+    "sprite": "compute-engine"
+  }, {
+    "title": "GC Container Registry",
+    "src": "container-registry.jpg",
+    "sprite": "container-registry"
+  }, {
+    "title": "Docker",
+    "src": "docker.jpg",
+    "sprite": "docker"
+  }, {
+    "title": "Git",
+    "src": "git-icon.jpg",
+    "sprite": "git-icon"
+  }, {
+    "title": "Google Cloud Run",
+    "src": "cloud-run.jpg",
+    "sprite": "cloud-run"
+  }, {
+    "title": "Gitlab CI",
+    "src": "gitlab.jpg",
+    "sprite": "gitlab"
+  }, {
+    "title": "Google Cloud Platform",
+    "src": "google-cloud.jpg",
+    "sprite": "google-cloud"
+  }, {
+    "title": "Heroku",
+    "src": "heroku.jpg",
+    "sprite": "heroku"
+  }, {
+    "title": "Google Cloud Tasks",
+    "src": "cloud-tasks.jpg",
+    "sprite": "cloud-tasks"
+  }, {
+    "title": "Kubernetes",
+    "src": "kubernetes-logo.jpg",
+    "sprite": "kubernetes-logo"
+  }, {
+    "title": "GC Stackdriver",
+    "src": "stackdriver.jpg",
+    "sprite": "stackdriver"
+  }, {
+    "title": "Travis CI",
+    "src": "travis-ci.jpg",
+    "sprite": "travis-ci"
+  }, {
+    "title": "Elasticsearch",
+    "src": "elasticsearch.jpg",
+    "sprite": "elasticsearch"
+  }, {
+    "title": "Beats",
+    "src": "beats.jpg",
+    "sprite": "beats"
+  }, {
+    "title": "Logstash",
+    "src": "logstash.jpg",
+    "sprite": "logstash"
+  }, {
+    "title": "Kibana",
+    "src": "kibana.jpg",
+    "sprite": "kibana"
+  }]
 }

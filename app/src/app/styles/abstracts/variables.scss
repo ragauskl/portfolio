@@ -1,0 +1,43 @@
+$color: (
+  // od = 'one dark pro' vscode theme
+  od-v-dark: rgb(27, 29, 31),
+  od-dark: rgb(46, 50, 53),
+  od-light: rgb(255, 255, 255),
+  od-dec: rgb(198, 120, 221),
+  od-str: rgb(152, 195, 121),
+  od-obj: rgb(229, 192, 123),
+  od-fn: rgb(86, 182, 194),
+  od-var: rgb(224, 108, 117),
+  od-cmt: rgb(100, 100, 100)
+);
+
+$theme: (
+  background-primary: map-get($color, 'od-dark'),
+  foreground-primary: map-get($color, 'od-light'),
+  background-secondary: map-get($color, 'od-light'),
+  foreground-secondary: map-get($color, 'od-dark'),
+  // 500s
+  primary: rgb(82, 37, 70),
+  secondary: rgb(38, 166, 154),
+  warn: rgb(255, 152, 0),
+  success: map-get($color, 'od-str'),
+  error: map-get($color, 'od-var'),
+  // 900s
+  primary-900: rgb(40, 13, 32),
+  secondary-900: rgb(13, 123, 108)
+);
+
+// Exception: Function added here instead of mixins.scss
+// because this directly depends on root and $color
+@function color($var) {
+  $map: $theme;
+  @if map-has-key($map, $var) == false {
+    $map: $color;
+  }
+
+  @return var(--#{$var}, map-get($map, $var))
+}
+
+$z-index: (
+  'top-most': 200
+);

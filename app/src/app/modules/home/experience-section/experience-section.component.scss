@@ -1,0 +1,129 @@
+@import 'abstracts';
+
+:host {
+  @include flex(column, center, center);
+
+  h1 {
+    flex: 0 0 auto;
+  }
+}
+
+.experience-panel {
+  flex: 0 1 100%;
+  width: 100%;
+  overflow: auto;
+  @include flex(row, space-evenly, center);
+
+  #graph-cards, #graph-container {
+    max-height: 80%;
+    height: 80%;
+    width: 40%;
+    position: relative;
+
+    &.compact {
+      width: 95%;
+    }
+  }
+
+  .arrow-back {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 50%;
+    opacity: 0.3;
+    cursor: pointer;
+    transform: translate(-50%, -50%) rotate(90deg);
+    width: 10%;
+    max-width: 30px;
+
+    polygon {
+      animation: canGoBack 3s infinite ease-in-out;
+    }
+
+    @keyframes canGoBack {
+      0% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  #experience-graph {
+    height: 100%;
+    width: 100%;
+    display: flex;
+  }
+}
+
+:host ::ng-deep {
+  .graph-title-wrap {
+    @include fxFlex(row, null, flex-start);
+    height: 100%;
+
+    .graph-title {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+
+  .graph-node {
+    @include fxFlex(row, center, center);
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border-radius: 50%;
+    transform: scale(0.85);
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+
+    .graph-node-light {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(white, rgba(255, 255, 255, 0));
+      opacity: 0.4;
+      border-radius: 50%;
+    }
+
+    .graph-node-filler {
+      border-radius: 50%;
+      opacity: 0.3;
+      background: white;
+    }
+  }
+
+  foreignObject.focused {
+    .graph-node {
+      transform: scale(1);
+      .graph-node-filler {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .mat-tab-group {
+    .mat-tab-header {
+      display: none;
+    }
+
+    .mat-tab-body {
+      width: 80vw;
+      height: 75vh;
+
+      .mat-tab-body-content {
+        @include flex;
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+@import 'abstracts';
+
+:host {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.overflow-content-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+}
+
+.overflow-content {
+  width: 100%;
+  height: fit-content;
+  padding: 50px 0;
+}
+
+.overflow-indicator {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  right: 0;
+  left: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      white 0,
+      rgba(255, 255, 255, 0.7) 25px,
+      rgba(255, 255, 255, 0) 50px, rgba(255, 255, 255, 0) calc(100% - 50px),
+      rgba(255, 255, 255, 0.7) calc(100% - 25px),
+      white 100%);
+}
+
+.arrow-top,
+.arrow-bottom {
+  @include absolute-centre(true, false);
+  height: 30px;
+  opacity: 0.3;
+  cursor: pointer;
+
+  polygon {
+    animation: canScrollUpDown 3s infinite;
+  }
+}
+
+.arrow-top {
+  transform: rotate(180deg) translateY(100%);
+}
+.arrow-bottom {
+  transform: translateY(100%);
+}
+
+.overflow-top, .overflow-bottom {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+
+  .arrow-top,
+  .arrow-bottom {
+
+    &.active {
+      opacity: 1;
+
+      polygon {
+        animation: none;
+      }
+    }
+
+  }
+}
+
+.overflow {
+  &-top {
+    top: 0;
+  }
+
+  &-bottom {
+    bottom: 0;
+  }
+}
+
+@keyframes canScrollUpDown {
+  0% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.3;
+  }
+}

@@ -1,23 +1,28 @@
-@import 'mixins.scss';
+@import 'abstracts';
 
 :host {
   display: flex;
-  height: 100%;
+  flex-direction: column;
   width: 100%;
 
-  app-sidenav {
-    height: 100%;
-    width: 64px;
+  app-nav {
+    width: 100%;
+    min-height: 50px;
+    max-height: 100px;
     z-index: 10;
-  }
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: box-shadow 0s linear, height 0.01s linear;
 
-  @include break('lt', 'm') {
-    flex-direction: column;
-
-    app-sidenav {
-      width: 100%;
-      min-height: 0;
-      height: 64px;
+    &.mat-elevation-z5 {
+      transition:  box-shadow 0.5s, height 0.01s linear;
     }
   }
+
+  #header-placeholder {
+    background: color('od-dark');
+    width: 100%;
+  }
+
 }
