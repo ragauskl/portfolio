@@ -1,9 +1,9 @@
-<div class="overflow-content {{contentClass}}" #scroll>
+<div class="overflow-content {{contentClass}}" #scroll (rendered)="recalculateScrollFlags()">
   <ng-content></ng-content>
 </div>
 
-<div class="overflow-top" *ngIf="scroll.scrollTop">
+<div class="overflow-top" *ngIf="canScrollUp">
 </div>
 
-<div class="overflow-bottom" *ngIf="scroll.scrollTop + 2 < scroll.scrollHeight - scroll.clientHeight">
+<div class="overflow-bottom" *ngIf="canScrollDown">
 </div>

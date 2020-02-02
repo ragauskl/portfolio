@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core'
 import { environment } from 'environments/environment'
 import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
+import { fromEvent } from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,7 @@ export class AppComponent {
       !window.location.href.includes('error')
   }
 
-  get headerHeight () {
-    return Math.max(50, 100 - this.scrollOffset * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1))
-  }
-  get scrollOffset () {
-    return document.scrollingElement.scrollTop
-  }
+  headerHeight = 100
 
   constructor (
     private _matIconRegistry: MatIconRegistry,
@@ -34,6 +30,10 @@ export class AppComponent {
       ['send', 'icons/action/send.svg'],
       ['menu', 'icons/action/menu.svg']
     ])
+
+    fromEvent(window, 'scroll').subscribe(e =>
+      this.headerHeight = Math.max(50, 100 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1))
+    )
   }
 
   private RegisterCustomIcons (icons: [string, string][]) {
