@@ -89,6 +89,9 @@
 .sections {
   @include break-font(17px);
   @include fxFlex(row, 20px, center, center);
+  // Min height of header minus padding, to center text in navbar, but not
+  // when it's expanded (scroll: 0)
+  height: 30px;
 }
 
 #menu-backdrop {
