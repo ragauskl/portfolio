@@ -1,12 +1,12 @@
 language: node_js
 node_js:
-- '13.5.0'
+- '10.15.0'
 os: linux
 services:
 - docker
 
 before_install:
-  - npm install -g npm@6.13.4
+  - npm install -g npm@6.4.1
   - npm -v
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_EVENT_TYPE
@@ -48,6 +48,7 @@ branches:
 install:
   - npm i -g @angular/cli
   - cd api
+  - ls
   - npm i
   - cd ../app
   - npm i
