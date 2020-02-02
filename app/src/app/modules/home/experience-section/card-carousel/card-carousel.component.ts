@@ -14,7 +14,7 @@ export class CardCarouselComponent implements OnInit {
   private _loaded = false
   // Set top most index to 100, this will last a while
   // until there are under 100 items
-  focusedIndex = 100
+  styleFocusedIndex = 100
 
   private _selectedIndex?: number
   @Output() selectedIndexChange = new EventEmitter()
@@ -75,7 +75,7 @@ export class CardCarouselComponent implements OnInit {
         x.description,
         i - index,
         // top most index - offset (0 for focused, <0 for before and >0 for after)
-        this.focusedIndex - Math.abs(i - index),
+        this.styleFocusedIndex - Math.abs(i - index),
         x.color || 'rgba(255, 255, 255, 0)'
       )
 
@@ -93,7 +93,7 @@ export class CardCarouselComponent implements OnInit {
     for (let i = 0; i < this.cards.length; i++) {
       const c = this.cards[i]
       c.index = i - index,
-      c.zIndex = this.focusedIndex - Math.abs(i - index)
+      c.zIndex = this.styleFocusedIndex - Math.abs(i - index)
     }
   }
 
