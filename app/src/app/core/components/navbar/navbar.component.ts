@@ -2,11 +2,30 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core'
 import { NavBarService } from '@core/services/navbar.service'
 import { Section } from '@core/model/section'
 import { ViewService } from '@core/services/view.service'
+import { trigger, transition, stagger, style, query } from '@angular/animations'
 
 @Component({
   selector: 'app-nav',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  animations: [
+    trigger(
+      'render', [
+        transition('* => *', [
+          query(':enter', [
+            style({
+              opacity: 0
+            }),
+            stagger(200, [
+              style({
+                opacity: 1
+              })
+            ])
+          ])
+        ])
+      ]
+    )
+  ]
 })
 export class NavBarComponent {
   @ViewChild('menuBackdrop', { static: true }) menuBackdrop: ElementRef<HTMLElement>

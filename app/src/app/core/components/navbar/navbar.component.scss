@@ -92,6 +92,20 @@
   // Min height of header minus padding, to center text in navbar, but not
   // when it's expanded (scroll: 0)
   height: 30px;
+
+  a {
+    opacity: 1;
+    animation: render 0.2s 1;
+    // Hide until backdrop animation is done
+    @keyframes render {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
 }
 
 #menu-backdrop {
@@ -107,7 +121,7 @@
     height: 50px;
     border-radius: 50%;
     transform: scale(0);
-    transition: all 0.3s ease-in;
+    transition: all 0.3s ease-out;
     background: black;
     opacity: 0.9;
     position: absolute;
@@ -126,11 +140,23 @@
     @include flex(column, flex-start);
 
     #backdrop {
-      transform: scale(50);
+      @media (orientation: landscape) {
+        transform: scale(2);
+        width: 150vw;
+        height: 150vw;
+      }
+
+      @media (orientation: portrait) {
+        transform: scale(2);
+        width: 150vh;
+        height: 150vh;
+      }
     }
 
     mat-icon {
       align-self: flex-end;
+      // To account for removed scrollbar
+      margin-right: 10px;
     }
 
     .sections {
