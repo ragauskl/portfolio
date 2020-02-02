@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { BrowserService } from '@core/services/browser.service'
+import browserUtil from '@core/utils/browser.util'
 
 @Component({
   selector: 'app-browser-not-supported',
@@ -8,14 +8,10 @@ import { BrowserService } from '@core/services/browser.service'
 })
 export class BrowserNotSupportedComponent {
   get browsers () {
-    return this.browserService.browsers
+    return browserUtil.browsers
   }
 
   get current () {
-    return this.browserService.browserName
+    return browserUtil.browserName
   }
-
-  constructor (
-    private browserService: BrowserService
-  ) {}
 }

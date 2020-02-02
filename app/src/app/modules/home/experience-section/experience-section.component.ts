@@ -5,6 +5,7 @@ import { Subject, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import { MatTabGroup } from '@angular/material/tabs'
+import browserUtil from '@core/utils/browser.util'
 
 @Component({
   selector: 'app-experience-section',
@@ -436,7 +437,7 @@ class GraphNode {
     this.titleGroup.style.cursor = 'pointer'
 
     this._titleBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    this._titleBackground.setAttributeNS(null, 'x', `${this.position.x - this.size * 0.65} `)
+    this._titleBackground.setAttributeNS(null, 'x', `${this.position.x - this.size * 0.65}`)
     this._titleBackground.setAttributeNS(null, 'y', `${this.position.y - this.size * 0.73}`)
     this._titleBackground.setAttributeNS(null, 'width', `110%`)
     this._titleBackground.setAttributeNS(null, 'height', `${this.size * 1.5}`)
@@ -452,8 +453,15 @@ class GraphNode {
     titleEdge.setAttributeNS(null, 'fill', `${this.commit.color || 'black'}`)
 
     const forTitle = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
-    forTitle.setAttributeNS(null, 'width', `calc(97% - 70px - ${this.textX + this.size}px)`)
-    forTitle.setAttributeNS(null, 'height', `${this.size}`)
+
+    if (browserUtil.isSafari()) {
+      forTitle.setAttributeNS(null, 'width', `54%`)
+      forTitle.setAttributeNS(null, 'height', `${this.size}`)
+    } else {
+      forTitle.setAttributeNS(null, 'width', `calc(97% - 70px - ${this.textX + this.size}px)`)
+      forTitle.setAttributeNS(null, 'height', `${this.size}`)
+    }
+
     forTitle.setAttributeNS(null, 'x', `${this.textX + this.size * 0.75}`)
     forTitle.setAttributeNS(null, 'y', `${this.position.y - this.size / 2}`)
 

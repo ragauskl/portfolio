@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core'
 import { CanLoad, Route, Router, CanActivate } from '@angular/router'
-import { BrowserService } from '@core/services/browser.service'
+import browserUtil from '@core/utils/browser.util'
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrowserNotSupportedGuard implements CanActivate {
   constructor (
-    private browserService: BrowserService,
     private router: Router
   ) {}
 
   canActivate (): boolean {
-    if (this.browserService.supported) {
+    if (browserUtil.supported) {
       this.router.navigateByUrl('/')
       return false
     }

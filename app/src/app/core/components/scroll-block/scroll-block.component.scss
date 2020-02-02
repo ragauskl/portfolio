@@ -23,13 +23,15 @@
     top: -1px;
     background: linear-gradient(to bottom,
       white,
-      transparent);
+      rgba(255, 255, 255, 0)
+    );
   }
 
   &-bottom {
     bottom: -1px;
     background: linear-gradient(to top,
-    white,
-    transparent);
+      white,
+      rgba(255, 255, 255, 0)
+    );
   }
 }

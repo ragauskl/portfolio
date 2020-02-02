@@ -76,7 +76,7 @@ export class CardCarouselComponent implements OnInit {
         i - index,
         // top most index - offset (0 for focused, <0 for before and >0 for after)
         this.focusedIndex - Math.abs(i - index),
-        x.color || 'transparent'
+        x.color || 'rgba(255, 255, 255, 0)'
       )
 
       return card
