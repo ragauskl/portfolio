@@ -39,7 +39,7 @@ export class NavBarComponent {
   }
 
   get logoContainerTop () {
-    const height = 50
+    const height = 25
     return `${Math.max(0, height - document.scrollingElement.scrollTop)}px`
   }
 

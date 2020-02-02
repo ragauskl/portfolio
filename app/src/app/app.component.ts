@@ -16,7 +16,7 @@ export class AppComponent {
   }
 
   get headerHeight () {
-    return Math.max(50, 100 - this.scrollOffset * 0.3)
+    return Math.max(50, 100 - this.scrollOffset * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1))
   }
   get scrollOffset () {
     return document.scrollingElement.scrollTop
