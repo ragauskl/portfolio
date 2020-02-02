@@ -13,7 +13,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    transition: box-shadow 0.5s linear, height 0.01s linear;
+    transition: box-shadow 0s linear, height 0.01s linear;
+
+    &.mat-elevation-z5 {
+      transition:  box-shadow 0.5s, height 0.01s linear;
+    }
   }
 
   #header-placeholder {

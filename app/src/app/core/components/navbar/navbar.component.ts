@@ -15,11 +15,13 @@ export class NavBarComponent {
   get menuOpen () {
     return this._menuOpen && this.viewService.mobile
   }
-  get ratio () {
-    return document.scrollingElement.scrollTop
-  }
   set menuOpen (val: boolean) {
     this._menuOpen = val
+  }
+
+  get logoContainerTop () {
+    const height = 50
+    return `${Math.max(0, height - document.scrollingElement.scrollTop)}px`
   }
 
   constructor (

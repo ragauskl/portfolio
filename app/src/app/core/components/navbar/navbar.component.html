@@ -1,9 +1,7 @@
 <div id=navbar-wrap>
-  <div id="nav-title">
-    {{ratio}}
-  </div>
+  <div id="nav-title"></div>
 
-  <div id="logo-container" (click)="navBar.scrollTo(null)">
+  <div id="logo-container" (click)="navBar.scrollTo(null)" [style.top]="logoContainerTop">
     <img src="assets/logo/logo-dark.svg" alt="Lina Ragauskaite">
   </div>
 
