@@ -1,0 +1,99 @@
+@import './functions';
+
+@mixin absolute-centre ($horizontal: true, $vertical: true) {
+  position: absolute;
+
+  @if $vertical and $horizontal {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  } @else if $horizontal {
+    left: 50%;
+    transform: translateX(-50%);
+  } @else if $vertical {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@mixin absolute-fill ($width: null, $height: null, $type: 'size') {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+
+  @if $width != null {
+    @if $type == 'size' {
+      width: $width;
+    } @else if $type == 'edge' {
+      left: $width;
+      right: $width;
+    }
+  } @else {
+    right: 0;
+  }
+
+  @if $height != null {
+    @if $type == 'size' {
+      height: $height;
+    } @else if $type == 'edge' {
+      top: $height;
+      bottom: $height;
+    }
+  } @else {
+    bottom: 0;
+  }
+}
+
+@mixin mat-icon ($size, $class: true) {
+  @if ($class) {
+    mat-icon {
+      font-size: $size;
+      width: $size;
+      height: $size;
+      line-height: $size;
+    }
+  } @else {
+    font-size: $size;
+    width: $size;
+    height: $size;
+    line-height: $size;
+  }
+}
+
+@mixin flex ($direction: row, $justify: center, $align: center) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+// Flex layout
+@mixin fxFlex ($direction, $gap: null, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+
+  @if ($gap) {
+    > *:not(:last-child) {
+      @if ($direction == row) {
+        margin-right: $gap;
+      } @else if ($direction == column) {
+        margin-bottom: $gap;
+      }
+    }
+  }
+}
+
+@mixin item-space ($direction: row, $distance: 20px) {
+  @if $direction == row {
+    > *:not(:last-child) {
+      margin-right: $distance;
+    }
+  } @else if $direction == column {
+    > *:not(:last-child) {
+      margin-bottom: $distance;
+    }
+  }
+}

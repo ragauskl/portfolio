@@ -1,1 +1,2 @@
-<div id="resize-container" (resized)="onResized($event)"></div>
+<div id="resize-container" (resized)="onResized($event)"
+track-scroll (out-of-view)="toggleAnimation(false)" (in-view)="toggleAnimation(true)"></div>

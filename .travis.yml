@@ -1,11 +1,12 @@
 language: node_js
 node_js:
-- '10.15.0'
-sudo: required
+- '13.7.0'
+os: linux
 services:
 - docker
 
 before_install:
+  - npm -v
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_EVENT_TYPE
   - echo $TRAVIS_PULL_REQUEST
@@ -32,11 +33,6 @@ jobs:
       script: cd app && npm run build
     - stage: deploy_app
       script: cd app && npm run build && npm run deploy
-
-before_install:
-  - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
-  - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-  - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
 
 branches:
   only:

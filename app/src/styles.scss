@@ -1,43 +1,24 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import url('https://fonts.googleapis.com/css?family=Montserrat+Subrayada:400,700');
-@import 'mixins';
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Crete+Round&display=swap');
 
+@import 'abstracts';
+
 :root {
-  --od-v-dark: #1b1d1f;
-  --od-dark: #2e3235;
-  --od-light: white;
-  --od-dec: #c678dd;
-  --od-str: #98c379;
-  --od-obj: #e5c07b;
-  --od-fn: #56b6c2;
-  --od-var: #e06c75;
-  --od-cmt: #646464;
-
-  --background: var(--od-light);
-  --color: var(--od-dark);
-  // 500s
-  --primary: #522546;
-  --secondary: #26a69a;
-  --warn: #ff9800;
-  --success: #369c50;
-  --error: #f44336;
-  // 900s
-  --primary900: #280d20;
-  --secondary900: #0d7b6c;
-
-  --max-width: 80%;
-  .dark-theme {
-    --background: var(--od-dark);
-    --color: var(--od-light);
+  @each $key, $val in $color {
+    #{--$key}: $val;
+  }
+  @each $key, $val in $theme {
+    #{--$key}: $val;
   }
 }
 
 body {
   margin: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--background);
   color: var(--color);
   height: 100vh;
@@ -65,4 +46,52 @@ button {
   &.mat-raised-button {
     padding: 0 25px;
   }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(193, 194, 195);
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color:  rgba($color: #626768, $alpha: 1);
+}
+
+.mini-scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgba($color: #626768, $alpha: 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color:  rgba($color: #626768, $alpha: 0.2);
+  }
+}
+
+h1 {
+  @include break-font(32px, null, 32px);
+}
+
+h3 {
+  @include break-font(19px, 13px, 19px);
+}
+
+small {
+  @include break-font(13px, null, 13px);
+}
+
+p {
+  @include break-font(17px, 11px, 17px);
 }

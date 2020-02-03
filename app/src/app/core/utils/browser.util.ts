@@ -1,14 +1,19 @@
-import { Injectable } from '@angular/core'
 import browser from 'bowser'
 
-@Injectable({
-  providedIn: 'root'
-})
-export class BrowserService {
+enum Browser {
+  Chrome = 'Chrome',
+  Edge = 'Edge',
+  Opera = 'Opera',
+  Firefox = 'Firefox',
+  Safari = 'Safari',
+  IE = 'IE'
+}
+
+class BrowserUtil {
   private logos = 'assets/icons/browsers'
   browsers = [{
     name: 'Firefox',
-    supported: false,
+    supported: true,
     src: `${this.logos}/firefox.svg`,
     href: 'https://www.mozilla.org/en-GB/firefox/new/'
   }, {
@@ -41,25 +46,32 @@ export class BrowserService {
     src: `${this.logos}/ie.svg`
   }]
 
-  browserName = this.formatName(
+  browserName: Browser = this.formatName(
     browser.getParser(window.navigator.userAgent).getBrowserName()
   )
+
   supported = !!this.browsers.find(x => x.name === this.browserName && x.supported)
 
   private formatName (name: string) {
     name = name.toLowerCase()
     if (name.includes('chrome')) {
-      return 'Chrome'
+      return Browser.Chrome
     } else if (name.includes('edge')) {
-      return 'Edge'
+      return Browser.Edge
     } else if (name.includes('opera')) {
-      return 'Opera'
+      return Browser.Opera
     } else if (name.includes('firefox')) {
-      return 'Firefox'
+      return Browser.Firefox
     } else if (name.includes('safari')) {
-      return 'Safari'
+      return Browser.Safari
     } else if (name.includes('explorer')) {
-      return 'IE'
+      return Browser.IE
     }
   }
+
+  isSafari () {
+    return this.browserName === Browser.Safari
+  }
 }
+
+export default new BrowserUtil()

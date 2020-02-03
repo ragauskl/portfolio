@@ -1,0 +1,37 @@
+@import 'abstracts';
+
+:host {
+  display: block;
+  position: relative;
+}
+.overflow-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+
+.overflow-top, .overflow-bottom {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overflow {
+  &-top {
+    top: -1px;
+    background: linear-gradient(to bottom,
+      white,
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  &-bottom {
+    bottom: -1px;
+    background: linear-gradient(to top,
+      white,
+      rgba(255, 255, 255, 0)
+    );
+  }
+}

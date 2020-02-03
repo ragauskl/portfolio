@@ -37,6 +37,11 @@ export class ImgBubblesComponent implements AfterViewInit {
     })
   }
 
+  async toggleAnimation (animate: boolean) {
+    if (!animate) await this.bubbles.stopAnimation()
+    else this.bubbles.startAnimation()
+  }
+
   ngAfterViewInit () {
     this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
       this.bubbles = new Bubbles(this._el.nativeElement, json)

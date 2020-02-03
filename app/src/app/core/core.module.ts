@@ -1,20 +1,31 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { MaterialModule } from './lib/material.module'
-import { SidenavComponent } from './components/sidenav/sidenav.component'
+import { NavBarComponent } from './components/navbar/navbar.component'
 import { AngularResizedEventModule } from 'angular-resize-event'
 import { ContactFormComponent } from './components/contact-form/contact-form.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ProgressButtonComponent } from './components/progress-button/progress-button.component'
 import { FormOverlayComponent } from './components/form-overlay/form-overlay.component'
 import { FooterComponent } from './components/footer/footer.component'
+import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.component'
+import { RenderedDirective } from './directives/rendered.directive'
+import { NoScrollDirective } from './directives/no-scroll.directive'
+import { ScrollBlockComponent } from './components/scroll-block/scroll-block.component'
+import { TrackScrollDirective } from './directives/track-scroll.directive'
+
 @NgModule({
   declarations: [
-    SidenavComponent,
+    NavBarComponent,
     ContactFormComponent,
     ProgressButtonComponent,
     FormOverlayComponent,
-    FooterComponent
+    FooterComponent,
+    ArrowScrollComponent,
+    RenderedDirective,
+    NoScrollDirective,
+    ScrollBlockComponent,
+    TrackScrollDirective
   ],
   imports: [
     CommonModule,
@@ -24,12 +35,17 @@ import { FooterComponent } from './components/footer/footer.component'
   ],
   exports: [
     MaterialModule,
-    SidenavComponent,
+    NavBarComponent,
     AngularResizedEventModule,
     ContactFormComponent,
     ReactiveFormsModule,
     ProgressButtonComponent,
-    FooterComponent
+    FooterComponent,
+    ArrowScrollComponent,
+    RenderedDirective,
+    NoScrollDirective,
+    ScrollBlockComponent,
+    TrackScrollDirective
   ]
 })
 export class CoreModule { }

@@ -1,4 +1,4 @@
-<button type="submit" cdkFocusInitial mat-raised-button [color]="valid || !hovered ? 'primary' : 'warn'"
+<button type="submit" cdkFocusInitial mat-raised-button [color]="valid || !hovered ? 'accent' : 'warn'"
 [disabled]="disabled" (click)="onClick()"
 [@buttonShrink]="state" [class.valid]="valid">
   <span [@textFade]="state">{{text}}</span>

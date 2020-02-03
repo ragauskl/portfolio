@@ -1,0 +1,19 @@
+<div class="position-wrapper"
+  *ngFor="let card of cards"
+  [id]="'z' + abs(card.index)"
+  [class.focused]="card.zIndex === styleFocusedIndex"
+  [class.hide]="card.hide"
+  [ngStyle]="card.style">
+    <div class="ratio-wrapper" *ngIf="!card.hide">
+      <div class="carousel-card mat-elevation-z5"
+      (click)="card.zIndex !== styleFocusedIndex && focusCard(card, 'a')">
+        <h3>{{card.title}}</h3>
+        <p><small>{{card.subtitle}}</small></p>
+
+        <app-scroll-block class="card-description" contentClass="mini-scrollbar">
+          <p [innerHTML]="card.description"></p>
+        </app-scroll-block>
+
+      </div>
+  </div>
+</div>
