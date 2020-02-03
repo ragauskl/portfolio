@@ -18,6 +18,7 @@ export class ExperienceSectionComponent implements OnDestroy {
   readonly drawGrid = false
   commits: Commit[] = []
   nodes: GraphNode[] = []
+  // Will be ignored if history element has focused prop defined
   selectedIndex: number = 19
   private _focusedNode?: GraphNode
   private readonly _ySkip = 2
@@ -93,11 +94,6 @@ export class ExperienceSectionComponent implements OnDestroy {
         }
       )
 
-    // Temp fix
-    for (const commit of this.commits) {
-      commit.focused = this.commits.indexOf(commit) === this.selectedIndex ? true : undefined
-    }
-
     const calculatePositions = () => {
         // First commit must be on master
         // If branch has closed commit, there must be at least one more previous commit
@@ -154,7 +150,7 @@ export class ExperienceSectionComponent implements OnDestroy {
           this.selectedIndex = i
         }
 
-        node.onFocusChange.subscribe(focused => this.NodeFocuseChanged(node, focused))
+        node.onFocusChange.subscribe(focused => this.NodeFocusedChanged(node, focused))
         node.onClick.subscribe(() => {
           if (this.matTabGroup) {
             if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
@@ -250,7 +246,7 @@ export class ExperienceSectionComponent implements OnDestroy {
     renderNodes()
   }
 
-  private NodeFocuseChanged (node: GraphNode, focused: boolean) {
+  private NodeFocusedChanged (node: GraphNode, focused: boolean) {
     if (focused) {
       this.selectedIndex = node.index
 
