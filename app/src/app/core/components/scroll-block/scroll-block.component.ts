@@ -26,7 +26,7 @@ export class ScrollBlockComponent implements OnDestroy, AfterViewInit {
     this._subscriptions.unsubscribe()
   }
 
-  private recalculateScrollFlags () {
+  recalculateScrollFlags () {
     const scroll = this.scrollElement.nativeElement
     this.canScrollUp = !!scroll.scrollTop
     this.canScrollDown = (scroll.scrollTop + 2) < (scroll.scrollHeight - scroll.clientHeight)

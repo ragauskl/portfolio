@@ -14,7 +14,7 @@ export class ArrowScrollComponent {
   private scrollSubscription?: Subscription
   scrollBy = 0
 
-  scrollDirection (direction: 1 | 0 | -1) {
+  scrollDirection (direction: 1 | 0 | -1 | number) {
     if (this.scrollSubscription) this.scrollSubscription.unsubscribe()
     this.scrollBy = direction
 
