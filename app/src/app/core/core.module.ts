@@ -15,6 +15,7 @@ import { ScrollBlockComponent } from './components/scroll-block/scroll-block.com
 import { TrackScrollDirective } from './directives/track-scroll.directive';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component'
 import { PostCoverComponent } from './components/post-cover/post-cover.component'
+import { MomentPipe } from './pipes/moment.pipe'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PostCoverComponent } from './components/post-cover/post-cover.component
     ScrollBlockComponent,
     TrackScrollDirective,
     ProjectsListComponent,
-    PostCoverComponent
+    PostCoverComponent,
+    MomentPipe
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { PostCoverComponent } from './components/post-cover/post-cover.component
     NoScrollDirective,
     ScrollBlockComponent,
     TrackScrollDirective,
-    ProjectsListComponent
+    ProjectsListComponent,
+    MomentPipe
   ]
 })
 export class CoreModule { }

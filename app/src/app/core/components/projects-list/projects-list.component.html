@@ -5,8 +5,17 @@
     </div>
   </div>
 
-  <div class="caption">
-    <!-- <h4>{{project.title}}</h4>
-    <p>{{project.summary}}</p> -->
+  <div class="ratio-wrapper">
+    <div class="summary-wrapper">
+      <div class="summary-content">
+        <h3>{{project.title}}</h3>
+        <p>
+          <small *ngIf="project.startDate">{{project.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
+          <small *ngIf="project.endDate">- {{project.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>
+        </p>
+        <small *ngIf="project.subtitle">{{project.subtitle}}</small>
+        <p>{{project.summary}}</p>
+      </div>
+    </div>
   </div>
 </div>

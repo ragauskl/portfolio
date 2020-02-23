@@ -14,15 +14,19 @@
   }
 
   > * {
-    flex: 0 0 49%;
+    flex: 0 0 46%;
     min-height: 100px;
+  }
 
-    &:first-child {
-      border: 1px solid red;
-    }
+  .summary-wrapper {
+    position: relative;
+    padding-top: 80%;
 
-    &:nth-child(2) {
-      border: 1px solid blue;
+    @include flex(column, flex-start, stretch);
+    @include item-space(column, 15px);
+
+    .summary-content {
+      @include absolute-fill;
     }
   }
 
@@ -30,6 +34,15 @@
     @include flex(column, flex-start);
     &.reverse {
       flex-direction: column;
+    }
+
+    .summary-wrapper {
+      padding-top: unset;
+
+      .summary-content {
+        width: 100%;
+        position: relative;
+      }
     }
 
     @include item-space(column, 15px);
@@ -44,4 +57,19 @@
 .image {
   padding-top: 100%;
   width: 100%;
+  position: relative;
+
+  // TEMP
+  filter: saturate(1.5);
+  background: linear-gradient(to right, #e06c75, #eaca92);
+  &:before {
+    content: '';
+    position: absolute;
+    top: 15px; right: 15px; bottom: 15px; left: 15px;
+    background: white;
+  }
+}
+
+.reverse .image {
+  background: linear-gradient(to right, #56b6c2, #c678dd);
 }

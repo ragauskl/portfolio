@@ -2,6 +2,8 @@
 
 :host {
   @include flex(column, center, center);
+  @include item-space(column, 50px);
+  margin-bottom: 50px;
 
   h1 {
     flex: 0 0 auto;
@@ -9,7 +11,6 @@
 }
 
 app-projects-list {
-  border: 1px solid black;
   width: 80%;
   max-width: 1000px;
 
