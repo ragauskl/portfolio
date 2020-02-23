@@ -1,0 +1,23 @@
+@import 'abstracts';
+
+:host {
+  @include flex(column, center, center);
+
+  h1 {
+    flex: 0 0 auto;
+  }
+}
+
+app-projects-list {
+  border: 1px solid black;
+  width: 80%;
+  max-width: 1000px;
+
+  @include break ('lt', 'm') {
+    width: 60%;
+  }
+
+  @include break ('lt', 's') {
+    width: 80%;
+  }
+}

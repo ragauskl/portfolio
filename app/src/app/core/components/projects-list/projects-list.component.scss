@@ -1,0 +1,47 @@
+@import 'abstracts';
+
+:host {
+ @include flex(column, flex-start, center);
+ @include item-space(column, 100px);
+}
+
+.project-block {
+  width: 100%;
+  @include flex(row, space-between);
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
+  > * {
+    flex: 0 0 49%;
+    min-height: 100px;
+
+    &:first-child {
+      border: 1px solid red;
+    }
+
+    &:nth-child(2) {
+      border: 1px solid blue;
+    }
+  }
+
+  @include break ('lt', 'm') {
+    @include flex(column, flex-start);
+    &.reverse {
+      flex-direction: column;
+    }
+
+    @include item-space(column, 15px);
+
+    > * {
+      flex: unset;
+      width: 100%;
+    }
+  }
+}
+
+.image {
+  padding-top: 100%;
+  width: 100%;
+}

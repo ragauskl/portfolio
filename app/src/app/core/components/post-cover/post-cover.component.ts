@@ -26,7 +26,7 @@ export class PostCoverComponent {
 
   fragments: Fragment[] = []
   animateTimeout: NodeJS.Timer
-  state: 'shattered' | 'initial' | 'shattering' | 'reseting' = 'initial'
+  state: 'shattered' | 'initial' | 'shattering' | 'resetting' = 'initial'
 
   updateCounter = 0
   // Mouse object used to calculate rotation values
@@ -199,8 +199,8 @@ export class PostCoverComponent {
   }
 
   private resetShatter () {
-    if (this.state === 'initial' || this.state === 'reseting') return
-    this.state = 'reseting'
+    if (this.state === 'initial' || this.state === 'resetting') return
+    this.state = 'resetting'
 
     this.coverContainerEl.style.transform = ''
     this.textEl.style.transition = 'all 0.1s linear'
@@ -208,13 +208,13 @@ export class PostCoverComponent {
     this.fragments.forEach(f => f.reset())
 
     setTimeout(() => {
-      if (this.state !== 'reseting') return
+      if (this.state !== 'resetting') return
       this.imageEl.style.opacity = '1'
     }, 499)
 
     setTimeout(() => {
       for (const fragment of this.fragments) {
-        if (this.state !== 'reseting') return
+        if (this.state !== 'resetting') return
         if (Array.from(this.shatterContainerEl.childNodes).includes(fragment.fragmentEl)) {
           this.shatterContainerEl.removeChild(fragment.fragmentEl)
         }

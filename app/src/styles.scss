@@ -8,10 +8,10 @@
 
 :root {
   @each $key, $val in $color {
-    #{--$key}: $val;
+    --#{$key}: #{$val};
   }
   @each $key, $val in $theme {
-    #{--$key}: $val;
+    --#{$key}: #{$val};
   }
 }
 

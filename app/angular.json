@@ -32,11 +32,10 @@
               "src/styles.scss",
               "src/theme/main.scss"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/app/styles"
+                "src/app/styles"
               ]
             }
           },
@@ -100,11 +99,10 @@
               "src/styles.scss",
               "src/theme/main.scss"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/app/styles"
+                "src/app/styles"
               ]
             }
           }
@@ -135,6 +133,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "app"
+    }
+  },
+  "defaultProject": "app",
+  "cli": {
+    "analytics": false
+  }
 }
