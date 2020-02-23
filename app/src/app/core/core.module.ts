@@ -15,7 +15,8 @@ import { ScrollBlockComponent } from './components/scroll-block/scroll-block.com
 import { TrackScrollDirective } from './directives/track-scroll.directive';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component'
 import { PostCoverComponent } from './components/post-cover/post-cover.component'
-import { MomentPipe } from './pipes/moment.pipe'
+import { MomentPipe } from './pipes/moment.pipe';
+import { ImageShatterComponent } from './components/image-shatter/image-shatter.component'
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MomentPipe } from './pipes/moment.pipe'
     TrackScrollDirective,
     ProjectsListComponent,
     PostCoverComponent,
-    MomentPipe
+    MomentPipe,
+    ImageShatterComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { MomentPipe } from './pipes/moment.pipe'
     ScrollBlockComponent,
     TrackScrollDirective,
     ProjectsListComponent,
-    MomentPipe
+    MomentPipe,
+    ImageShatterComponent
   ]
 })
 export class CoreModule { }

@@ -60,16 +60,21 @@
   position: relative;
 
   // TEMP
-  filter: saturate(1.5);
-  background: linear-gradient(to right, #e06c75, #eaca92);
-  &:before {
-    content: '';
-    position: absolute;
-    top: 15px; right: 15px; bottom: 15px; left: 15px;
-    background: white;
-  }
+  // filter: saturate(1.5);
+  // background: linear-gradient(to right, #e06c75, #eaca92);
+  // &:before {
+  //   content: '';
+  //   position: absolute;
+  //   top: 15px; right: 15px; bottom: 15px; left: 15px;
+  //   background: white;
+  // }
 }
 
-.reverse .image {
-  background: linear-gradient(to right, #56b6c2, #c678dd);
+// .reverse .image {
+//   background: linear-gradient(to right, #56b6c2, #c678dd);
+// }
+
+app-image-shatter {
+  @include absolute-fill;
+  background: lime;
 }
