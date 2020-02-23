@@ -89,7 +89,7 @@ export class PostCoverComponent {
     // Animation rotate trigger
     this.coverContainerEl.onmousemove = (event) => {
       if (this.shouldUpdateSkew()) {
-        // Calculate loaction on image from position on page
+        // Calculate location on image from position on page
         // as mouse move will trigger on child elements
         // resulting in different offsets
         const rect = this.coverContainerEl.getBoundingClientRect()
