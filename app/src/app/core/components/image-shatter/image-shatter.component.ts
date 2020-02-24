@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy, Input } from '@angular/core'
 import * as Three from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 
@@ -9,12 +9,18 @@ import { Subscription, fromEvent } from 'rxjs'
 })
 export class ImageShatterComponent implements AfterViewInit, OnDestroy {
   private _subscriptions = new Subscription()
+
+  @Input() src: string
+
   camera: Three.PerspectiveCamera
   scene: Three.Scene
-  geometry: Three.BoxGeometry
+  planeGeometry: Three.PlaneGeometry
   material: Three.MeshNormalMaterial
   mesh: Three.Mesh
   renderer: Three.WebGLRenderer
+
+  raycaster: Three.Raycaster
+  rendererMouse: Three.Vector2
 
   // Mouse position relative to element
   mouse = {
@@ -22,9 +28,14 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     _y: 0,
     x: 0,
     y: 0,
+    relativeX: 0,
+    relativeY: 0,
     updatePosition: function (x: number, y: number) {
       this.x = x - this._x
       this.y = y - this._y
+
+      this.relativeX = x
+      this.relativeY = y
     },
     setOrigin: function (el: HTMLElement) {
       this._x = Math.floor(el.clientWidth / 2)
@@ -49,12 +60,6 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     this.init()
 
     this._subscriptions.add(
-      fromEvent(this.element, 'mouseenter').subscribe(e => {
-        const event = e as MouseEvent
-      })
-    )
-
-    this._subscriptions.add(
       fromEvent(this.element, 'mouseleave').subscribe(e => {
         const event = e as MouseEvent
         // this.rotateMesh(0, 0)
@@ -69,26 +74,76 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
         // Calculate location on image from position on page
         const rect = this.element.getBoundingClientRect()
         this.updateMousePosition(event.clientX - rect.left, event.clientY - rect.top)
+
+        const { clientHeight, clientWidth } = this.element
+        this.rendererMouse.x = (this.mouse.relativeX / clientWidth) * 2 - 1
+        this.rendererMouse.y = -(this.mouse.relativeY / clientHeight) * 2 + 1
+
+        this.raycaster.setFromCamera(this.rendererMouse, this.camera)
+
+        const [intersection] = this.raycaster.intersectObject(this.mesh)
+        if (intersection) console.log('Hover')
+        this.rotateMesh()
       })
     )
+
+    this._subscriptions.add(
+      fromEvent(window, 'resize').subscribe(() => this.updateCamera())
+    )
+  }
+
+  updateCamera () {
+    const { clientHeight, clientWidth } = this.element
+    this.renderer.setSize(clientWidth, clientHeight)
+
+    this.camera.aspect = clientWidth / clientHeight
+    this.camera.updateProjectionMatrix()
+    this.updateRenderer()
+  }
+
+  updateRenderer () {
+    this.renderer.render(this.scene, this.camera)
   }
 
   init () {
     const { clientHeight, clientWidth } = this.element
-    this.camera = new Three.PerspectiveCamera(50, clientWidth / clientHeight, 0.01, 10)
-    this.camera.position.z = 1
+    this.camera = new Three.PerspectiveCamera(50, clientWidth / clientHeight, 0.01, 1000)
+    this.camera.position.z = 100
 
     this.scene = new Three.Scene()
-    this.geometry = new Three.BoxGeometry(0.2, 0.2, 0.2)
+    const textureLoader = new Three.TextureLoader()
+    const material = new Three.MeshLambertMaterial({
+      map: textureLoader.load(this.src)
+    })
+
+    this.planeGeometry = new Three.PlaneGeometry(70, 70 * 0.6)
     this.material = new Three.MeshNormalMaterial()
-    this.mesh = new Three.Mesh(this.geometry, this.material)
+    // this.mesh = new Three.Mesh(this.geometry, this.material)
+    this.mesh = new Three.Mesh(this.planeGeometry, material)
+    this.mesh.position.set(0,0,0)
+
+    const light = new Three.PointLight(0xffffff, 1, 0)
+    light.position.set(1, 1, 400)
+
+    window['geom'] = this.planeGeometry
+    console.log('this.planeGeometry.vertices:', this.planeGeometry.vertices)
 
     this.scene.add(this.mesh)
+    this.scene.add(light)
+
     this.renderer = new Three.WebGLRenderer({ antialias: true })
+    this.renderer.setClearColor('#6e6e6e') // 0xffffff
     this.renderer.setSize(clientWidth, clientHeight)
     this.element.appendChild(this.renderer.domElement)
 
-    this.renderer.render(this.scene, this.camera)
+    this.raycaster = new Three.Raycaster()
+    this.rendererMouse = new Three.Vector2()
+
+    this.updateRenderer()
+
+    setTimeout(() => this.updateRenderer(), 500)
+
+    window['obj'] = this
   }
 
   private _resetAnimation
@@ -116,9 +171,12 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  rotateMesh (x: number, y: number) {
-    this.mesh.rotation.x = x
-    this.mesh.rotation.y = y
+  rotateMesh () {
+    const rotateX = (this.mouse.y / this.element.offsetHeight / 0.5).toFixed(2)
+    const rotateY = (this.mouse.x / this.element.offsetWidth / 0.5).toFixed(2)
+
+    this.mesh.rotation.x = +rotateX
+    this.mesh.rotation.y = +rotateY
 
     this.renderer.render(this.scene, this.camera)
   }
@@ -127,9 +185,6 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     if (this._resetAnimation) cancelAnimationFrame(this._resetAnimation)
     this.mouse.updatePosition(x, y)
 
-    const rotateX = (this.mouse.y / this.element.offsetHeight / 0.5).toFixed(2)
-    const rotateY = (this.mouse.x / this.element.offsetWidth / 0.5).toFixed(2)
-
-    this.rotateMesh(+rotateX, +rotateY)
   }
+
 }
