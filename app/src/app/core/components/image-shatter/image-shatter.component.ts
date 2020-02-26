@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy, Input } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { HttpClient } from '@angular/common/http'
 @Component({
   selector: 'app-image-shatter',
   templateUrl: './image-shatter.component.html',
@@ -16,7 +17,7 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
   scene: THREE.Scene
   light: THREE.SpotLight
   planeGeometry: THREE.PlaneGeometry | THREE.PlaneBufferGeometry
-  backPlane: THREE.PlaneGeometry
+  backPlane: THREE.Mesh
   material: THREE.MeshLambertMaterial | THREE.ShaderMaterial
   meshArray: THREE.Mesh[] = []
   renderer: THREE.WebGLRenderer
@@ -49,15 +50,38 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     return this._el.nativeElement
   }
 
+  vertexShader: string
+  fragmentShader: string
   constructor (
-    private _el: ElementRef<HTMLElement>
-  ) {}
+    private _el: ElementRef<HTMLElement>,
+    private _http: HttpClient
+  ) {
+
+  }
 
   ngOnDestroy () {
     this._subscriptions.unsubscribe()
   }
 
-  ngAfterViewInit () {
+  async ngAfterViewInit () {
+    let shader = THREE.ShaderChunk.shadowmap_pars_fragment
+
+    // shader = shader.replace(
+		// 			'#ifdef USE_SHADOWMAP',
+		// 			'#ifdef USE_SHADOWMAP' +
+		// 			document.getElementById('PCSS').textContent
+		// 		)
+
+    // shader = shader.replace(
+		// 			'#if defined( SHADOWMAP_TYPE_PCF )',
+		// 			document.getElementById('PCSSGetShadow').textContent +
+		// 			'#if defined( SHADOWMAP_TYPE_PCF )'
+		// 		)
+
+    // THREE.ShaderChunk.shadowmap_pars_fragment = shader
+
+    this.vertexShader = await this._http.get(`assets/shaders/vertex-shader.vs`, { responseType: 'text' }).toPromise()
+    this.fragmentShader = await this._http.get(`assets/shaders/fragment-shader.fs`, { responseType: 'text' }).toPromise()
     this.mouse.setOrigin(this.element)
     this.init()
 
@@ -67,6 +91,14 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
         // this.rotateMesh(0, 0)
         this.resetAnimation()
         this.RenderImageAs('plane')
+      })
+    )
+
+    this._subscriptions.add(
+      fromEvent(window, 'keydown').subscribe(e => {
+        if ((e as KeyboardEvent).key === 'Escape') {
+          this.updateLight(true)
+        }
       })
     )
 
@@ -85,9 +117,9 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
         this.raycaster.setFromCamera(this.rendererMouse, this.camera)
 
         const [intersection] = this.raycaster.intersectObjects(this.meshArray)
-        // if (intersection && !this.bufferGeometry) this.RenderImageAs('buffer')
+        // // if (intersection && !this.bufferGeometry) this.RenderImageAs('buffer')
         this.RenderImageAs('buffer')
-        this.rotateMesh()
+        // this.rotateMesh()
       })
     )
 
@@ -111,33 +143,61 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
   init () {
     const { clientHeight, clientWidth } = this.element
-    this.camera = new THREE.PerspectiveCamera(50, clientWidth / clientHeight, 0.01, 1000)
-    this.camera.position.z = 200
+    this.camera = new THREE.PerspectiveCamera(50, clientWidth / clientHeight, 0.01, 10000)
+    this.camera.position.z = 500
 
     this.scene = new THREE.Scene()
 
-    this.light = new THREE.SpotLight(0xffffff, 1, 0)
-    this.light.position.set(0, 0, 100)
+    const material = new THREE.MeshPhongMaterial({
+      color: '#cccccc',
+      side: THREE.DoubleSide
+    })
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(50, 50, 50),
+      material
+    )
+    mesh.position.y += 30
+    mesh.castShadow = true
+    // this.scene.add(mesh)
+
+    this.backPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(clientWidth, clientHeight),
+      material
+    )
+    this.backPlane.position.y = -100
+    this.backPlane.receiveShadow = true
+    window['floor'] = this.backPlane
+    this.scene.add(this.backPlane)
+
+    const ambient = new THREE.AmbientLight('white', 0.3)
+    this.scene.add(ambient)
+
+    this.light = new THREE.SpotLight('white') as any
+    this.light.position.set(0, 90, 100)
+    this.light.castShadow = true
 
     this.scene.add(this.light)
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
-    this.renderer.setClearColor('#6e6e6e') // 0xffffff
+    // this.renderer.setClearColor('#6e6e6e') // 0xffffff
     this.renderer.setSize(clientWidth, clientHeight)
+    this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     this.element.appendChild(this.renderer.domElement)
 
     this.raycaster = new THREE.Raycaster()
     this.rendererMouse = new THREE.Vector2()
 
-    this.backPlane = new THREE.PlaneGeometry(clientWidth, clientHeight)
-    const material = new THREE.MeshBasicMaterial({
-      color: '#cccccc'
-    })
-    const mesh = new THREE.Mesh(this.backPlane, material)
-    mesh.position.set(0,0,0)
-    mesh.receiveShadow = true
-    this.scene.add(mesh)
-    // this.light.target = mesh
+    const controls = new OrbitControls(this.camera, this.renderer.domElement)
+    controls.enablePan = true
+    const animate = () => {
+      requestAnimationFrame(animate.bind(this))
+      controls.update()
+
+      this.renderer.render(this.scene, this.camera)
+      this.updateCamera()
+    }
+    animate()
 
     this.setupShadow()
 
@@ -148,20 +208,51 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     window['obj'] = this
   }
 
-  setupShadow () {
-    this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = THREE.PCFShadowMap
-    this.light.castShadow = true
-
-    this.light.shadow = new THREE.SpotLightShadow(
-      new THREE.PerspectiveCamera(100, 1, 0.01, 1000)
+  updateLight (pos = false) {
+    if (pos) {
+      this.light.position.set(
+      this.camera.position.x,
+      this.camera.position.y,
+      this.camera.position.z
     )
-    this.light.shadowBias = 0.0001
-    this.light.shadow.mapSize.width = 1048
-    this.light.shadow.mapSize.height = 1048
+
+      this.light.rotation.set(
+      this.camera.rotation.x,
+      this.camera.rotation.y,
+      this.camera.rotation.z
+    )
+    }
+
+    if (this.lightHelper) this.lightHelper.update()
+    if (this.shadowCameraHelper) this.shadowCameraHelper.update()
+
+    this.updateRenderer()
   }
 
-  private RenderImageAs (geom?: 'plane' | 'buffer') {
+  lightHelper
+  shadowCameraHelper
+
+  setupShadow () {
+
+    // this.light.shadow.mapSize.width = 512 * 2
+    // this.light.shadow.mapSize.height = 512 * 2
+    this.light.shadow.camera.near = 1
+    this.light.shadow.camera.far = 4000
+    this.light.shadow.camera.fov = 30
+
+    this.lightHelper = new THREE.SpotLightHelper(this.light)
+    this.scene.add(this.lightHelper)
+
+    this.shadowCameraHelper = new THREE.CameraHelper(this.light.shadow.camera)
+    this.scene.add(this.shadowCameraHelper)
+
+    this.scene.add(new THREE.AxesHelper(10))
+  }
+
+  lastGeom
+  private async RenderImageAs (geom?: 'plane' | 'buffer') {
+    if (this.lastGeom && this.lastGeom === geom) return
+    this.lastGeom = geom
     if (this.meshArray.length) {
       for (const mesh of this.meshArray) {
         this.scene.remove(mesh)
@@ -171,19 +262,28 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!this.material) {
-      const vertexShader = document.getElementById('vertex-shader').textContent
-      const fragmentShader = document.getElementById('fragment-shader').textContent
 
       const loader = new THREE.TextureLoader()
+      // this.material = new THREE.ShaderMaterial(THREE.ShaderLib.shadow)
+      // THREE.ShaderChunk.shadow_frag
+
       this.material = new THREE.ShaderMaterial({
-        uniforms: {
+        uniforms: // THREE.ShaderLib.shadow.uniforms,
+        {
+          // ...THREE.UniformsLib.fog,
+          // ...THREE.UniformsLib.lights,
           texture: {
             type: 't',
             value: loader.load(this.src)
+          },
+          lightPosition: {
+            type: 'v3',
+            value: this.light.position
           }
         },
-        vertexShader,
-        fragmentShader
+        vertexShader: shaderParse(this.vertexShader),
+        fragmentShader: shaderParse(this.fragmentShader),
+        side: THREE.DoubleSide
       })
     }
 
@@ -192,18 +292,16 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
     const addMesh = (geom: THREE.Geometry | THREE.BufferGeometry) => {
       const mesh = new THREE.Mesh(geom, this.material)
-      mesh.position.set(0,0,100)
+      mesh.position.set(0,0,10)
       this.scene.add(mesh)
       mesh.castShadow = true
-      // mesh.receiveShadow = true
+      mesh.receiveShadow = true
       this.meshArray.push(mesh)
-      this.light.target = mesh
     }
     if (geom === 'plane') {
-      this.planeGeometry = new THREE.PlaneBufferGeometry(imageSize.width, imageSize.height)
+      this.planeGeometry = new THREE.PlaneGeometry(imageSize.width, imageSize.height)
       addMesh(this.planeGeometry)
 
-      // console.log('this.planeGeometry.vertices:', this.planeGeometry.vertices)
     } else if (geom === 'buffer') {
       const geom1 = new THREE.BufferGeometry()
       const geom2 = new THREE.BufferGeometry()
@@ -245,52 +343,62 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
   private _resetAnimation
   resetAnimation () {
-    let rx = 0
-    let ry = 0
-    for (const mesh of this.meshArray) {
-      const { x, y } = mesh.rotation
-      if (y > 0.1) {
-        mesh.rotation.y -= 0.05
-      } else if (y < -0.1) {
-        mesh.rotation.y += 0.05
-      } else {
-        mesh.rotation.y = 0
-      }
+    // let rx = 0
+    // let ry = 0
+    // for (const mesh of this.meshArray) {
+    //   const { x, y } = mesh.rotation
+    //   if (y > 0.1) {
+    //     mesh.rotation.y -= 0.05
+    //   } else if (y < -0.1) {
+    //     mesh.rotation.y += 0.05
+    //   } else {
+    //     mesh.rotation.y = 0
+    //   }
 
-      if (x > 0.1) {
-        mesh.rotation.x -= 0.05
-      } else if (x < -0.1) {
-        mesh.rotation.x += 0.05
-      } else {
-        mesh.rotation.x = 0
-      }
+    //   if (x > 0.1) {
+    //     mesh.rotation.x -= 0.05
+    //   } else if (x < -0.1) {
+    //     mesh.rotation.x += 0.05
+    //   } else {
+    //     mesh.rotation.x = 0
+    //   }
 
-      rx += mesh.rotation.x
-      ry += mesh.rotation.y
-    }
+    //   rx += mesh.rotation.x
+    //   ry += mesh.rotation.y
+    // }
     this.renderer.render(this.scene, this.camera)
 
-    if (rx !== 0 || ry !== 0) {
-      this._resetAnimation = requestAnimationFrame(this.resetAnimation.bind(this))
-    }
+    // if (rx !== 0 || ry !== 0) {
+    //   this._resetAnimation = requestAnimationFrame(this.resetAnimation.bind(this))
+    // }
   }
 
   rotateMesh () {
-    const rotateX = (this.mouse.y / this.element.offsetHeight / 0.5).toFixed(2)
-    const rotateY = (this.mouse.x / this.element.offsetWidth / 0.5).toFixed(2)
+    // const rotateX = (this.mouse.y / this.element.offsetHeight / 0.5).toFixed(2)
+    // const rotateY = (this.mouse.x / this.element.offsetWidth / 0.5).toFixed(2)
 
-    for (const mesh of this.meshArray) {
-      mesh.rotation.x = +rotateX
-      mesh.rotation.y = +rotateY
-    }
+    // for (const mesh of this.meshArray) {
+    //   mesh.rotation.x = +rotateX
+    //   mesh.rotation.y = +rotateY
+    // }
 
     this.renderer.render(this.scene, this.camera)
   }
 
   updateMousePosition (x: number, y: number) {
-    if (this._resetAnimation) cancelAnimationFrame(this._resetAnimation)
+    // if (this._resetAnimation) cancelAnimationFrame(this._resetAnimation)
     this.mouse.updatePosition(x, y)
 
   }
 
+}
+
+function replaceThreeChunkFn (_: any, b: any) {
+  // if (b === 'shadowmap_pars_fragment') console.log(THREE.ShaderChunk[b])
+  console.warn(b, !!THREE.ShaderChunk[b])
+  return THREE.ShaderChunk[b] + '\n'
+}
+
+function shaderParse (glsl: string) {
+  return glsl.replace(/\/\/\s?chunk\(\s?(\w+)\s?\);/g, replaceThreeChunkFn)
 }
