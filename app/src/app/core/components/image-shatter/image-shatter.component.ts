@@ -80,8 +80,8 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
     // THREE.ShaderChunk.shadowmap_pars_fragment = shader
 
-    this.vertexShader = await this._http.get(`assets/shaders/vertex-shader.vs`, { responseType: 'text' }).toPromise()
-    this.fragmentShader = await this._http.get(`assets/shaders/fragment-shader.fs`, { responseType: 'text' }).toPromise()
+    this.vertexShader = await this._http.get(`assets/shaders/vertex-shader.glsl`, { responseType: 'text' }).toPromise()
+    this.fragmentShader = await this._http.get(`assets/shaders/fragment-shader.glsl`, { responseType: 'text' }).toPromise()
     this.mouse.setOrigin(this.element)
     this.init()
 
@@ -172,8 +172,10 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     const ambient = new THREE.AmbientLight('white', 0.3)
     this.scene.add(ambient)
 
-    this.light = new THREE.SpotLight('white') as any
-    this.light.position.set(0, 90, 100)
+    this.light = new THREE.SpotLight('white')
+    this.light.shadow.mapSize.width = 512 * 4
+    this.light.shadow.mapSize.height = 512 * 4
+    this.light.position.set(0, 70, 100)
     this.light.castShadow = true
 
     this.scene.add(this.light)
@@ -234,11 +236,10 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
   setupShadow () {
 
-    // this.light.shadow.mapSize.width = 512 * 2
-    // this.light.shadow.mapSize.height = 512 * 2
     this.light.shadow.camera.near = 1
     this.light.shadow.camera.far = 4000
     this.light.shadow.camera.fov = 30
+    this.light.shadowBias = -0.0001
 
     this.lightHelper = new THREE.SpotLightHelper(this.light)
     this.scene.add(this.lightHelper)
@@ -264,14 +265,10 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     if (!this.material) {
 
       const loader = new THREE.TextureLoader()
-      // this.material = new THREE.ShaderMaterial(THREE.ShaderLib.shadow)
-      // THREE.ShaderChunk.shadow_frag
-
       this.material = new THREE.ShaderMaterial({
-        uniforms: // THREE.ShaderLib.shadow.uniforms,
+        uniforms:
         {
-          // ...THREE.UniformsLib.fog,
-          // ...THREE.UniformsLib.lights,
+          ...THREE.UniformsLib.lights,
           texture: {
             type: 't',
             value: loader.load(this.src)
@@ -283,7 +280,9 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
         },
         vertexShader: shaderParse(this.vertexShader),
         fragmentShader: shaderParse(this.fragmentShader),
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        transparent: true,
+        lights: true
       })
     }
 
@@ -292,11 +291,13 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
     const addMesh = (geom: THREE.Geometry | THREE.BufferGeometry) => {
       const mesh = new THREE.Mesh(geom, this.material)
+
       mesh.position.set(0,0,10)
       this.scene.add(mesh)
       mesh.castShadow = true
       mesh.receiveShadow = true
       this.meshArray.push(mesh)
+      return mesh
     }
     if (geom === 'plane') {
       this.planeGeometry = new THREE.PlaneGeometry(imageSize.width, imageSize.height)
@@ -331,10 +332,12 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
       geom1.setAttribute('position', new THREE.BufferAttribute(vertices1, 3))
       geom1.setAttribute('uv', new THREE.BufferAttribute(uvs1, 2))
+      geom1.computeVertexNormals()
       addMesh(geom1)
 
       geom2.setAttribute('position', new THREE.BufferAttribute(vertices2, 3))
       geom2.setAttribute('uv', new THREE.BufferAttribute(uvs2, 2))
+      geom2.computeVertexNormals()
       addMesh(geom2)
     }
 
@@ -394,8 +397,6 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 }
 
 function replaceThreeChunkFn (_: any, b: any) {
-  // if (b === 'shadowmap_pars_fragment') console.log(THREE.ShaderChunk[b])
-  console.warn(b, !!THREE.ShaderChunk[b])
   return THREE.ShaderChunk[b] + '\n'
 }
 
