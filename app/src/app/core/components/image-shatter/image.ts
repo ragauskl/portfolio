@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import * as THREE from 'three'
 import { Scene } from './scene'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, of } from 'rxjs'
+import { getTriangleVertices, calculateNewCentroid, translateToOrigin, translateToCornerOrigin } from './triangulate'
 
 type State = 'solid' | 'shattered'
 
@@ -36,6 +37,10 @@ export class Image {
           rx: number
           ry: number
           rz: number
+        },
+        steps?: {
+          axis: number
+          rotation: number
         }
       }[]
     }
@@ -63,19 +68,21 @@ export class Image {
     this._vertexShader = await this._http.get(`assets/shaders/vertex-shader.glsl`, { responseType: 'text' }).toPromise()
     this._fragmentShader = await this._http.get(`assets/shaders/fragment-shader.glsl`, { responseType: 'text' }).toPromise()
 
-    const bounds = {
-      x: {
-        min: -(this._width / 2),
-        max: this._width / 2
-      },
-      y: {
-        min: -(this._height / 2),
-        max: this._height / 2
-      }
+    const offset = {
+      x: this._width / 2,
+      y: this._height / 2
     }
 
-    // TEMP
-    const coords = { x: bounds.x.min, y: bounds.y.min, z: 0 }
+    const bounds = {
+      x: {
+        min: -offset.x,
+        max: offset.x
+      },
+      y: {
+        min: -offset.y,
+        max: offset.y
+      }
+    }
 
     const loader = new THREE.TextureLoader()
     const material = new THREE.ShaderMaterial({
@@ -113,34 +120,50 @@ export class Image {
     const calculateUv = (x: number, y: number) => {
       const clip = (n: number, max: number) => Math.max(0, Math.min(n, max))
       return [
-        clip(distance(bounds.x.min, x), this._width) / this._width,
-        clip(distance(bounds.y.min, y), this._height) / this._height
+        +(clip(distance(bounds.x.min, x), this._width) / this._width).toFixed(2),
+        +(clip(distance(bounds.y.min, y), this._height) / this._height).toFixed(2)
       ]
     }
 
-    // Temp array
-    const geometries: Float32Array[] = [
-      new Float32Array([
-        coords.x, coords.y, coords.z, // bottom left
-        coords.x + this._width, coords.y, coords.z, // bottom right
-        coords.x + this._width, coords.y + this._height, coords.z // upper right
-      ]),
-      new Float32Array([
-        coords.x + this._width, coords.y + this._height, coords.z, // upper right
-        coords.x, coords.y + this._height, coords.z, // upper left
-        coords.x, coords.y, coords.z // bottom left
-      ])
-    ]
+    const arr = getTriangleVertices(this._width, this._height)
 
-    const geoms = geometries.map((vertices, index) => {
+    const triangles = arr
+    .map(vertices =>
+      vertices.map(([x, y]) =>
+      [+(x - offset.x).toFixed(2), +(y - offset.y).toFixed(2)]
+      )
+    )
+
+    const geometries: Float32Array[] = (triangles as [[number, number], [number, number], [number, number]][]).map(x =>
+      new Float32Array([
+        ...x[0], 0,
+        ...x[1], 0,
+        ...x[2], 0
+      ])
+    )
+
+    this._stateConfig.shattered.objects = geometries.map(vertices => {
       const geom = new THREE.BufferGeometry()
       const uvs = []
       if (vertices.length % 3 !== 0) throw new Error('Vertices length invalid.')
 
+      const xs: number[] = []
+      const ys: number[] = []
       for (let i = 0; i < vertices.length; i += 3) {
         const [x, y] = vertices.slice(i, i + 2)
-
+        xs.push(x)
+        ys.push(y)
         uvs.push(...calculateUv(x, y))
+      }
+
+      const centerX = xs.reduce((sum, x) => sum + x, 0) / xs.length
+      const centerY = ys.reduce((sum, x) => sum + x, 0) / ys.length
+
+      const newCentroid = calculateNewCentroid(centerX, centerY, 0.7, 0.9)
+
+      const diff = {
+        x: newCentroid.x - centerX,
+        y: newCentroid.y - centerY
       }
 
       geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
@@ -148,6 +171,7 @@ export class Image {
       geom.computeVertexNormals()
 
       const mesh = createMesh(geom)
+
       return {
         mesh,
         solid: {
@@ -155,16 +179,11 @@ export class Image {
           rx: 0, ry: 0, rz: 0
         },
         shattered: {
-          x: mesh.position.x - index * 10, y: mesh.position.y + index * 10, z: mesh.position.z + index * 10,
-          rx: degreesToRadians(index * -10), ry: degreesToRadians(index * -10), rz: degreesToRadians(index * -5)
+          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + random(20),
+          rx: degreesToRadians(random(3, -3)), ry: degreesToRadians(random(3, -3)), rz: degreesToRadians(random(10, -10))
         }
       }
     })
-
-    // ----
-    this._stateConfig.shattered.objects = [
-      ...geoms
-    ]
 
     this.RenderState()
   }
@@ -172,8 +191,9 @@ export class Image {
   changeToState (state: State) {
     if (this._targetState === state) return
     this._targetState = state
+    this._stateConfig.shattered.objects.forEach(o => o.steps = undefined)
 
-    this.AnimateToState()
+    this.AnimateToState(true)
   }
 
   private RenderState () {
@@ -185,7 +205,7 @@ export class Image {
   }
 
   _nextFrame?: number
-  private AnimateToState () {
+  private AnimateToState (stateChange = false) {
     const cleanupFrame = () => {
       if (this._nextFrame) cancelAnimationFrame(this._nextFrame)
       this._nextFrame = undefined
@@ -195,15 +215,27 @@ export class Image {
     const config = this._stateConfig.shattered
 
     for (const obj of config.objects) {
+      if (!obj.steps) {
+        const axisDistances = ['x', 'y', 'z'].map(key => distance(obj[this._targetState][key], obj.mesh.position[key]))
+        const average = axisDistances.reduce((sum, val) => sum + val, 0) / axisDistances.length
+
+        const rotationDistances = ['x', 'y', 'z'].map(key => distance(obj[this._targetState][`r${key}`], obj.mesh.rotation[key]))
+        const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
+
+        obj.steps = {
+          axis: average / ANIMATION_TIME * 60,
+          rotation: degreesToRadians(1.7)
+        }
+      }
       const moveAxis = (key: 'z' | 'x' | 'y', set: (x: number) => void) => {
         const curr = obj.mesh.position[key]
         const target = obj[this._targetState][key]
         if (curr !== target) {
           const diff = distance(target, curr)
-          if (diff <= AXIS_SPEED) {
+          if (diff <= obj.steps.axis) {
             set(target)
           } else {
-            const direction = target < curr ? -AXIS_SPEED : AXIS_SPEED
+            const direction = target < curr ? -obj.steps.axis : obj.steps.axis
             animationDone = false
             set(curr + direction)
           }
@@ -216,10 +248,10 @@ export class Image {
 
         if (curr !== target) {
           const diff = distance(target, curr)
-          if (diff <= ROTATION_SPEED) {
+          if (diff <= obj.steps.rotation) {
             return target
           } else {
-            const direction = target < curr ? -ROTATION_SPEED : ROTATION_SPEED
+            const direction = target < curr ? -obj.steps.rotation : obj.steps.rotation
             animationDone = false
             return curr + direction
           }
@@ -251,6 +283,12 @@ export class Image {
     }
 
     if (this._targetState === 'shattered' && this._currentState === 'solid') {
+      if (stateChange) {
+        this._currentState = this._targetState
+        this.RenderState()
+        return
+      }
+
       this.AnimateToState()
       return
     }
@@ -264,8 +302,7 @@ export class Image {
   }
 }
 
-const AXIS_SPEED = 0.5
-const ROTATION_SPEED = degreesToRadians(1.7)
+const ANIMATION_TIME = 500
 
 const distance = (a: number, b: number) => Math.abs(a - b)
 
@@ -279,4 +316,8 @@ function shaderParse (glsl: string) {
 
 function degreesToRadians (deg: number) {
   return deg * Math.PI / 180
+}
+
+function random (max: number, min = 0) {
+  return Math.random() * (max - min) + min
 }

@@ -107,8 +107,8 @@ export class Scene {
   private SetupBackground () {
     this._background = new THREE.Mesh(
       new THREE.PlaneGeometry(this.width * 5, this.height * 5),
-      new THREE.MeshPhysicalMaterial({
-        color: 'white',
+      new THREE.MeshPhongMaterial({
+        color: '#666',
         side: THREE.DoubleSide
       })
     )
@@ -116,20 +116,20 @@ export class Scene {
     this._background.position.set(0, 0, -70)
     this._background.receiveShadow = true
     this.scene.add(this._background)
+
   }
 
   private SetupLight () {
     const ambient = new THREE.AmbientLight('white', 0.7)
     this.scene.add(ambient)
 
-    this.light = new THREE.SpotLight('white', 0.5, undefined, undefined, 0.5)
-    this.light.shadow.mapSize.width = 512 * 4
-    this.light.shadow.mapSize.height = 512 * 4
+    this.light = new THREE.SpotLight('white', 1, undefined, degreesToRadians(150))
+    this.light.shadow.mapSize.width = 512 * 2
+    this.light.shadow.mapSize.height = 512 * 2
     this.light.position.set(0, 10, 400)
     this.light.castShadow = true
     this.light.shadow.camera.near = 1
     this.light.shadow.camera.far = 4000
-    this.light.shadow.camera.fov = 30
     // Important for objects to not drop shadow on themselves
     this.light.shadow.bias = -0.0001
     this.light.penumbra = 0.5
@@ -179,4 +179,8 @@ export class Scene {
     if (this.lightHelper) this.lightHelper.update()
     if (this.shadowCameraHelper) this.shadowCameraHelper.update()
   }
+}
+
+function degreesToRadians (deg: number) {
+  return deg * Math.PI / 180
 }
