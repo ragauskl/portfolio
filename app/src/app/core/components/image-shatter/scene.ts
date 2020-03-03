@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { degreesToRadians, distance, ANIMATION_TIME } from './utils'
 
 export class Scene {
   scene: THREE.Scene
@@ -47,6 +48,19 @@ export class Scene {
     return this.scene.children.filter(x => x !== this._background && x instanceof THREE.Mesh)
   }
 
+  _camConfig = {
+    original: {
+      x: 0,
+      y: 0,
+      z: 500
+    },
+    target: {
+      x: 0,
+      y: 0,
+      z: 500
+    }
+  }
+
   constructor (
     private element: HTMLElement,
     private debug = false
@@ -75,7 +89,62 @@ export class Scene {
   }
 
   resetCamera () {
-    this.camera.position.set(0, 0, 500)
+    this.MoveTo(0, 0)
+  }
+
+  moveToMouse () {
+    this.MoveTo(-this.mouse.x / 2, this.mouse.y / 2)
+  }
+
+  private MoveTo (x: number, y: number) {
+    this._camConfig.target.x = x
+    this._camConfig.target.y = y
+
+    if (this._nextCamFrame) cancelAnimationFrame(this._nextCamFrame)
+    this._nextCamFrame = undefined
+    this.AnimateCamera()
+  }
+
+  private _nextCamFrame?: number
+  private AnimateCamera () {
+    const cleanupFrame = () => {
+      if (this._nextCamFrame) cancelAnimationFrame(this._nextCamFrame)
+      this._nextCamFrame = undefined
+    }
+
+    let animationDone = true
+    const config = this._camConfig.target
+
+    const axisDistances = ['x', 'y', 'z'].map(key => distance(config[key], this.camera.position[key]))
+    const average = axisDistances.reduce((sum, val) => sum + val, 0) / axisDistances.length
+
+    const axisSpeed = 0.15
+
+    const moveAxis = (key: 'z' | 'x' | 'y', set: (x: number) => void) => {
+      const curr = this.camera.position[key]
+      const target = config[key]
+      if (curr !== target) {
+        const diff = distance(target, curr)
+        if (diff <= axisSpeed) {
+          set(target)
+        } else {
+          const direction = target < curr ? -axisSpeed : axisSpeed
+          animationDone = false
+          set(curr + direction)
+        }
+      }
+    }
+
+    moveAxis('z', (val) => this.camera.position.z = val)
+    moveAxis('x', (val) => this.camera.position.x = val)
+    moveAxis('y', (val) => this.camera.position.y = val)
+    this.updateLight(true)
+    if (!animationDone) {
+      this._nextFrame = requestAnimationFrame(this.AnimateCamera.bind(this))
+      return
+    }
+
+    cleanupFrame()
   }
 
   private _nextFrame?: number
@@ -108,7 +177,7 @@ export class Scene {
     this._background = new THREE.Mesh(
       new THREE.PlaneGeometry(this.width * 5, this.height * 5),
       new THREE.MeshPhongMaterial({
-        color: '#666',
+        color: 'white',
         side: THREE.DoubleSide
       })
     )
@@ -126,14 +195,26 @@ export class Scene {
     this.light = new THREE.SpotLight('white', 1, undefined, degreesToRadians(150))
     this.light.shadow.mapSize.width = 512 * 2
     this.light.shadow.mapSize.height = 512 * 2
-    this.light.position.set(0, 10, 400)
+    this.light.position.set(0, 50, 400)
     this.light.castShadow = true
     this.light.shadow.camera.near = 1
-    this.light.shadow.camera.far = 4000
+    this.light.shadow.camera.far = 1000
     // Important for objects to not drop shadow on themselves
     this.light.shadow.bias = -0.0001
     this.light.penumbra = 0.5
     this.scene.add(this.light)
+
+    // this.light = new THREE.SpotLight('white', 0.5, undefined, degreesToRadians(150))
+    // this.light.shadow.mapSize.width = 512 * 2
+    // this.light.shadow.mapSize.height = 512 * 2
+    // this.light.position.set(0, -50, 400)
+    // this.light.castShadow = true
+    // this.light.shadow.camera.near = 1
+    // this.light.shadow.camera.far = 4000
+    // // Important for objects to not drop shadow on themselves
+    // this.light.shadow.bias = -0.0001
+    // this.light.penumbra = 0.5
+    // this.scene.add(this.light)
   }
 
   private SetupDebugTools () {
@@ -164,23 +245,13 @@ export class Scene {
   updateLight (pos = false) {
     if (pos) {
       this.light.position.set(
-      this.camera.position.x,
-      this.camera.position.y,
-      this.camera.position.z
-    )
-
-      this.light.rotation.set(
-      this.camera.rotation.x,
-      this.camera.rotation.y,
-      this.camera.rotation.z
-    )
+        -this.camera.position.x,
+        -this.camera.position.y,
+         this.light.position.z
+      )
     }
 
     if (this.lightHelper) this.lightHelper.update()
     if (this.shadowCameraHelper) this.shadowCameraHelper.update()
   }
-}
-
-function degreesToRadians (deg: number) {
-  return deg * Math.PI / 180
 }

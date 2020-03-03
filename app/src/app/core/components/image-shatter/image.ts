@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import { Scene } from './scene'
 import { BehaviorSubject, of } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid, translateToOrigin, translateToCornerOrigin } from './triangulate'
+import { distance, degreesToRadians, ANIMATION_TIME } from './utils'
+import { randomRange } from '../post-cover/helpers/utils'
 
 type State = 'solid' | 'shattered'
 
@@ -92,10 +94,6 @@ export class Image {
         texture: {
           type: 't',
           value: loader.load(this._src)
-        },
-        lightPosition: {
-          type: 'v3',
-          value: this._scene.light.position
         }
       },
       vertexShader: shaderParse(this._vertexShader),
@@ -107,7 +105,7 @@ export class Image {
 
     const createMesh = (geom: THREE.Geometry | THREE.BufferGeometry) => {
       const mesh = new THREE.Mesh(geom, material)
-      mesh.position.set(0,0,2)
+      mesh.position.set(0, 0, 20)
       mesh.castShadow = true
       mesh.receiveShadow = true
       return mesh
@@ -179,8 +177,8 @@ export class Image {
           rx: 0, ry: 0, rz: 0
         },
         shattered: {
-          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + random(20),
-          rx: degreesToRadians(random(3, -3)), ry: degreesToRadians(random(3, -3)), rz: degreesToRadians(random(10, -10))
+          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(0, 20),
+          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-10, 10))
         }
       }
     })
@@ -302,22 +300,10 @@ export class Image {
   }
 }
 
-const ANIMATION_TIME = 500
-
-const distance = (a: number, b: number) => Math.abs(a - b)
-
 function shaderParse (glsl: string) {
   const replaceThreeChunkFn = (_: any, b: any) => {
     return THREE.ShaderChunk[b] + '\n'
   }
 
   return glsl.replace(/\/\/\s?chunk\(\s?(\w+)\s?\);/g, replaceThreeChunkFn)
-}
-
-function degreesToRadians (deg: number) {
-  return deg * Math.PI / 180
-}
-
-function random (max: number, min = 0) {
-  return Math.random() * (max - min) + min
 }

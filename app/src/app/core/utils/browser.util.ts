@@ -33,7 +33,7 @@ class BrowserUtil {
     href: 'https://www.apple.com/uk/safari/'
   }, {
     name: 'Edge',
-    supported: false,
+    supported: true,
     src: `${this.logos}/edge.svg`
   }, {
     name: 'Opera',

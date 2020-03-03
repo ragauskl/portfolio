@@ -60,12 +60,28 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       this._subscriptions.add(
         fromEvent(element, 'mouseleave').subscribe(e => {
           this.image.changeToState('solid')
+          this.scene.resetCamera()
         })
       )
 
       this._subscriptions.add(
         fromEvent(element, 'mousemove').subscribe(e => {
           this.image.changeToState('shattered')
+
+          const event = e as MouseEvent
+          const rect = element.getBoundingClientRect()
+          this.scene.mouse.updatePosition(event.clientX - rect.left, event.clientY - rect.top)
+
+          const rotateX = +(this.scene.mouse.y / element.offsetHeight / 0.5).toFixed(2)
+          const rotateY = +(this.scene.mouse.x / element.offsetWidth / 0.5).toFixed(2)
+
+          this.scene.moveToMouse()
+          //   for (const mesh of this.scene.meshObjects) {
+          //     mesh.rotation.x = +rotateX
+          //     mesh.rotation.y = +rotateY
+          //   }
+
+          //   this.scene.renderer.render(this.scene.scene, this.scene.camera)
         })
       )
     })

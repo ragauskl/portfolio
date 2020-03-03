@@ -1,4 +1,5 @@
 import * as triangulate from 'delaunay-triangulate'
+import { randomRange, clamp } from './utils'
 
 export function getTriangleVertices (w: number, h: number): [[number, number], [number, number], [number, number]][] {
   const vertices: [number, number][] = []
@@ -51,14 +52,6 @@ export function getTriangleVertices (w: number, h: number): [[number, number], [
   }
 
   return triangles
-}
-
-export function randomRange (min: number, max: number): number {
-  return min + (max - min) * Math.random()
-}
-
-export function clamp (x: number, min: number, max: number) {
-  return x < min ? min : (x > max ? max : x)
 }
 
 export function calculateNewCentroid (cx: number, cy: number, distanceMin: number, distanceMax: number) {

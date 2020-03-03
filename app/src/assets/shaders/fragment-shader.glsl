@@ -6,17 +6,10 @@
 * passed from the vertex shader
 **/
 
-
-
-precision highp float; // set float precision (optional)
+// precision highp float; // set float precision (optional)
 
 uniform sampler2D texture; // identify the texture as a uniform argument
 varying vec2 vUv; // identify the uv values as a varying attribute
-
-varying vec3 vWorldPosition;
-uniform vec3 lightPosition;
-
-varying vec3 vNormal;
 
 // chunk(common);
 // chunk(packing);
@@ -30,11 +23,6 @@ varying vec3 vNormal;
 
 
 void main(void) {
-
-  vec3 lightDirection = normalize(lightPosition - vWorldPosition);
-
-  vec3 outgoingLight = vec3(1.0);
-
   float mask = min(1.0, getShadowMask() + 0.7);
   vec4 tx = texture2D(texture, vUv) * mask;
 
