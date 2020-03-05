@@ -20,6 +20,8 @@ export class Image {
   private _targetState: State = 'solid'
   private _currentState: State = 'solid'
 
+  private _activeGroup: THREE.Group
+
   private _stateConfig: {
     [key in State]: {
       objects: {
@@ -177,7 +179,7 @@ export class Image {
           rx: 0, ry: 0, rz: 0
         },
         shattered: {
-          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(0, 20),
+          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(0, 50),
           rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-10, 10))
         }
       }
@@ -194,11 +196,93 @@ export class Image {
     this.AnimateToState(true)
   }
 
+  _rotationConfig = {
+    original: {
+      x: 0,
+      y: 0
+    },
+    target: {
+      x: 0,
+      y: 0
+    }
+  }
+
+  private RotateBy (x: number, y: number) {
+    this._rotationConfig.target.x = x
+    this._rotationConfig.target.y = y
+
+    if (this._nextRotateFrame) cancelAnimationFrame(this._nextRotateFrame)
+    this._nextRotateFrame = undefined
+    this.AnimateRotation()
+  }
+
+  resetRotation () {
+    this.RotateBy(0, 0)
+  }
+
+  rotateToMouse () {
+    const distanceX = Math.abs(this._scene.mouse.x) * 100 / (this._width / 2) * (this._scene.mouse.x < 0 ? -1 : 1) / 6
+    const distanceY = Math.abs(this._scene.mouse.y) * 100 / (this._height / 2) * (this._scene.mouse.y < 0 ? -1 : 1) / 8
+    this.RotateBy(degreesToRadians(distanceY), degreesToRadians(distanceX))
+  }
+
+  private _nextRotateFrame?: number
+  private AnimateRotation () {
+    const cleanupFrame = () => {
+      if (this._nextRotateFrame) cancelAnimationFrame(this._nextRotateFrame)
+      this._nextRotateFrame = undefined
+    }
+
+    let animationDone = true
+    const config = this._rotationConfig.target
+
+    const rotationDistances = ['x', 'y'].map(key => distance(config[key], this._activeGroup.position[key]))
+    const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
+
+    const axisSpeed = degreesToRadians(1.7)
+
+    const rotateAxis = (key: 'x' | 'y'): number => {
+      const curr = this._activeGroup.rotation[key]
+      const target = config[key]
+
+      if (curr !== target) {
+        const diff = distance(target, curr)
+        if (diff <= axisSpeed) {
+          return target
+        } else {
+          const direction = target < curr ? -axisSpeed : axisSpeed
+          animationDone = false
+          return curr + direction
+        }
+      }
+      return curr
+    }
+
+    const [x, y, z] = [
+      rotateAxis('x'),
+      rotateAxis('y'),
+      0
+    ]
+
+    this._activeGroup.rotation.set(x, y, z)
+
+    if (!animationDone) {
+      this._nextFrame = requestAnimationFrame(this.AnimateRotation.bind(this))
+      return
+    }
+
+    cleanupFrame()
+  }
+
   private RenderState () {
     this._scene.clearScene()
+
+    this._activeGroup = new THREE.Group()
+    this._scene.scene.add(this._activeGroup)
+
     const config = this._stateConfig[this._currentState]
     for (const obj of config.objects) {
-      this._scene.scene.add(obj.mesh)
+      this._activeGroup.add(obj.mesh)
     }
   }
 

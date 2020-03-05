@@ -6,7 +6,7 @@ export class Scene {
   scene: THREE.Scene
   renderer: THREE.WebGLRenderer
   camera: THREE.PerspectiveCamera
-  light: THREE.SpotLight
+  lights: THREE.SpotLight[] = []
 
   private _background: THREE.Mesh
   controls: OrbitControls
@@ -44,21 +44,10 @@ export class Scene {
     return this.element.clientWidth
   }
 
-  get meshObjects () {
-    return this.scene.children.filter(x => x !== this._background && x instanceof THREE.Mesh)
-  }
-
-  _camConfig = {
-    original: {
-      x: 0,
-      y: 0,
-      z: 500
-    },
-    target: {
-      x: 0,
-      y: 0,
-      z: 500
-    }
+  get objects () {
+    return this.scene.children.filter(x => x !== this._background && (
+      x instanceof THREE.Mesh || x instanceof THREE.Group
+    ))
   }
 
   constructor (
@@ -88,65 +77,6 @@ export class Scene {
     this.animate()
   }
 
-  resetCamera () {
-    this.MoveTo(0, 0)
-  }
-
-  moveToMouse () {
-    this.MoveTo(-this.mouse.x / 2, this.mouse.y / 2)
-  }
-
-  private MoveTo (x: number, y: number) {
-    this._camConfig.target.x = x
-    this._camConfig.target.y = y
-
-    if (this._nextCamFrame) cancelAnimationFrame(this._nextCamFrame)
-    this._nextCamFrame = undefined
-    this.AnimateCamera()
-  }
-
-  private _nextCamFrame?: number
-  private AnimateCamera () {
-    const cleanupFrame = () => {
-      if (this._nextCamFrame) cancelAnimationFrame(this._nextCamFrame)
-      this._nextCamFrame = undefined
-    }
-
-    let animationDone = true
-    const config = this._camConfig.target
-
-    const axisDistances = ['x', 'y', 'z'].map(key => distance(config[key], this.camera.position[key]))
-    const average = axisDistances.reduce((sum, val) => sum + val, 0) / axisDistances.length
-
-    const axisSpeed = 0.15
-
-    const moveAxis = (key: 'z' | 'x' | 'y', set: (x: number) => void) => {
-      const curr = this.camera.position[key]
-      const target = config[key]
-      if (curr !== target) {
-        const diff = distance(target, curr)
-        if (diff <= axisSpeed) {
-          set(target)
-        } else {
-          const direction = target < curr ? -axisSpeed : axisSpeed
-          animationDone = false
-          set(curr + direction)
-        }
-      }
-    }
-
-    moveAxis('z', (val) => this.camera.position.z = val)
-    moveAxis('x', (val) => this.camera.position.x = val)
-    moveAxis('y', (val) => this.camera.position.y = val)
-    this.updateLight(true)
-    if (!animationDone) {
-      this._nextFrame = requestAnimationFrame(this.AnimateCamera.bind(this))
-      return
-    }
-
-    cleanupFrame()
-  }
-
   private _nextFrame?: number
   animate () {
     this._nextFrame = requestAnimationFrame(this.animate.bind(this))
@@ -164,7 +94,7 @@ export class Scene {
   }
 
   clearScene () {
-    for (const child of this.meshObjects) {
+    for (const child of this.objects) {
       this.scene.remove(child)
     }
   }
@@ -189,32 +119,27 @@ export class Scene {
   }
 
   private SetupLight () {
-    const ambient = new THREE.AmbientLight('white', 0.7)
+    const ambient = new THREE.AmbientLight('white', 0.5)
     this.scene.add(ambient)
 
-    this.light = new THREE.SpotLight('white', 1, undefined, degreesToRadians(150))
-    this.light.shadow.mapSize.width = 512 * 2
-    this.light.shadow.mapSize.height = 512 * 2
-    this.light.position.set(0, 50, 400)
-    this.light.castShadow = true
-    this.light.shadow.camera.near = 1
-    this.light.shadow.camera.far = 1000
-    // Important for objects to not drop shadow on themselves
-    this.light.shadow.bias = -0.0001
-    this.light.penumbra = 0.5
-    this.scene.add(this.light)
+    for (const [x, y, z] of [
+      [0, 20, 400],
+      [0, -10, 500]
+    ]) {
+      const light = new THREE.SpotLight('white', 0.3, undefined, degreesToRadians(150))
+      light.shadow.mapSize.width = 512 * 2
+      light.shadow.mapSize.height = 512 * 2
+      light.position.set(x, y, z)
+      light.castShadow = true
+      light.shadow.camera.near = 1
+      light.shadow.camera.far = 1000
+      // Important for objects to not drop shadow on themselves
+      light.shadow.bias = -0.0001
+      light.penumbra = 0.5
+      this.scene.add(light)
+      this.lights.push(light)
+    }
 
-    // this.light = new THREE.SpotLight('white', 0.5, undefined, degreesToRadians(150))
-    // this.light.shadow.mapSize.width = 512 * 2
-    // this.light.shadow.mapSize.height = 512 * 2
-    // this.light.position.set(0, -50, 400)
-    // this.light.castShadow = true
-    // this.light.shadow.camera.near = 1
-    // this.light.shadow.camera.far = 4000
-    // // Important for objects to not drop shadow on themselves
-    // this.light.shadow.bias = -0.0001
-    // this.light.penumbra = 0.5
-    // this.scene.add(this.light)
   }
 
   private SetupDebugTools () {
@@ -242,15 +167,7 @@ export class Scene {
     this.renderer.render(this.scene, this.camera)
   }
 
-  updateLight (pos = false) {
-    if (pos) {
-      this.light.position.set(
-        -this.camera.position.x,
-        -this.camera.position.y,
-         this.light.position.z
-      )
-    }
-
+  updateLight () {
     if (this.lightHelper) this.lightHelper.update()
     if (this.shadowCameraHelper) this.shadowCameraHelper.update()
   }
