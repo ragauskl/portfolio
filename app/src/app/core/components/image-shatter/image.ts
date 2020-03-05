@@ -5,7 +5,7 @@ import { BehaviorSubject, of } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid, translateToOrigin, translateToCornerOrigin } from './triangulate'
 import { distance, degreesToRadians, ANIMATION_TIME } from './utils'
 import { randomRange } from '../post-cover/helpers/utils'
-
+import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
 export class Image {
@@ -92,7 +92,7 @@ export class Image {
     const material = new THREE.ShaderMaterial({
       uniforms:
       {
-        ...THREE.UniformsLib.lights,
+        ...cloneDeep(THREE.UniformsLib.lights),
         texture: {
           type: 't',
           value: loader.load(this._src)

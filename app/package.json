@@ -46,6 +46,7 @@
     "@types/gh-pages": "^2.0.0",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/lodash": "^4.14.149",
     "@types/node": "~8.9.4",
     "@types/noisejs": "0.0.28",
     "codelyzer": "^5.0.0",

@@ -1,14 +1,10 @@
 [{
-  "title": "Lorem Ipsum",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac tincidunt felis, sed egestas tellus. Aliquam fringilla egestas leo, eu fringilla tortor vehicula ut. Phasellus elementum ante ac orci feugiat sodales. Curabitur pharetra elementum placerat. Nulla ac lacus non justo ultrices finibus a vel arcu. In lobortis lobortis elementum.",
-  "featured": true
-},{
   "title": "VSCode File Pin Extension",
   "description": "3-vscode-pin/description.md",
   "summary": "VSCode extension used for pinning folders, files and file lines for quick access, which I started out of personal need for optimizing workflow in a large mono-repo.",
   "startDate": "2020.01",
   "github": "https://github.com/ragauskl/vscode-pin",
-  "featured": false
+  "featured": true
 }, {
   "title": "Personal Portfolio",
   "description": "2-portfolio/description.md",
@@ -17,7 +13,7 @@
   "endDate": "2020.03",
   "github": "https://github.com/ragauskl/portfolio",
   "live": "https://lina.codes/",
-  "featured": false
+  "featured": true
 }, {
   "title": "RouteFox (Dissertation)",
   "description": "1-route-fox/description.md",
@@ -26,5 +22,5 @@
   "endDate": "2018.04",
   "demo": "https://www.youtube.com/watch?v=9NwdTCJON8U&feature=youtu.be",
   "live": null,
-  "featured": false
+  "featured": true
 }]

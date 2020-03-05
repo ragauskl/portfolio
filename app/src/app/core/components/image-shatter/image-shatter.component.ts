@@ -28,7 +28,7 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
   async ngAfterViewInit () {
     const element = this._el.nativeElement
-    window['obj'] = this
+    window[`obj${Math.round(Math.random() * 10)}`] = this
 
     this._subscriptions.add(
       fromEvent(window, 'keydown').subscribe(e => {
