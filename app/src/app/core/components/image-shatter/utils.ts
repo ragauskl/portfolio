@@ -13,4 +13,3 @@ export function degreesToRadians (deg: number) {
 
 export const distance = (a: number, b: number) => Math.abs(a - b)
 
-export const ANIMATION_TIME = 1000

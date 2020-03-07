@@ -74,11 +74,18 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       }
 
       const onMove = (mouseX: number, mouseY: number) => {
-        this.image.changeToState('shattered')
         mouseOver = true
 
         const rect = element.getBoundingClientRect()
-        this.scene.mouse.updatePosition(mouseX - rect.left, mouseY - rect.top)
+        this.scene.updateMouse(mouseX - rect.left, mouseY - rect.top)
+
+        if (!this.image.matrix) return
+
+        this.scene.ray.copy(this.scene.raycaster.ray).applyMatrix4(this.image.matrix)
+        if (!this.scene.ray.intersectBox(this.image.bbox, new THREE.Vector3())) {
+          onLeave()
+          return
+        }
 
         this.image.rotateToMouse()
       }
@@ -110,5 +117,4 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       )
     })
   }
-
 }

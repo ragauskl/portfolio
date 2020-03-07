@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { degreesToRadians, distance, ANIMATION_TIME } from './utils'
+import { degreesToRadians } from './utils'
 
 export class Scene {
   scene: THREE.Scene
@@ -12,6 +12,7 @@ export class Scene {
   controls: OrbitControls
 
   raycaster: THREE.Raycaster
+  ray: THREE.Ray
   rendererMouse: THREE.Vector2
   helpers: (THREE.SpotLightHelper | THREE.CameraHelper)[] = []
 
@@ -71,6 +72,7 @@ export class Scene {
     if (this.debug) this.SetupDebugTools()
 
     this.raycaster = new THREE.Raycaster()
+    this.ray = new THREE.Ray()
     this.rendererMouse = new THREE.Vector2()
 
     this.animate()
@@ -98,6 +100,15 @@ export class Scene {
     }
   }
 
+  updateMouse (x: number, y: number) {
+    this.mouse.updatePosition(x, y)
+    if (this.raycaster) {
+      this.rendererMouse.x = (this.mouse.relativeX / this.width) * 2 - 1
+      this.rendererMouse.y = -(this.mouse.relativeY / this.height) * 2 + 1
+      this.raycaster.setFromCamera(this.rendererMouse, this.camera)
+    }
+  }
+
   private UpdateMouse () {
     this.mouse.setOrigin(this.element)
   }
@@ -111,7 +122,7 @@ export class Scene {
       })
     )
 
-    this._background.position.set(0, 0, -70)
+    this._background.position.set(0, 0, -300)
     this._background.receiveShadow = true
     this.scene.add(this._background)
 
@@ -122,10 +133,10 @@ export class Scene {
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 10, 500],
-      [0, -10, 600]
+      [0, 10, 600],
+      [0, -10, 700]
     ]) {
-      const light = new THREE.SpotLight('white', 0.3, undefined, degreesToRadians(150))
+      const light = new THREE.SpotLight('white', 0.3, undefined, degreesToRadians(160))
       light.shadow.mapSize.width = 512 * 2
       light.shadow.mapSize.height = 512 * 2
       light.position.set(x, y, z)

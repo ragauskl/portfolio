@@ -3,12 +3,11 @@ import * as THREE from 'three'
 import { Scene } from './scene'
 import { BehaviorSubject } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid } from './triangulate'
-import { distance, degreesToRadians, ANIMATION_TIME } from './utils'
+import { distance, degreesToRadians } from './utils'
 import { randomRange } from '../post-cover/helpers/utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
-// trigger on group
 // add text
 // shatter duration more equally
 // smoother shadows
@@ -24,7 +23,9 @@ export class Image {
   private _targetState: State = 'solid'
   private _currentState: State = 'solid'
 
-  private _activeGroup: THREE.Group
+  activeGroup: THREE.Group
+  bbox: THREE.Box3
+  matrix: THREE.Matrix4
 
   private _stateConfig: {
     [key in State]: {
@@ -225,6 +226,7 @@ export class Image {
   }
 
   rotateToMouse () {
+    this.changeToState('shattered')
     const distanceX = Math.abs(this._scene.mouse.x) * 100 / (this._width / 2) * (this._scene.mouse.x < 0 ? -1 : 1) / 6
     const distanceY = Math.abs(this._scene.mouse.y) * 100 / (this._height / 2) * (this._scene.mouse.y < 0 ? -1 : 1) / 8
     this.RotateBy(degreesToRadians(distanceY), degreesToRadians(distanceX))
@@ -240,13 +242,13 @@ export class Image {
     let animationDone = true
     const config = this._rotationConfig.target
 
-    const rotationDistances = ['x', 'y'].map(key => distance(config[key], this._activeGroup.position[key]))
+    const rotationDistances = ['x', 'y'].map(key => distance(config[key], this.activeGroup.position[key]))
     const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
 
-    const axisSpeed = degreesToRadians(1.7)
+    const axisSpeed = degreesToRadians(0.07)
 
     const rotateAxis = (key: 'x' | 'y'): number => {
-      const curr = this._activeGroup.rotation[key]
+      const curr = this.activeGroup.rotation[key]
       const target = config[key]
 
       if (curr !== target) {
@@ -268,7 +270,7 @@ export class Image {
       0
     ]
 
-    this._activeGroup.rotation.set(x, y, z)
+    this.activeGroup.rotation.set(x, y, z)
 
     if (!animationDone) {
       this._nextFrame = requestAnimationFrame(this.AnimateRotation.bind(this))
@@ -281,13 +283,21 @@ export class Image {
   private RenderState () {
     this._scene.clearScene()
 
-    this._activeGroup = new THREE.Group()
-    this._scene.scene.add(this._activeGroup)
+    this.activeGroup = new THREE.Group()
+    this._scene.scene.add(this.activeGroup)
 
     const config = this._stateConfig[this._currentState]
     for (const obj of config.objects) {
-      this._activeGroup.add(obj.mesh)
+      this.activeGroup.add(obj.mesh)
     }
+    this.UpdateIntersectionSetup()
+  }
+
+  private UpdateIntersectionSetup () {
+    this.bbox = new THREE.Box3().setFromObject(this.activeGroup)
+
+    if (!this.matrix) this.matrix = new THREE.Matrix4()
+    this.matrix.getInverse(this.activeGroup.matrixWorld)
   }
 
   _nextFrame?: number
@@ -307,7 +317,7 @@ export class Image {
 
         const rotationDistances = ['x', 'y', 'z'].map(key => distance(obj[this._targetState][`r${key}`], obj.mesh.rotation[key]))
         const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
-
+        const ANIMATION_TIME = 1000
         obj.steps = {
           axis: average / ANIMATION_TIME * 60,
           rotation: degreesToRadians(1.7)
@@ -357,6 +367,7 @@ export class Image {
 
       obj.mesh.rotation.set(x, y, z)
     }
+    this.UpdateIntersectionSetup()
 
     if (!animationDone) {
       if (this._targetState === 'shattered' && this._currentState === 'solid') {
