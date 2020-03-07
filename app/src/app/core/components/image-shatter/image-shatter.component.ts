@@ -48,8 +48,8 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     this.image = new Image(
       this._http,
       this.src,
-      350,
-      210,
+      270,
+      300,
       this.scene
     )
 

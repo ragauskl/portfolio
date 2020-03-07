@@ -2,25 +2,34 @@
 
 :host {
  @include flex(column, flex-start, center);
- @include item-space(column, 100px);
 }
 
 .project-block {
   width: 100%;
   @include flex(row, space-between);
+  margin-left: -10%;
 
   &.reverse {
     flex-direction: row-reverse;
+    margin-left: 10%;
   }
 
   > * {
-    flex: 0 0 46%;
-    min-height: 100px;
+    &:first-child {
+      flex: 0 0 55%;
+      min-height: 100px;
+    }
+
+    &:last-child {
+      flex: 0 0 45%;
+      min-height: 100px;
+      padding: 0 20px
+    }
   }
 
   .summary-wrapper {
     position: relative;
-    padding-top: 80%;
+    padding-top: 90%;
 
     @include flex(column, flex-start, stretch);
     @include item-space(column, 15px);
@@ -31,9 +40,18 @@
   }
 
   @include break ('lt', 'm') {
+    margin-left: 0;
+
     @include flex(column, flex-start);
     &.reverse {
       flex-direction: column;
+      margin-left: 0;
+    }
+
+    > * {
+      &:last-child {
+        margin-top: -14%;
+      }
     }
 
     .summary-wrapper {
@@ -45,8 +63,6 @@
       }
     }
 
-    @include item-space(column, 15px);
-
     > * {
       flex: unset;
       width: 100%;
@@ -55,7 +71,7 @@
 }
 
 .image {
-  padding-top: 100%;
+  padding-top: 120%;
   width: 100%;
   position: relative;
 }

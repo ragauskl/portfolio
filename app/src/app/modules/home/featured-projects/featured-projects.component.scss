@@ -7,10 +7,14 @@
 
   h1 {
     flex: 0 0 auto;
+    // So that canvas of app-projects-list would not get drawn over header
+    // due to negative margin-top
+    z-index: 1;
   }
 }
 
 app-projects-list {
+  margin-top: -75px;
   width: 80%;
   max-width: 1000px;
 

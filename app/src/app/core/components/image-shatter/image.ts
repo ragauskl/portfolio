@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http'
 import * as THREE from 'three'
 import { Scene } from './scene'
-import { BehaviorSubject, of } from 'rxjs'
-import { getTriangleVertices, calculateNewCentroid, translateToOrigin, translateToCornerOrigin } from './triangulate'
+import { BehaviorSubject } from 'rxjs'
+import { getTriangleVertices, calculateNewCentroid } from './triangulate'
 import { distance, degreesToRadians, ANIMATION_TIME } from './utils'
 import { randomRange } from '../post-cover/helpers/utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
+// trigger on group
+// add text
 // shatter duration more equally
-// increase size of image
 // smoother shadows
 export class Image {
   private _vertexShader: string

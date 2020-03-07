@@ -56,7 +56,7 @@ export class Scene {
     this.UpdateMouse()
 
     this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.01, 10000)
-    this.camera.position.z = 500
+    this.camera.position.z = 600
 
     this.scene = new THREE.Scene()
 
@@ -122,8 +122,8 @@ export class Scene {
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 20, 400],
-      [0, -10, 500]
+      [0, 10, 500],
+      [0, -10, 600]
     ]) {
       const light = new THREE.SpotLight('white', 0.3, undefined, degreesToRadians(150))
       light.shadow.mapSize.width = 512 * 2
