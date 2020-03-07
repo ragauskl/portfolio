@@ -8,7 +8,6 @@ import { randomRange } from '../post-cover/helpers/utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
-// mousemove when scrolling
 // shatter duration more equally
 // increase size of image
 // smoother shadows

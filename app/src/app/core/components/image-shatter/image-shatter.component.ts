@@ -40,7 +40,7 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       })
     )
 
-    this.scene = new Scene(element, true)
+    this.scene = new Scene(element)
     this._subscriptions.add(
       fromEvent(window, 'resize').subscribe(() => this.scene.onResize())
     )
@@ -57,22 +57,55 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       if (!rendered) return
       sub.unsubscribe()
 
+      const lastPosition = { x: 0, y: 0 }
       this._subscriptions.add(
-        fromEvent(element, 'mouseleave').subscribe(e => {
-          this.image.changeToState('solid')
-          this.image.resetRotation()
+        fromEvent(window, 'mousemove').subscribe(e => {
+          const ev = e as MouseEvent
+          lastPosition.x = ev.clientX
+          lastPosition.y = ev.clientY
+        })
+      )
+
+      let mouseOver = false
+      const onLeave = () => {
+        this.image.changeToState('solid')
+        this.image.resetRotation()
+        mouseOver = true
+      }
+
+      const onMove = (mouseX: number, mouseY: number) => {
+        this.image.changeToState('shattered')
+        mouseOver = true
+
+        const rect = element.getBoundingClientRect()
+        this.scene.mouse.updatePosition(mouseX - rect.left, mouseY - rect.top)
+
+        this.image.rotateToMouse()
+      }
+
+      this._subscriptions.add(
+        fromEvent(element, 'mouseleave').subscribe(e => onLeave())
+      )
+
+      this._subscriptions.add(
+        fromEvent(window, 'scroll').subscribe(e => {
+          const rect = element.getBoundingClientRect()
+          const inside = (
+            lastPosition.x < rect.right && lastPosition.x > rect.left
+          ) && (
+            lastPosition.y < rect.bottom && lastPosition.y > rect.top
+          )
+
+          if (!inside && mouseOver) onLeave()
+          else if (inside) onMove(lastPosition.x, lastPosition.y)
+
         })
       )
 
       this._subscriptions.add(
         fromEvent(element, 'mousemove').subscribe(e => {
-          this.image.changeToState('shattered')
-
           const event = e as MouseEvent
-          const rect = element.getBoundingClientRect()
-          this.scene.mouse.updatePosition(event.clientX - rect.left, event.clientY - rect.top)
-
-          this.image.rotateToMouse()
+          onMove(event.clientX, event.clientY)
         })
       )
     })

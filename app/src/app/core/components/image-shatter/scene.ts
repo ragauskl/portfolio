@@ -13,8 +13,7 @@ export class Scene {
 
   raycaster: THREE.Raycaster
   rendererMouse: THREE.Vector2
-  lightHelper: THREE.SpotLightHelper
-  shadowCameraHelper: THREE.CameraHelper
+  helpers: (THREE.SpotLightHelper | THREE.CameraHelper)[] = []
 
   // Mouse position relative to element
   mouse = {
@@ -143,13 +142,17 @@ export class Scene {
   }
 
   private SetupDebugTools () {
-    // this.lightHelper = new THREE.SpotLightHelper(this.light)
-    // this.scene.add(this.lightHelper)
+    for (const light of this.lights) {
+      const lightHelper = new THREE.SpotLightHelper(light)
+      this.scene.add(lightHelper)
+      this.helpers.push(lightHelper)
 
-    // this.shadowCameraHelper = new THREE.CameraHelper(this.light.shadow.camera)
-    // this.scene.add(this.shadowCameraHelper)
+      const shadowCameraHelper = new THREE.CameraHelper(light.shadow.camera)
+      this.scene.add(shadowCameraHelper)
+      this.helpers.push(shadowCameraHelper)
+    }
 
-    // this.scene.add(new THREE.AxesHelper(10))
+    this.scene.add(new THREE.AxesHelper(10))
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.enablePan = true
@@ -168,7 +171,6 @@ export class Scene {
   }
 
   updateLight () {
-    if (this.lightHelper) this.lightHelper.update()
-    if (this.shadowCameraHelper) this.shadowCameraHelper.update()
+    this.helpers.forEach(h => h.update())
   }
 }
