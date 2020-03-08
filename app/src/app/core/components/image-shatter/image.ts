@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { Scene } from './scene'
 import { BehaviorSubject } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid } from './triangulate'
-import { distance, degreesToRadians, round, randomRange } from './utils'
+import { distance, degreesToRadians, round, randomRange, getRangeOptions, randomFrom } from './utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
@@ -147,6 +147,15 @@ export class Image {
       ])
     )
 
+    const zs: {
+      [z: string]: {
+        min: [number, number]
+        max: [number, number]
+      }[]
+    } = {}
+    // Should have at least 7 options
+    const zOptions = getRangeOptions(-50, 55, 15).map(z => `${z}`)
+
     this._stateConfig.shattered.objects = geometries.map(vertices => {
       const geom = new THREE.BufferGeometry()
       const uvs = []
@@ -177,17 +186,48 @@ export class Image {
 
       const mesh = createMesh(geom)
 
-      return {
+      const shatteredPosition = { x: mesh.position.x + diff.x, y: mesh.position.y + diff.y }
+      const min: [number, number] = [
+        Math.min(...xs) + diff.x,
+        Math.min(...ys) + diff.x
+      ]
+      const max: [number, number] = [
+        Math.max(...xs) + diff.x,
+        Math.max(...ys) + diff.x
+      ]
+
+      const inside = (val, min, max) => val >= min && val <= max
+      const pointInside = (a, bMin, bMax) => inside(a[0], bMin[0], bMax[0]) && inside(a[1], bMin[1], bMax[1])
+      const usedZs = Object.keys(zs).filter(z =>
+        !!zs[z].find(box =>
+          pointInside(min, box.min, box.max) || pointInside(max, box.min, box.max) || pointInside(box.min, min, max) || pointInside(box.max, min, max)
+        )
+      )
+      const zFrom = usedZs.length ? [...zOptions].filter(z => !usedZs.includes(z)) : zOptions
+
+      let z = randomFrom(zFrom)
+      if (isNaN(+z)) {
+        console.warn('Fragment overlap warning. 0 unoccupied nearby z-indexes found.')
+        z = randomFrom(zOptions)
+      }
+      if (!zs[`${z}`]) zs[`${z}`] = []
+      zs[`${z}`].push({
+        min, max
+      })
+
+      const object = {
         mesh,
         solid: {
           x: mesh.position.x, y: mesh.position.y, z: mesh.position.z,
           rx: 0, ry: 0, rz: 0
         },
         shattered: {
-          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(-10, 50),
-          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-10, 10, 2))
+          ...shatteredPosition, z: mesh.position.z + +z,
+          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-3, 3))
         }
       }
+
+      return object
     })
 
     const fontLoader = new THREE.FontLoader()

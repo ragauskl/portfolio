@@ -4,6 +4,18 @@ export function randomRange (min: number, max: number, roundTo?: number): number
   return roundTo ? round(r, roundTo) : r
 }
 
+export function randomFrom (arr: (number | string)[]) {
+  if (arr.length < 1) return arr[0]
+  const max = arr.length - 1
+  const min = 0
+  const randIndex = randomRange(min, max, 1)
+  return arr[Math.min(max, randIndex)]
+}
+
+export function getRangeOptions (min: number, max: number, inc = 1) {
+  return Array(Math.round((max + 1 - min) / inc)).fill(undefined).map((_, i) => i * inc + min)
+}
+
 export function clamp (x: number, min: number, max: number) {
   return x < min ? min : (x > max ? max : x)
 }
