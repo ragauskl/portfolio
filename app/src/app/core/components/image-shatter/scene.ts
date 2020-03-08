@@ -122,23 +122,24 @@ export class Scene {
       })
     )
 
-    this._background.position.set(0, 0, -300)
+    this._background.position.set(0, 0, -100)
     this._background.receiveShadow = true
     this.scene.add(this._background)
 
   }
 
   private SetupLight () {
-    const ambient = new THREE.AmbientLight('white', 0.5)
+    const ambient = new THREE.AmbientLight('white', 0.6)
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 10, 600],
+      [0, 30, 600],
       [0, -10, 700]
     ]) {
-      const light = new THREE.SpotLight('white', 0.3, undefined, degreesToRadians(160))
-      light.shadow.mapSize.width = 512 * 2
-      light.shadow.mapSize.height = 512 * 2
+      const light = new THREE.SpotLight('white', 0.3, undefined)
+      light.angle = degreesToRadians(55)
+      light.shadow.mapSize.width = 512 * 4
+      light.shadow.mapSize.height = 512 * 4
       light.position.set(x, y, z)
       light.castShadow = true
       light.shadow.camera.near = 1

@@ -13,7 +13,7 @@
   "endDate": "2020.03",
   "github": "https://github.com/ragauskl/portfolio",
   "live": "https://lina.codes/",
-  "featured": true
+  "featured": false
 }, {
   "title": "RouteFox (Dissertation)",
   "description": "1-route-fox/description.md",
@@ -22,5 +22,5 @@
   "endDate": "2018.04",
   "demo": "https://www.youtube.com/watch?v=9NwdTCJON8U&feature=youtu.be",
   "live": null,
-  "featured": true
+  "featured": false
 }]

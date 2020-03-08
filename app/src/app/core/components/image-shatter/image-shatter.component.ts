@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, OnDestroy, Input } from '@angular/core'
+import { Component, ElementRef, AfterViewInit, OnDestroy, Input, HostBinding } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
@@ -11,11 +11,16 @@ import { Image } from './image'
 })
 export class ImageShatterComponent implements AfterViewInit, OnDestroy {
   private _subscriptions = new Subscription()
-
+  @HostBinding('style.cursor')
+  private get _cursor () {
+    return this.pointer ? 'pointer' : 'default'
+  }
   @Input() src: string
 
   scene: Scene
   image: Image
+
+  pointer = false
 
   constructor (
     private _el: ElementRef<HTMLElement>,
@@ -70,7 +75,7 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
       const onLeave = () => {
         this.image.changeToState('solid')
         this.image.resetRotation()
-        mouseOver = true
+        this.pointer = false
       }
 
       const onMove = (mouseX: number, mouseY: number) => {
@@ -86,12 +91,16 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
           onLeave()
           return
         }
+        this.pointer = true
 
         this.image.rotateToMouse()
       }
 
       this._subscriptions.add(
-        fromEvent(element, 'mouseleave').subscribe(e => onLeave())
+        fromEvent(element, 'mouseleave').subscribe(e => {
+          onLeave()
+          mouseOver = false
+        })
       )
 
       this._subscriptions.add(
@@ -103,7 +112,10 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
             lastPosition.y < rect.bottom && lastPosition.y > rect.top
           )
 
-          if (!inside && mouseOver) onLeave()
+          if (!inside && mouseOver) {
+            onLeave()
+            mouseOver = false
+          }
           else if (inside) onMove(lastPosition.x, lastPosition.y)
 
         })

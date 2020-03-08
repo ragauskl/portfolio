@@ -3,14 +3,12 @@ import * as THREE from 'three'
 import { Scene } from './scene'
 import { BehaviorSubject } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid } from './triangulate'
-import { distance, degreesToRadians } from './utils'
-import { randomRange } from '../post-cover/helpers/utils'
+import { distance, degreesToRadians, round, randomRange } from './utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
-// add text
 // shatter duration more equally
-// smoother shadows
+
 export class Image {
   private _vertexShader: string
   private _fragmentShader: string
@@ -19,6 +17,8 @@ export class Image {
   get rendered () {
     return this._rendered.asObservable()
   }
+
+  text: THREE.Mesh
 
   private _targetState: State = 'solid'
   private _currentState: State = 'solid'
@@ -74,8 +74,8 @@ export class Image {
   }
 
   private async InitRender () {
-    this._vertexShader = await this._http.get(`assets/shaders/vertex-shader.glsl`, { responseType: 'text' }).toPromise()
-    this._fragmentShader = await this._http.get(`assets/shaders/fragment-shader.glsl`, { responseType: 'text' }).toPromise()
+    this._vertexShader = await this._http.get(`assets/three/shaders/vertex-shader.glsl`, { responseType: 'text' }).toPromise()
+    this._fragmentShader = await this._http.get(`assets/three/shaders/fragment-shader.glsl`, { responseType: 'text' }).toPromise()
 
     const offset = {
       x: this._width / 2,
@@ -164,7 +164,7 @@ export class Image {
       const centerX = xs.reduce((sum, x) => sum + x, 0) / xs.length
       const centerY = ys.reduce((sum, x) => sum + x, 0) / ys.length
 
-      const newCentroid = calculateNewCentroid(centerX, centerY, 0.7, 0.9)
+      const newCentroid = calculateNewCentroid(centerX, centerY, 1, 1.15)
 
       const diff = {
         x: newCentroid.x - centerX,
@@ -184,11 +184,35 @@ export class Image {
           rx: 0, ry: 0, rz: 0
         },
         shattered: {
-          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(0, 50),
-          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-10, 10))
+          x: mesh.position.x + diff.x, y: mesh.position.y + diff.y, z: mesh.position.z + randomRange(-10, 50),
+          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-10, 10, 2))
         }
       }
     })
+
+    const fontLoader = new THREE.FontLoader()
+    const text: THREE.TextGeometry = await new Promise(res => {
+      fontLoader.load('assets/three/fonts/roboto_bold.typeface.json', font => {
+        res(new THREE.TextGeometry('Read more', {
+          font,
+          size: 14,
+          height: 1,
+          curveSegments: 12
+        }))
+      })
+    })
+    text.computeBoundingBox()
+    text.computeVertexNormals()
+
+    const buffer = new THREE.BufferGeometry().fromGeometry(text)
+    this.text = new THREE.Mesh(buffer, [
+      new THREE.MeshPhongMaterial({ color: 'black', flatShading: true })
+    ])
+    this.text.receiveShadow = true
+
+    const size = new THREE.Box3().setFromObject(this.text)
+    const [offsetX, offsetY] = [round(size.max.x - size.min.x, 2) / 2, round(size.max.y - size.min.y, 2) / 2]
+    this.text.position.set(-offsetX, -offsetY, 0)
 
     this.RenderState()
   }
@@ -286,6 +310,7 @@ export class Image {
     this.activeGroup = new THREE.Group()
     this._scene.scene.add(this.activeGroup)
 
+    this.activeGroup.add(this.text)
     const config = this._stateConfig[this._currentState]
     for (const obj of config.objects) {
       this.activeGroup.add(obj.mesh)

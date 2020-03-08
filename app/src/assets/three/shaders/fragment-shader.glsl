@@ -23,13 +23,8 @@ varying vec2 vUv; // identify the uv values as a varying attribute
 
 
 void main(void) {
-  float mask = min(1.0, getShadowMask() + 0.7);
+  float mask = min(1.0, getShadowMask());
   vec4 tx = texture2D(texture, vUv) * mask;
 
-  float r = tx.r * mask;
-  float g = tx.g * mask;
-  float b = tx.b * mask;
-
-
-  gl_FragColor = vec4(r, g, b, 1.0);
+  gl_FragColor = tx;
 }
