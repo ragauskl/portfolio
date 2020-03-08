@@ -133,8 +133,8 @@ export class Scene {
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 30, 600],
-      [0, -10, 700]
+      [0, 20, 600],
+      [0, -5, 700]
     ]) {
       const light = new THREE.SpotLight('white', 0.3, undefined)
       light.angle = degreesToRadians(55)
