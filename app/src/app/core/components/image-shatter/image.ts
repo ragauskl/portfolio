@@ -3,11 +3,11 @@ import * as THREE from 'three'
 import { Scene } from './scene'
 import { BehaviorSubject } from 'rxjs'
 import { getTriangleVertices, calculateNewCentroid } from './triangulate'
-import { distance, degreesToRadians, round, randomRange, getRangeOptions, randomFrom } from './utils'
+import { distance, degreesToRadians, round, randomRange, getRangeOptions, randomFrom, map, pointDistance } from './utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
-// shatter duration more equally
+// fix resize warnings
 
 export class Image {
   private _vertexShader: string
@@ -94,24 +94,27 @@ export class Image {
     }
 
     const loader = new THREE.TextureLoader()
-    const material = new THREE.ShaderMaterial({
-      uniforms:
-      {
-        ...cloneDeep(THREE.UniformsLib.lights),
-        texture: {
-          type: 't',
-          value: loader.load(this._src)
-        }
-      },
-      vertexShader: shaderParse(this._vertexShader),
-      fragmentShader: shaderParse(this._fragmentShader),
-      side: THREE.DoubleSide,
-      transparent: true,
-      lights: true
-    })
+    const lights = cloneDeep(THREE.UniformsLib.lights)
 
     const createMesh = (geom: THREE.Geometry | THREE.BufferGeometry) => {
+      const material = new THREE.ShaderMaterial({
+        uniforms:
+        {
+          ...lights,
+          texture: {
+            type: 't',
+            value: loader.load(this._src)
+          }
+        },
+        vertexShader: shaderParse(this._vertexShader),
+        fragmentShader: shaderParse(this._fragmentShader),
+        side: THREE.DoubleSide,
+        transparent: true,
+        lights: true
+      })
+
       const mesh = new THREE.Mesh(geom, material)
+
       mesh.position.set(0, 0, 20)
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -148,13 +151,10 @@ export class Image {
     )
 
     const zs: {
-      [z: string]: {
-        min: [number, number]
-        max: [number, number]
-      }[]
+      [z: string]: THREE.Box2[]
     } = {}
     // Should have at least 7 options
-    const zOptions = getRangeOptions(-50, 55, 15).map(z => `${z}`)
+    const zOptions = getRangeOptions(-50, 55, 5).map(z => `${z}`)
 
     this._stateConfig.shattered.objects = geometries.map(vertices => {
       const geom = new THREE.BufferGeometry()
@@ -184,23 +184,20 @@ export class Image {
       geom.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(uvs), 2))
       geom.computeVertexNormals()
 
-      const mesh = createMesh(geom)
+      let mesh = createMesh(geom)
+      mesh.geometry.computeBoundingBox()
+      const box3 = new THREE.Box3().setFromObject(mesh)
+      const pad = 5
+      const bbox = new THREE.Box2().setFromPoints([
+        new THREE.Vector2(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad),
+        new THREE.Vector2(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad)
+      ])
 
       const shatteredPosition = { x: mesh.position.x + diff.x, y: mesh.position.y + diff.y }
-      const min: [number, number] = [
-        Math.min(...xs) + diff.x,
-        Math.min(...ys) + diff.x
-      ]
-      const max: [number, number] = [
-        Math.max(...xs) + diff.x,
-        Math.max(...ys) + diff.x
-      ]
 
-      const inside = (val, min, max) => val >= min && val <= max
-      const pointInside = (a, bMin, bMax) => inside(a[0], bMin[0], bMax[0]) && inside(a[1], bMin[1], bMax[1])
       const usedZs = Object.keys(zs).filter(z =>
         !!zs[z].find(box =>
-          pointInside(min, box.min, box.max) || pointInside(max, box.min, box.max) || pointInside(box.min, min, max) || pointInside(box.max, min, max)
+          box.intersectsBox(bbox)
         )
       )
       const zFrom = usedZs.length ? [...zOptions].filter(z => !usedZs.includes(z)) : zOptions
@@ -211,9 +208,7 @@ export class Image {
         z = randomFrom(zOptions)
       }
       if (!zs[`${z}`]) zs[`${z}`] = []
-      zs[`${z}`].push({
-        min, max
-      })
+      zs[`${z}`].push(bbox)
 
       const object = {
         mesh,
@@ -377,14 +372,11 @@ export class Image {
 
     for (const obj of config.objects) {
       if (!obj.steps) {
-        const axisDistances = ['x', 'y', 'z'].map(key => distance(obj[this._targetState][key], obj.mesh.position[key]))
-        const average = axisDistances.reduce((sum, val) => sum + val, 0) / axisDistances.length
+        const distance = pointDistance(obj[this._targetState], obj.mesh.position)
 
-        const rotationDistances = ['x', 'y', 'z'].map(key => distance(obj[this._targetState][`r${key}`], obj.mesh.rotation[key]))
-        const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
         const ANIMATION_TIME = 1000
         obj.steps = {
-          axis: average / ANIMATION_TIME * 60,
+          axis: distance / ANIMATION_TIME * 60,
           rotation: degreesToRadians(1.7)
         }
       }

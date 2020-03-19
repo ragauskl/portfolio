@@ -26,8 +26,17 @@ export function degreesToRadians (deg: number) {
 
 export const distance = (a: number, b: number) => Math.abs(a - b)
 
+export const pointDistance = (a: {x: number, y: number}, b: {x: number, y: number}) => Math.sqrt(
+  Math.pow(a.x - b.x, 2) +
+  Math.pow(a.y - b.y, 2)
+)
+
 export const round = (value: number, step: number) => {
   step || (step = 1.0)
   let inv = 1.0 / step
   return Math.round(value * inv) / inv
+}
+
+export const map = (val, inMin, inMax, outMin, outMax) => {
+  return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 }

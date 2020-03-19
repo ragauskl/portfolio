@@ -10,7 +10,6 @@
 
 uniform sampler2D texture; // identify the texture as a uniform argument
 varying vec2 vUv; // identify the uv values as a varying attribute
-
 // chunk(common);
 // chunk(packing);
 // chunk(bsdfs);
@@ -21,10 +20,9 @@ varying vec2 vUv; // identify the uv values as a varying attribute
 // chunk(shadowmap_pars_fragment);
 // chunk(shadowmask_pars_fragment);
 
-
 void main(void) {
-  float mask = min(1.0, getShadowMask());
+  float mask = min(1.0, getShadowMask() + 0.5);
   vec4 tx = texture2D(texture, vUv) * mask;
 
-  gl_FragColor = tx;
+  gl_FragColor = vec4(tx.rgb, 1.0);
 }
