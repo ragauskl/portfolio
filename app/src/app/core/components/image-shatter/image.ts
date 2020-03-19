@@ -71,6 +71,14 @@ export class Image {
     .then(() => this._rendered.next(true))
   }
 
+  debugShardArray: {
+    i: number
+    o: {x: number, y: number}
+    n: {x: number, y: number}
+    z: number
+    mesh: THREE.Mesh
+  }[] = []
+
   private async InitRender () {
     this._vertexShader = await this._http.get(`assets/three/shaders/vertex-shader.glsl`, { responseType: 'text' }).toPromise()
     this._fragmentShader = await this._http.get(`assets/three/shaders/fragment-shader.glsl`, { responseType: 'text' }).toPromise()
@@ -101,11 +109,7 @@ export class Image {
           ...lights,
           texture: {
             type: 't',
-            value: loader.load(this._src, (tex) => {
-              // tex.generateMipmaps = false
-              tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-              // tex.minFilter = THREE.LinearFilter
-            })
+            value: loader.load(this._src)
           }
         },
         vertexShader: shaderParse(this._vertexShader),
@@ -153,12 +157,12 @@ export class Image {
     )
 
     const zs: {
-      [z: string]: THREE.Box2[]
+      [z: string]: THREE.Box3[]
     } = {}
     // Should have at least 7 options
-    const zOptions = getRangeOptions(-50, 55, 5).map(z => `${z}`)
+    const zOptions = getRangeOptions(-50, 60, 10).map(z => `${z}`)
 
-    this._stateConfig.shattered.objects = geometries.map(vertices => {
+    this._stateConfig.shattered.objects = geometries.map((vertices, i) => {
       const geom = new THREE.BufferGeometry()
       const uvs = []
       if (vertices.length % 3 !== 0) throw new Error('Vertices length invalid.')
@@ -189,10 +193,13 @@ export class Image {
       let mesh = createMesh(geom)
       mesh.geometry.computeBoundingBox()
       const box3 = new THREE.Box3().setFromObject(mesh)
-      const pad = 5
-      const bbox = new THREE.Box2().setFromPoints([
-        new THREE.Vector2(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad),
-        new THREE.Vector2(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad)
+
+      const pad = 10
+      const bbox = new THREE.Box3().setFromPoints([
+        new THREE.Vector3(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad, box3.min.z - pad),
+        new THREE.Vector3(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad, box3.max.z + pad),
+        new THREE.Vector3(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad, box3.min.z - pad),
+        new THREE.Vector3(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad, box3.max.z + pad)
       ])
 
       const shatteredPosition = { x: mesh.position.x + diff.x, y: mesh.position.y + diff.y }
@@ -209,9 +216,18 @@ export class Image {
         console.warn('Fragment overlap warning. 0 unoccupied nearby z-indexes found.')
         z = randomFrom(zOptions)
       }
+
+      this.debugShardArray.push({
+        o: { x: centerX, y: centerY },
+        n: { x: newCentroid.x, y: newCentroid.y },
+        i,
+        z: +z,
+        mesh
+      } as any)
       if (!zs[`${z}`]) zs[`${z}`] = []
       zs[`${z}`].push(bbox)
 
+      const r = 10
       const object = {
         mesh,
         solid: {
@@ -220,7 +236,7 @@ export class Image {
         },
         shattered: {
           ...shatteredPosition, z: mesh.position.z + +z,
-          rx: degreesToRadians(randomRange(-3, 3)), ry: degreesToRadians(randomRange(-3, 3)), rz: degreesToRadians(randomRange(-3, 3))
+          rx: degreesToRadians(randomRange(-r, r)), ry: degreesToRadians(randomRange(-r, r)), rz: degreesToRadians(randomRange(-r, r))
         }
       }
 
@@ -249,11 +265,40 @@ export class Image {
 
     const size = new THREE.Box3().setFromObject(this.text)
     const [offsetX, offsetY] = [round(size.max.x - size.min.x, 2) / 2, round(size.max.y - size.min.y, 2) / 2]
-    this.text.position.set(-offsetX, -offsetY, 0)
+    this.text.position.set(-offsetX, -offsetY, -55)
 
     this.RenderState()
+
+    // DEBUG: render index on every shard, to identify it in debugShardArray
+    // window['position'] = this.renderPositions.bind(this)
   }
 
+  async renderPositions () {
+    const fontLoader = new THREE.FontLoader()
+    for (const el of this.debugShardArray) {
+      const text: THREE.TextGeometry = await new Promise(res => {
+        fontLoader.load('assets/three/fonts/roboto_bold.typeface.json', font => {
+          res(new THREE.TextGeometry(`${el.i}`, {
+            font,
+            size: 7,
+            height: 1,
+            curveSegments: 12
+          }))
+        })
+      })
+      text.computeBoundingBox()
+      text.computeVertexNormals()
+
+      const buffer = new THREE.BufferGeometry().fromGeometry(text)
+      const mesh = new THREE.Mesh(buffer, [
+        new THREE.MeshPhongMaterial({ color: 'red', flatShading: true })
+      ])
+      const size = new THREE.Box3().setFromObject(mesh)
+      const [offsetX, offsetY] = [round(size.max.x - size.min.x, 2) / 2, round(size.max.y - size.min.y, 2) / 2]
+      mesh.position.set(el.n.x - offsetX, el.n.y - offsetY, el.z + 30)
+      this.activeGroup.add(mesh)
+    }
+  }
   changeToState (state: State) {
     if (this._targetState === state) return
     this._targetState = state
@@ -301,9 +346,6 @@ export class Image {
 
     let animationDone = true
     const config = this._rotationConfig.target
-
-    const rotationDistances = ['x', 'y'].map(key => distance(config[key], this.activeGroup.position[key]))
-    const rotationAverage = rotationDistances.reduce((sum, val) => sum + val, 0) / rotationDistances.length
 
     const axisSpeed = degreesToRadians(0.07)
 
