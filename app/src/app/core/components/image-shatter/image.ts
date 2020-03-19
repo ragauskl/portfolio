@@ -7,8 +7,6 @@ import { distance, degreesToRadians, round, randomRange, getRangeOptions, random
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
 
-// fix resize warnings
-
 export class Image {
   private _vertexShader: string
   private _fragmentShader: string
@@ -103,7 +101,11 @@ export class Image {
           ...lights,
           texture: {
             type: 't',
-            value: loader.load(this._src)
+            value: loader.load(this._src, (tex) => {
+              // tex.generateMipmaps = false
+              tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+              // tex.minFilter = THREE.LinearFilter
+            })
           }
         },
         vertexShader: shaderParse(this._vertexShader),
@@ -256,7 +258,6 @@ export class Image {
     if (this._targetState === state) return
     this._targetState = state
     this._stateConfig.shattered.objects.forEach(o => o.steps = undefined)
-
     this.AnimateToState(true)
   }
 
@@ -339,6 +340,7 @@ export class Image {
     cleanupFrame()
   }
 
+  private _firstRender = true
   private RenderState () {
     this._scene.clearScene()
 
@@ -346,6 +348,22 @@ export class Image {
     this._scene.scene.add(this.activeGroup)
 
     this.activeGroup.add(this.text)
+
+    if (this._firstRender) {
+      this._firstRender = false
+      // On first render, also render fragments
+      // because they take some time to initialise on load.
+      // Set their z behind so it's not in view, but not too far
+      // so that it is not visible/different during first animation
+      setTimeout(() => {
+        const config = this._stateConfig.shattered
+        for (const obj of config.objects) {
+          obj.mesh.position.z = -10
+          this.activeGroup.add(obj.mesh)
+        }
+      }, 100)
+    }
+
     const config = this._stateConfig[this._currentState]
     for (const obj of config.objects) {
       this.activeGroup.add(obj.mesh)
