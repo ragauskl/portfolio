@@ -8,6 +8,7 @@
   width: 100%;
   @include flex(row, space-between);
   margin-left: -10%;
+  margin-top: -180px;
 
   &.reverse {
     flex-direction: row-reverse;
@@ -41,6 +42,7 @@
 
   @include break ('lt', 'm') {
     margin-left: 0;
+    margin-top: 0;
 
     @include flex(column, flex-start);
     &.reverse {

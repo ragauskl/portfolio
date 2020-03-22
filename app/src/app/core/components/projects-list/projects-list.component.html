@@ -1,4 +1,4 @@
-<div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0">
+<div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0" [style.margin-top]="i === 0 ? 0 : ''">
   <div class="ratio-wrapper">
     <div class="image">
       <app-image-shatter #el
