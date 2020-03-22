@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, OnDestroy, Input, HostBinding } from '@angular/core'
+import { Component, ElementRef, OnDestroy, Input, HostBinding } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
@@ -9,7 +9,7 @@ import { Image } from './image'
   templateUrl: './image-shatter.component.html',
   styleUrls: ['./image-shatter.component.scss']
 })
-export class ImageShatterComponent implements AfterViewInit, OnDestroy {
+export class ImageShatterComponent implements OnDestroy {
   private _subscriptions = new Subscription()
   @HostBinding('style.cursor')
   private get _cursor () {
@@ -22,6 +22,8 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
 
   pointer = false
 
+  private _rendered = false
+
   constructor (
     private _el: ElementRef<HTMLElement>,
     private _http: HttpClient
@@ -31,7 +33,10 @@ export class ImageShatterComponent implements AfterViewInit, OnDestroy {
     this._subscriptions.unsubscribe()
   }
 
-  async ngAfterViewInit () {
+  render () {
+    if (this._rendered) return
+    this._rendered = true
+
     const element = this._el.nativeElement
 
     this._subscriptions.add(

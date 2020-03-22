@@ -1,23 +1,23 @@
 @import 'abstracts';
 
 :host {
+  width: 100%;
   @include flex(column, center, center);
   @include item-space(column, 50px);
-  margin-bottom: 50px;
+  margin: 50px 0;
 
   h1 {
     flex: 0 0 auto;
     // So that canvas of app-projects-list would not get drawn over header
     // due to negative margin-top
     z-index: 1;
-    @include flex(column);
   }
 }
 
 app-projects-list {
   margin-top: -75px;
   width: 80%;
-  max-width: 1200px;
+  max-width: 1000px;
 
   @include break ('lt', 'm') {
     width: 60%;

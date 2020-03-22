@@ -1,7 +1,10 @@
 <div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0">
   <div class="ratio-wrapper">
     <div class="image">
-      <app-image-shatter src="assets/post-cover-mock-10-9-p.jpg" ></app-image-shatter>
+      <app-image-shatter #el
+      (in-view)="renderWhen === 'in-view' && el.render()"
+      (rendered)="renderWhen === 'rendered' && el.render()"
+      src="assets/post-cover-mock-10-9-p.jpg"></app-image-shatter>
     </div>
   </div>
 

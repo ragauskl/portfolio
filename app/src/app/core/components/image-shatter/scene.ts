@@ -122,7 +122,7 @@ export class Scene {
       })
     )
 
-    this._background.position.set(0, 0, -100)
+    this._background.position.set(0, 0, -150)
     this._background.receiveShadow = true
     this.scene.add(this._background)
 

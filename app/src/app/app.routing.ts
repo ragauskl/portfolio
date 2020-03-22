@@ -6,8 +6,7 @@ import { BrowserNotSupportedGuard } from '@core/route-guards/browser-not-support
 const routes: Routes = [
   { path: '', loadChildren: `./modules/home/home.module#HomeModule`, canActivate: [BrowserSupportGuard] },
   { path: 'error', loadChildren: `./modules/error/error.module#ErrorModule`, canActivate: [BrowserSupportGuard] },
-  { path: 'posts', loadChildren: `./modules/posts/posts.module#PostsModule`, canActivate: [BrowserSupportGuard] },
-  { path: 'about-me', loadChildren: `./modules/about-me/about-me.module#AboutMeModule`, canActivate: [BrowserSupportGuard] },
+  { path: 'projects', loadChildren: `./modules/projects/projects.module#ProjectsModule`, canActivate: [BrowserSupportGuard] },
   { path: 'browser-not-supported', loadChildren: `./modules/browser-not-supported/browser-not-supported.module#BrowserNotSupportedModule`, canActivate: [BrowserNotSupportedGuard] },
   { path: '**', redirectTo: `error/404` }
 ]

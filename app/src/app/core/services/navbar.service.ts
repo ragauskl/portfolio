@@ -1,14 +1,41 @@
 import { Injectable } from '@angular/core'
 import { Section } from '@core/model/section'
+import { Router, NavigationEnd } from '@angular/router'
+import { take } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavBarService {
   currentTitle = 'Home'
+  currentRoute = '/'
 
-  scrollTo (section: keyof typeof Section | null) {
+  constructor (private _router: Router) {
+    this._router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) this.currentRoute = e.url
+    })
+  }
+
+  scrollTo (section: keyof typeof Section | null, attempts = 0) {
+    if (this.currentRoute !== '/') {
+      const sub = this._router.events.subscribe(e => {
+        if (e instanceof NavigationEnd && e.url === '/') {
+          sub.unsubscribe()
+          setTimeout(() => this.scrollTo(section), 100)
+        }
+      })
+      this._router.navigate(['/'])
+      return
+    }
+
     const el = document.getElementById(section)
+    if (section && !el) {
+      if (attempts > 5) return
+      attempts++
+
+      setTimeout(() => this.scrollTo(section, attempts), 100)
+      return
+    }
 
     if (!section) {
       document.scrollingElement.scrollTo({

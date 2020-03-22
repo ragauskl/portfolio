@@ -17,6 +17,8 @@ import { ProjectsListComponent } from './components/projects-list/projects-list.
 import { PostCoverComponent } from './components/post-cover/post-cover.component'
 import { MomentPipe } from './pipes/moment.pipe';
 import { ImageShatterComponent } from './components/image-shatter/image-shatter.component'
+import { RouterModule } from '@angular/router'
+import { InViewDirective } from './directives/in-view.directive'
 
 @NgModule({
   declarations: [
@@ -33,13 +35,15 @@ import { ImageShatterComponent } from './components/image-shatter/image-shatter.
     ProjectsListComponent,
     PostCoverComponent,
     MomentPipe,
-    ImageShatterComponent
+    ImageShatterComponent,
+    InViewDirective
   ],
   imports: [
     CommonModule,
     MaterialModule,
     AngularResizedEventModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     MaterialModule,
@@ -56,7 +60,8 @@ import { ImageShatterComponent } from './components/image-shatter/image-shatter.
     TrackScrollDirective,
     ProjectsListComponent,
     MomentPipe,
-    ImageShatterComponent
+    ImageShatterComponent,
+    InViewDirective
   ]
 })
 export class CoreModule { }

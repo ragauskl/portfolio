@@ -50,9 +50,10 @@
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  height: 100%;
 
   img {
+    height: 80%;
+    max-height: 65px;
     position: relative;
     @include break-font(45px);
     object-fit: contain;

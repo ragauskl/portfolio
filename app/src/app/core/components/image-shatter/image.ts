@@ -248,7 +248,7 @@ export class Image {
       fontLoader.load('assets/three/fonts/roboto_bold.typeface.json', font => {
         res(new THREE.TextGeometry('Read more', {
           font,
-          size: 14,
+          size: 12,
           height: 1,
           curveSegments: 12
         }))

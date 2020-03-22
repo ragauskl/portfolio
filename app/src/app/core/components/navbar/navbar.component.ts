@@ -38,11 +38,6 @@ export class NavBarComponent {
     this._menuOpen = val
   }
 
-  get logoContainerTop () {
-    const height = 25
-    return `${Math.max(0, height - document.scrollingElement.scrollTop)}px`
-  }
-
   constructor (
     public navBar: NavBarService,
     public viewService: ViewService
