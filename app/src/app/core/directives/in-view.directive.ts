@@ -32,10 +32,10 @@ export class InViewDirective implements AfterViewInit, OnDestroy {
 
   private CheckInView () {
     const rect = this._el.nativeElement.getBoundingClientRect()
-    const inRange = (vals: number[], min: number, max: number) => vals.some(val => val >= min && val <= max)
+    const rangeOverlap = (r1Min: number, r1Max: number, r2Min: number, r2Max: number) => r1Min <= r2Max && r1Max >= r2Min
 
-    const inView = inRange([rect.top, rect.bottom], 0, window.innerHeight) &&
-      inRange([rect.left, rect.right], 0, window.innerWidth)
+    const inView = rangeOverlap(rect.top, rect.bottom, 0, window.innerHeight) &&
+      rangeOverlap(rect.left, rect.right, 0, window.innerWidth)
 
     if (inView && !this._inView) this.inView.next()
     this._inView = inView

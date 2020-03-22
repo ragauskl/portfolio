@@ -43,6 +43,10 @@
   }
 }
 
+a.active {
+  color: color('secondary');
+}
+
 #logo-container {
   height: 100%;
   position: absolute;
