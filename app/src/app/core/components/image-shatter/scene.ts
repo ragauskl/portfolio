@@ -70,7 +70,6 @@ export class Scene {
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     this.element.appendChild(this.renderer.domElement)
-    window['renderer'] = this.renderer
 
     this.SetupLight()
     this.SetupBackground()
