@@ -25,7 +25,6 @@ export class ProjectsService {
   }
 
   viewProject (project: Project) {
-    console.log('project:', project)
     this._router.navigate(['projects', project.tag])
   }
 }
