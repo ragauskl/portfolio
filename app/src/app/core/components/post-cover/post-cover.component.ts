@@ -66,8 +66,7 @@ export class PostCoverComponent {
     this.mouse.setOrigin(this.coverContainerEl)
 
     // Resize image
-    // TODO change to promise
-    this.resizeImage(this.src, { w: +this.width, h: +this.height }, (src: string) => {
+    this.resizeImage(this.src, { w: +this.width, h: +this.height }).then(src => {
       this.imageEl.onload = this.initializeFragments.bind(this)
       this.imageEl.src = src
     })
@@ -108,41 +107,43 @@ export class PostCoverComponent {
     this.imageEl.style.pointerEvents = on ? '' : 'none'
   }
 
-  private resizeImage (source: string, size: {w: number, h: number}, cb: (src: string) => void) {
+  private resizeImage (source: string, size: {w: number, h: number}): Promise<string> {
     const resizeImg = new Image()
     const resizeCanvas: HTMLCanvasElement = document.createElement('canvas')
     const resizeCtx = resizeCanvas.getContext('2d')
 
-    resizeImg.onload = () => {
-       // Calculate cropping box
-      const original = {
-        w: resizeImg.width,
-        h: resizeImg.height
-      }
-      const targetRatio = size.w / size.h
-      const cropBox = { w: 0, h: 0, x: 0, y: 0 }
-      if (resizeImg.width > resizeImg.height) {
-        cropBox.h = resizeImg.height
-        cropBox.w = targetRatio * cropBox.h
-        cropBox.x = (original.w - cropBox.w) / 2
-      } else {
-        cropBox.w = resizeImg.width
-        cropBox.h = cropBox.w / targetRatio
-        cropBox.y = (original.h - cropBox.h) / 2
-      }
-       // Set new canvas size
+    return new Promise((res, rej) => {
+      resizeImg.onload = () => {
+        // Calculate cropping box
+        const original = {
+          w: resizeImg.width,
+          h: resizeImg.height
+        }
+        const targetRatio = size.w / size.h
+        const cropBox = { w: 0, h: 0, x: 0, y: 0 }
+        if (resizeImg.width > resizeImg.height) {
+          cropBox.h = resizeImg.height
+          cropBox.w = targetRatio * cropBox.h
+          cropBox.x = (original.w - cropBox.w) / 2
+        } else {
+          cropBox.w = resizeImg.width
+          cropBox.h = cropBox.w / targetRatio
+          cropBox.y = (original.h - cropBox.h) / 2
+        }
+        // Set new canvas size
 
-      resizeCanvas.style.width = `${size.w}px`
-      resizeCanvas.width = size.w
-      resizeCanvas.style.height = `${size.h}px`
-      resizeCanvas.height = size.h
-       // Crop rectangle from original image element and
-       // draw it on the new canvas
-      resizeCtx.drawImage(resizeImg, cropBox.x, cropBox.y, cropBox.w, cropBox.h, 0, 0, size.w, size.h)
+        resizeCanvas.style.width = `${size.w}px`
+        resizeCanvas.width = size.w
+        resizeCanvas.style.height = `${size.h}px`
+        resizeCanvas.height = size.h
+        // Crop rectangle from original image element and
+        // draw it on the new canvas
+        resizeCtx.drawImage(resizeImg, cropBox.x, cropBox.y, cropBox.w, cropBox.h, 0, 0, size.w, size.h)
 
-      cb(resizeCanvas.toDataURL())
-    }
-    resizeImg.src = source
+        res(resizeCanvas.toDataURL())
+      }
+      resizeImg.src = source
+    })
   }
 
   private initializeFragments () {

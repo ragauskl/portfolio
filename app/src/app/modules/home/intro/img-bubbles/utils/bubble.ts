@@ -25,7 +25,7 @@ export default class Bubble {
   ) {
     this.diameter = this.size * this.scale
     // Add random increment to x and y, that are in bounds of a 'rectangle'
-    // respecting inner padding (so that circles don't overflow eachother)
+    // respecting inner padding (so that circles don't overflow each other)
     const minInnerX = this.size * 0.10
     const maxInnerX = this.size * 0.90 - this.diameter
     const randX = map(Math.random(), 0, 1, minInnerX, maxInnerX)
@@ -43,16 +43,17 @@ export default class Bubble {
     this.el.style.width = this.el.style.height = `100%`
     this.elContainer.appendChild(this.el)
 
-    // const iLeft = document.createElement('img')
-    // iLeft.src = itemLeft.src
-    const iLeft = document.createElement('div')
-    iLeft.classList.add('back', 'sprite', itemLeft.sprite)
+    const iLeft = document.createElement('img')
+    iLeft.src = itemLeft.src
+    iLeft.classList.add('back')
+    // const iLeft = document.createElement('div')
+    // iLeft.classList.add('back', 'sprite', itemLeft.sprite)
 
     this.backImage = iLeft
-    // const iRight = document.createElement('img')
-    // iRight.src = itemRight.src
-    const iRight = document.createElement('div')
-    iRight.classList.add('sprite', itemRight.sprite)
+    const iRight = document.createElement('img')
+    iRight.src = itemRight.src
+    // const iRight = document.createElement('div')
+    // iRight.classList.add('sprite', itemRight.sprite)
 
     iLeft.draggable = iRight.draggable = false
 
