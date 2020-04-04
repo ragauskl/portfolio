@@ -37,6 +37,10 @@
 
     .summary-content {
       @include absolute-fill;
+
+      .read-more {
+        cursor: pointer;
+      }
     }
   }
 

@@ -11,6 +11,6 @@ export class FeaturedProjectsComponent {
   constructor (
     public viewService: ViewService,
     public projectsService: ProjectsService
-  ) { }
+  ) {}
 
 }

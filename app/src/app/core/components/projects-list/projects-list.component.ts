@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core'
 import { Project } from '@core/model/interfaces/project'
 import { ViewService } from '@core/services/view.service'
+import { ProjectsService } from '@core/services/projects.service'
 // TODO: When there will be more projects, add directive to remove 3js canvases
 // when they are out of view
 @Component({
@@ -13,7 +14,7 @@ export class ProjectsListComponent {
   @Input() renderWhen: 'in-view' | 'rendered' = 'in-view'
 
   constructor (
-    public viewService: ViewService
+    public viewService: ViewService,
+    public projectsService: ProjectsService
   ) { }
-
 }

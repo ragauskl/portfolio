@@ -3,6 +3,7 @@ import browser from 'bowser'
 enum Browser {
   Chrome = 'Chrome',
   Edge = 'Edge',
+  EdgeC = 'EdgeC',
   Opera = 'Opera',
   Firefox = 'Firefox',
   Safari = 'Safari',
@@ -13,7 +14,8 @@ class BrowserUtil {
   private logos = 'assets/icons/browsers'
   browsers = [{
     name: 'Firefox',
-    supported: true,
+    // Performance issues
+    supported: false,
     src: `${this.logos}/firefox.svg`,
     href: 'https://www.mozilla.org/en-GB/firefox/new/'
   }, {
@@ -33,8 +35,13 @@ class BrowserUtil {
     href: 'https://www.apple.com/uk/safari/'
   }, {
     name: 'Edge',
-    supported: true,
+    supported: false,
     src: `${this.logos}/edge.svg`
+  }, {
+    name: 'Edge (Chromium)',
+    supported: true,
+    src: `${this.logos}/edge-chromium.svg`,
+    href: 'https://www.microsoft.com/en-us/edge'
   }, {
     name: 'Opera',
     supported: true,
@@ -57,6 +64,10 @@ class BrowserUtil {
     if (name.includes('chrome')) {
       return Browser.Chrome
     } else if (name.includes('edge')) {
+      console.log('window.navigator.userAgent:', window.navigator.userAgent)
+      if (window.navigator.userAgent.toLowerCase().includes('edg/')) {
+        return Browser.EdgeC
+      }
       return Browser.Edge
     } else if (name.includes('opera')) {
       return Browser.Opera
@@ -69,8 +80,12 @@ class BrowserUtil {
     }
   }
 
-  isSafari () {
+  get isSafari () {
     return this.browserName === Browser.Safari
+  }
+
+  get isFirefox () {
+    return this.browserName === Browser.Firefox
   }
 }
 

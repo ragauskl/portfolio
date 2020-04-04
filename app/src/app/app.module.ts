@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app.routing'
 import { AppComponent } from './app.component'
 import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http'
-
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown'
 export class ScrollHammerConfig extends HammerGestureConfig {
   overrides = {
     'pinch': { enable: false },
@@ -23,7 +23,13 @@ export class ScrollHammerConfig extends HammerGestureConfig {
     AppRoutingModule,
     BrowserAnimationsModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {}
+      }
+    })
   ],
   providers: [{
     provide: HAMMER_GESTURE_CONFIG,

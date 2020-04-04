@@ -110,6 +110,14 @@ export class Image {
           texture: {
             type: 't',
             value: loader.load(this._src)
+          },
+          bWidth: {
+            type: 'float',
+            value: 0.017
+          },
+          bColor: {
+            type: 'vec3',
+            value: new THREE.Vector3(78, 83, 87)
           }
         },
         vertexShader: shaderParse(this._vertexShader),
@@ -120,7 +128,6 @@ export class Image {
       })
 
       const mesh = new THREE.Mesh(geom, material)
-
       mesh.position.set(0, 0, 20)
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -179,7 +186,7 @@ export class Image {
       const centerX = xs.reduce((sum, x) => sum + x, 0) / xs.length
       const centerY = ys.reduce((sum, x) => sum + x, 0) / ys.length
 
-      const newCentroid = calculateNewCentroid(centerX, centerY, 1, 1.15)
+      const newCentroid = calculateNewCentroid(centerX, centerY, 1.45, 1.50)
 
       const diff = {
         x: newCentroid.x - centerX,
@@ -248,7 +255,7 @@ export class Image {
       fontLoader.load('assets/three/fonts/roboto_bold.typeface.json', font => {
         res(new THREE.TextGeometry('Read more', {
           font,
-          size: 12,
+          size: 20,
           height: 1,
           curveSegments: 12
         }))

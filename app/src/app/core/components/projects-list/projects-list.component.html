@@ -1,23 +1,24 @@
 <div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0" [style.margin-top]="i === 0 ? 0 : ''">
   <div class="ratio-wrapper">
     <div class="image">
-      <app-image-shatter #el
+      <app-image-shatter #el *ngIf="project.cover"
+      (clicked)="projectsService.viewProject(project)"
       (in-view)="renderWhen === 'in-view' && el.render()"
       (rendered)="renderWhen === 'rendered' && el.render()"
-      src="assets/post-cover-mock-10-9-p.jpg"></app-image-shatter>
+      [src]="'assets/projects/' + project.cover"></app-image-shatter>
     </div>
   </div>
 
   <div class="ratio-wrapper">
     <div class="summary-wrapper">
       <div class="summary-content">
-        <h3>{{project.title}}</h3>
+        <h3 class="read-more" (click)="projectsService.viewProject(project)">{{project.title}}</h3>
         <p>
           <small *ngIf="project.startDate">{{project.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
           <small *ngIf="project.endDate">- {{project.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>
         </p>
         <small *ngIf="project.subtitle">{{project.subtitle}}</small>
-        <p>{{project.summary}}</p>
+        <p class="read-more" (click)="projectsService.viewProject(project)">{{project.summary}}</p>
       </div>
     </div>
   </div>

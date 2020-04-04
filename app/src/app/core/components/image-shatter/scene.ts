@@ -57,7 +57,7 @@ export class Scene {
     this.UpdateMouse()
 
     this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.01, 10000)
-    this.camera.position.z = 600
+    this.camera.position.z = 1200
 
     this.scene = new THREE.Scene()
 
@@ -122,7 +122,7 @@ export class Scene {
       })
     )
 
-    this._background.position.set(0, 0, -150)
+    this._background.position.set(0, 0, -300)
     this._background.receiveShadow = true
     this.scene.add(this._background)
 
@@ -133,8 +133,8 @@ export class Scene {
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 20, 600],
-      [0, -5, 700]
+      [0, 50, 1100],
+      [0, -15, 1400]
     ]) {
       const light = new THREE.SpotLight('white', 0.3, undefined)
       light.angle = degreesToRadians(55)
@@ -143,7 +143,7 @@ export class Scene {
       light.position.set(x, y, z)
       light.castShadow = true
       light.shadow.camera.near = 1
-      light.shadow.camera.far = 1000
+      light.shadow.camera.far = 2000
       // Important for objects to not drop shadow on themselves
       light.shadow.bias = -0.0001
       light.penumbra = 0.5

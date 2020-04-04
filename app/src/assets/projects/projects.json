@@ -1,22 +1,17 @@
 [{
+  "tag": "vscode-pin",
   "title": "VSCode File Pin Extension",
-  "description": "3-vscode-pin/description.md",
+  "markdown": "2-vscode-pin/description.md",
   "summary": "VSCode extension used for pinning folders, files and file lines for quick access, which I started out of personal need for optimizing workflow in a large mono-repo.",
   "startDate": "2020.01",
   "github": "https://github.com/ragauskl/vscode-pin",
-  "featured": true
+  "featured": true,
+  "hidden": true
 }, {
-  "title": "Personal Portfolio",
-  "description": "2-portfolio/description.md",
-  "summary": "Online portfolio used to demonstrate experience and skills, as well as showcase a collection of projects I have worked on.",
-  "startDate": "2019.09",
-  "endDate": "2020.03",
-  "github": "https://github.com/ragauskl/portfolio",
-  "live": "https://lina.codes/",
-  "featured": false
-}, {
+  "tag": "route-fox",
   "title": "RouteFox (Dissertation)",
-  "description": "1-route-fox/description.md",
+  "markdown": "1-route-fox/description.md",
+  "cover": "1-route-fox/route-fox-cover.jpg",
   "summary": "A mobile travel recommender system, that generates route suggestions between 2+ points of interests, based on the user preferences such as visit length for every place, arrival and departure preferences, the priority of each place as well as preferred transport type. The mobile application also has a feature to live-track a saved route and warn the user if wandering off too far away from the selected path.",
   "startDate": "2018.01",
   "endDate": "2018.04",

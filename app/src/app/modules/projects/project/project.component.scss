@@ -1,0 +1,31 @@
+@import 'abstracts';
+
+:host {
+  @include flex(column);
+}
+
+.cover-preview {
+  height: 400px;
+  width: 100vw;
+  @include flex;
+
+  img {
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  @include break('lt', 'm') {
+    height: 300px;
+  }
+
+  @include break('lt', 's') {
+    height: 200px;
+  }
+}
+
+.content {
+  max-width: 800px;
+  width: 80%;
+  @include flex(column);
+  padding-bottom: 50px;
+}

@@ -30,6 +30,7 @@
     "delaunay-triangulate": "^1.1.6",
     "hammerjs": "^2.0.8",
     "intersects": "^2.7.1",
+    "ngx-markdown": "^8.2.2",
     "noisejs": "^2.1.0",
     "rxjs": "^6.4.0",
     "three": "^0.114.0",

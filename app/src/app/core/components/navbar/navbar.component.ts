@@ -3,6 +3,7 @@ import { NavBarService } from '@core/services/navbar.service'
 import { Section } from '@core/model/section'
 import { ViewService } from '@core/services/view.service'
 import { trigger, transition, stagger, style, query } from '@angular/animations'
+import { ProjectsService } from '@core/services/projects.service'
 
 @Component({
   selector: 'app-nav',
@@ -38,8 +39,13 @@ export class NavBarComponent {
     this._menuOpen = val
   }
 
+  get projectsSection () {
+    return this.projectsService.hasProjectsPage ? 'projects' : 'featured'
+  }
+
   constructor (
     public navBar: NavBarService,
-    public viewService: ViewService
+    public viewService: ViewService,
+    public projectsService: ProjectsService
   ) {}
 }

@@ -1,0 +1,16 @@
+<div class="cover-preview">
+  <img *ngIf="project" [src]="'assets/projects/' + project.cover">
+</div>
+
+<div class="content">
+  <h2>{{project.title}}</h2>
+
+  <p>
+    <small *ngIf="project.startDate">{{project.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
+    <small *ngIf="project.endDate">- {{project.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>
+  </p>
+  <small *ngIf="project.subtitle">{{project.subtitle}}</small>
+
+  <markdown #description [src]="'assets/projects/' + project.markdown" (load)="onLoad()"
+  lineNumbers></markdown>
+</div>

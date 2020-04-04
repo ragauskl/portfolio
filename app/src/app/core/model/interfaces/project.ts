@@ -1,7 +1,8 @@
 export interface Project {
+  tag: string
   title: string
   subtitle: string
-  description: string
+  markdown: string
   summary: string
   startDate: string
   github?: string
@@ -9,4 +10,6 @@ export interface Project {
   endDate?: string
   live?: null | string
   demo?: string
+  cover?: string
+  hidden?: string
 }

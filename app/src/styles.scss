@@ -35,8 +35,18 @@ body {
   box-sizing: border-box;
 }
 
-p, small, span {
+p, small, span, ul {
   line-height: 1.7em;
+}
+
+code {
+  p, small, span, ul {
+    line-height: 1.8em;
+  }
+}
+
+ul {
+  padding-inline-start: 2em;
 }
 
 a {
@@ -96,6 +106,6 @@ small {
   @include break-font(13px, null, 13px);
 }
 
-p {
+p, ul, code {
   @include break-font(17px, 11px, 17px);
 }

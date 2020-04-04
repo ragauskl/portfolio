@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, Input, HostBinding } from '@angular/core'
+import { Component, ElementRef, OnDestroy, Input, HostBinding, Output, EventEmitter, HostListener } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
@@ -15,7 +15,13 @@ export class ImageShatterComponent implements OnDestroy {
   private get _cursor () {
     return this.pointer ? 'pointer' : 'default'
   }
+  @HostListener('click')
+  onClick () {
+    if (this.pointer) this.clicked.next()
+  }
+
   @Input() src: string
+  @Output() clicked = new EventEmitter()
 
   scene: Scene
   image: Image
@@ -57,8 +63,8 @@ export class ImageShatterComponent implements OnDestroy {
     this.image = new Image(
       this._http,
       this.src,
-      270,
-      300,
+      540,
+      600,
       this.scene
     )
 
@@ -119,8 +125,7 @@ export class ImageShatterComponent implements OnDestroy {
           if (!inside && mouseOver) {
             onLeave()
             mouseOver = false
-          }
-          else if (inside) onMove(lastPosition.x, lastPosition.y)
+          } else if (inside) onMove(lastPosition.x, lastPosition.y)
 
         })
       )

@@ -55,8 +55,8 @@ export function getTriangleVertices (w: number, h: number): [[number, number], [
 }
 
 export function calculateNewCentroid (cx: number, cy: number, distanceMin: number, distanceMax: number) {
-  const dx = cx - 0
-  const dy = cy - 0
+  const dx = cx
+  const dy = cy
 
   const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
   const radians = Math.atan2(dy, dx)
@@ -64,7 +64,7 @@ export function calculateNewCentroid (cx: number, cy: number, distanceMin: numbe
 
   const theta = angle * Math.PI / 180
   let extension = randomRange(distanceMin, distanceMax)
-  if (distance < 20) {
+  if (distance < 40) {
     extension += 5
   } else if (distance < 50) {
     extension += 1.5
