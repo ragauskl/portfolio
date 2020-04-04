@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { degreesToRadians } from './utils'
+import { Subject } from 'rxjs'
+import { auditTime } from 'rxjs/operators'
 
 export class Scene {
   scene: THREE.Scene
@@ -37,6 +39,8 @@ export class Scene {
     }
   }
 
+  toggleCameraUpdates = new Subject()
+
   get height () {
     return this.element.clientHeight
   }
@@ -66,6 +70,7 @@ export class Scene {
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     this.element.appendChild(this.renderer.domElement)
+    window['renderer'] = this.renderer
 
     this.SetupLight()
     this.SetupBackground()
@@ -75,17 +80,23 @@ export class Scene {
     this.ray = new THREE.Ray()
     this.rendererMouse = new THREE.Vector2()
 
-    this.animate()
+    this.updateCamera()
+
+    this.toggleCameraUpdates
+    .pipe(auditTime(100)).subscribe((animate: boolean) => {
+      this.stopAnimation()
+      if (animate) this.animate()
+    })
   }
 
   private _nextFrame?: number
-  animate () {
+  private animate () {
     this._nextFrame = requestAnimationFrame(this.animate.bind(this))
     if (this.controls) this.controls.update()
-    this.UpdateCamera()
+    this.updateCamera()
   }
 
-  stopAnimation () {
+  private stopAnimation () {
     if (this._nextFrame) cancelAnimationFrame(this._nextFrame)
     this._nextFrame = undefined
   }
@@ -170,7 +181,7 @@ export class Scene {
     this.controls.enablePan = true
   }
 
-  private UpdateCamera () {
+  updateCamera () {
     this.renderer.setSize(this.width, this.height)
 
     this.camera.aspect = this.width / this.height

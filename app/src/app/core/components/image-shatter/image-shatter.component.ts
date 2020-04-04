@@ -26,7 +26,18 @@ export class ImageShatterComponent implements OnDestroy {
   scene: Scene
   image: Image
 
-  pointer = false
+  private _pointer = false
+  private _cameraStopTimeout: NodeJS.Timer
+  get pointer () {
+    return this._pointer
+  }
+  set pointer (val: boolean) {
+    if (val === this._pointer) return
+    this._pointer = val
+    clearTimeout(this._cameraStopTimeout)
+    if (val) this.scene.toggleCameraUpdates.next(true)
+    else this._cameraStopTimeout = setTimeout(() => this.scene.toggleCameraUpdates.next(false), 1000)
+  }
 
   private _rendered = false
 

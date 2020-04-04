@@ -385,7 +385,6 @@ export class Image {
       this._nextFrame = requestAnimationFrame(this.AnimateRotation.bind(this))
       return
     }
-
     cleanupFrame()
   }
 
@@ -418,6 +417,7 @@ export class Image {
       this.activeGroup.add(obj.mesh)
     }
     this.UpdateIntersectionSetup()
+    setTimeout(() => this._scene.updateCamera(), 100)
   }
 
   private UpdateIntersectionSetup () {
