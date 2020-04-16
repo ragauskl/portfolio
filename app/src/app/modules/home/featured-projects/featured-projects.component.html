@@ -1,0 +1,8 @@
+<h1>
+  <span>Featured Projects</span>
+  <button *ngIf="projectsService.hasProjectsPage" mat-button routerLink="/projects">View All</button>
+</h1>
+
+<app-projects-list [projects]="projectsService.featuredProjects"></app-projects-list>
+
+

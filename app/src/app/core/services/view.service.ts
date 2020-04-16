@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { fromEvent, Subject, BehaviorSubject } from 'rxjs'
+import { auditTime } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,14 @@ export class ViewService {
   get viewModeChange () {
     return this._viewModeChange.asObservable()
   }
-  // TODO: If size changed by a lot - trigger event - to rerender
-  // Improve card sizing
+
   constructor () {
     this.calculateType(false)
     this._viewModeChange = new BehaviorSubject(this._viewMode)
-    fromEvent(window, 'resize').subscribe(() => this.calculateType())
+    fromEvent(window, 'resize')
+    .pipe(
+      auditTime(100)
+    ).subscribe(() => this.calculateType())
   }
 
   calculateType (emit: boolean = true) {

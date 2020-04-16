@@ -1,6 +1,7 @@
 import { IconMeta, shuffle, SkillsConfig } from './bubble-utils'
 import Bubble from './bubble'
 import Noise from 'noisejs'
+import browserUtil from '@core/utils/browser.util'
 
 export class Bubbles {
   pixelRatioMultiplier = Math.max(window.devicePixelRatio - 1, 1)
@@ -123,7 +124,15 @@ export class Bubbles {
     this.nextFrame()
   }
 
+  // For debugging
+  start = 0
+  end = 0
+  delta = 0
   nextFrame () {
+    this.end = Date.now()
+    this.delta = (this.end - this.start) / 1000.0 * 60
+    this.end = this.start
+
     if (this.state !== 'running') {
       this.state = 'stopped'
       return
@@ -148,7 +157,11 @@ export class Bubbles {
     this.checkFirstOutOfBounds()
 
     // Queue up another nextFrame() method call on the next frame
+    // if (browserUtil.isFirefox) {
+    //   setTimeout(this.nextFrame.bind(this), 2)
+    // } else {
     requestAnimationFrame(this.nextFrame.bind(this))
+    // }
   }
 
   private checkFirstOutOfBounds () {

@@ -43,6 +43,28 @@
   }
 }
 
+a::after {
+  content: " ";
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+
+a.active {
+  position: relative;
+
+  &::after {
+    content: " ";
+    width: 120%;
+    opacity: 1;
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom: 4px solid color('secondary');
+    transition: opacity 0.1s linear;
+  }
+}
+
 #logo-container {
   height: 100%;
   position: absolute;
@@ -50,9 +72,10 @@
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  height: 100%;
 
   img {
+    height: 80%;
+    max-height: 65px;
     position: relative;
     @include break-font(45px);
     object-fit: contain;

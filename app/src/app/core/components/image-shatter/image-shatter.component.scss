@@ -1,0 +1,12 @@
+@import 'abstracts';
+
+:host {
+  display: block;
+}
+
+:host ::ng-deep {
+  canvas {
+    outline: none;
+  }
+}
+

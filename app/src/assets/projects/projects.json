@@ -1,0 +1,27 @@
+[{
+  "tag": "vscode-pin",
+  "title": "VSCode File Pin Extension",
+  "markdown": "2-vscode-pin/description.md",
+  "summary": "VSCode extension used for pinning folders, files and file lines for quick access, which I started out of personal need for optimizing workflow in a large mono-repo.",
+  "startDate": "2020.01",
+  "featured": true,
+  "hidden": true,
+  "links": [{
+    "name": "Repository",
+    "href": "https://github.com/ragauskl/vscode-pin"
+  }]
+}, {
+  "tag": "route-fox",
+  "title": "RouteFox (Dissertation)",
+  "markdown": "1-route-fox/description.md",
+  "cover": "1-route-fox/route-fox-cover.jpg",
+  "summary": "A mobile travel recommender system, that generates route suggestions between 2+ points of interests, based on the user preferences such as visit length for every place, arrival and departure preferences, the priority of each place as well as preferred transport type. The mobile application also has a feature to live-track a saved route and warn the user if wandering off too far away from the selected path.",
+  "startDate": "2018.01",
+  "endDate": "2018.04",
+  "live": null,
+  "featured": true,
+  "links": [{
+    "name": "Demo",
+    "href": "https://www.youtube.com/watch?v=9NwdTCJON8U&feature=youtu.be"
+  }]
+}]

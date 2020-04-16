@@ -1,4 +1,4 @@
-<app-intro class="section"></app-intro>
+<app-intro [id]="section.intro" class="section"></app-intro>
 <app-experience-section [id]="section.experience" class="section"></app-experience-section>
+<app-featured-projects [id]="projectsService.hasProjectsPage ? section.projects : section.featured" class="section"></app-featured-projects>
 <app-contact-me [id]="section.contact" class="section"></app-contact-me>
-<app-footer></app-footer>
