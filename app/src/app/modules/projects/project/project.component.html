@@ -5,6 +5,17 @@
 <div class="content">
   <h2>{{project.title}}</h2>
 
+  <div class="links">
+    <ng-container *ngFor="let link of links; let i = index">
+      <a [href]="link.href" target="_blank">
+        <img *ngIf="link.img" [src]="link.img">
+        <p>{{link.name}}</p>
+      </a>
+
+      <span *ngIf="i !== links.length - 1" class="dot"></span>
+    </ng-container>
+  </div>
+
   <p>
     <small *ngIf="project.startDate">{{project.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
     <small *ngIf="project.endDate">- {{project.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>

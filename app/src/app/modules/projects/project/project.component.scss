@@ -28,4 +28,32 @@
   width: 80%;
   @include flex(column);
   padding-bottom: 50px;
+
+  .links {
+    @include flex;
+    @include item-space(row, 10px);
+    flex-wrap: wrap;
+
+    > a {
+      position: relative;
+      @include flex;
+      @include item-space(row, 5px);
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .dot {
+      width: 0.3em;
+      height: 0.3em;
+      background: color('background-primary');
+      border-radius: 50%;
+    }
+
+    img {
+      height: 1em;
+      object-fit: contain;
+    }
+  }
 }

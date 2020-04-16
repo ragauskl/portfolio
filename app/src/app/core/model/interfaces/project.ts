@@ -5,11 +5,12 @@ export interface Project {
   markdown: string
   summary: string
   startDate: string
-  github?: string
   featured: boolean
   endDate?: string
-  live?: null | string
-  demo?: string
   cover?: string
   hidden?: string
+  links?: {
+    name: string
+    href: string
+  }[]
 }

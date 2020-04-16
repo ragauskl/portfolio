@@ -102,6 +102,7 @@ export class Scene {
 
   onResize () {
     this.UpdateMouse()
+    this.updateCamera()
   }
 
   clearScene () {
@@ -143,7 +144,7 @@ export class Scene {
     this.scene.add(ambient)
 
     for (const [x, y, z] of [
-      [0, 50, 1100],
+      [0, 10, 1100],
       [0, -15, 1400]
     ]) {
       const light = new THREE.SpotLight('white', 0.3, undefined)
@@ -152,8 +153,8 @@ export class Scene {
       light.shadow.mapSize.height = 512 * 4
       light.position.set(x, y, z)
       light.castShadow = true
-      light.shadow.camera.near = 1
-      light.shadow.camera.far = 2000
+      light.shadow.camera.near = 100
+      light.shadow.camera.far = 2100
       // Important for objects to not drop shadow on themselves
       light.shadow.bias = -0.0001
       light.penumbra = 0.5

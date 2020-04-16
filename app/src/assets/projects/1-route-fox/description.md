@@ -1,4 +1,4 @@
-# Introduction <!-- omit in toc -->
+# Description <!-- omit in toc -->
 RouteFox is a mobile travel recommendation system done as a last year dissertation project for Computing BSc. The primary target of the system is to generate route suggestions between 2+ points of interest (POI), based on the user preferences such as:
 
  - Visit length
@@ -7,18 +7,6 @@ RouteFox is a mobile travel recommendation system done as a last year dissertati
  - Preferred transport type
 
 Secondary target of the application is to provide user with real-time tracking and updates of the route as well as warn user if the planned route is no longer valid, for example if user wanders of from the path and will not be able to get back on track in time for a bus.
-
-```ts
-onLoad () {
-  const links = Array.from(this.description.element.nativeElement.getElementsByTagName('a'))
-  for (const link of links) {
-    const url = new URL(link.href)
-    if (url.host === window.location.host) {
-      link.href = `${window.location.origin}${window.location.pathname}${url.hash}`
-    }
-  }
-}
-```
 
 # Contents <!-- omit in toc -->
 - [Technologies](#technologies)

@@ -12,12 +12,23 @@ import { MarkdownComponent } from 'ngx-markdown'
 export class ProjectComponent {
   project: Project
   @ViewChild('description', { static: false }) description!: MarkdownComponent
+
+  links: (Project['links'][0] & {
+    img: string
+  })[] = []
+
   constructor (
     public projectsService: ProjectsService,
     public activatedRoute: ActivatedRoute
   ) {
     activatedRoute.params.subscribe(p => {
       this.project = projectsService.projects.find(x => x.tag === p['project-tag'])
+      this.links = (this.project.links || []).map(l => ({
+        ...l,
+        img: l.href.includes('github.com') ? 'assets/icons/misc/github.svg' :
+          l.href.includes('youtube.com') ? 'assets/icons/misc/youtube.svg' : ''
+      }))
+      console.log('this.links:', this.links)
     })
   }
 
