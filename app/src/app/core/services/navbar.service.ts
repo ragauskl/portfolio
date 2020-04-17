@@ -58,7 +58,7 @@ export class NavBarService {
 
   }
 
-  goTo (section: keyof typeof Section | null) {
+  goTo (section: string | null) {
     if (!section) {
       document.scrollingElement.scrollTo({
         top: 0,
@@ -81,7 +81,7 @@ export class NavBarService {
     this.ScrollToHomeSection(section, 0)
   }
 
-  private ScrollToHomeSection (section: keyof typeof Section, attempts = 0) {
+  private ScrollToHomeSection (section: string, attempts = 0) {
     if (this.currentRoute !== '/') {
       const sub = this._router.events.subscribe(e => {
         if (e instanceof NavigationEnd && e.url === '/') {
