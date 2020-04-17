@@ -12,7 +12,13 @@ import { ArrowScrollComponent } from './components/arrow-scroll/arrow-scroll.com
 import { RenderedDirective } from './directives/rendered.directive'
 import { NoScrollDirective } from './directives/no-scroll.directive'
 import { ScrollBlockComponent } from './components/scroll-block/scroll-block.component'
-import { TrackScrollDirective } from './directives/track-scroll.directive'
+import { TrackScrollDirective } from './directives/track-scroll.directive';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component'
+import { PostCoverComponent } from './components/post-cover/post-cover.component'
+import { MomentPipe } from './pipes/moment.pipe';
+import { ImageShatterComponent } from './components/image-shatter/image-shatter.component'
+import { RouterModule } from '@angular/router'
+import { InViewDirective } from './directives/in-view.directive'
 
 @NgModule({
   declarations: [
@@ -25,13 +31,19 @@ import { TrackScrollDirective } from './directives/track-scroll.directive'
     RenderedDirective,
     NoScrollDirective,
     ScrollBlockComponent,
-    TrackScrollDirective
+    TrackScrollDirective,
+    ProjectsListComponent,
+    PostCoverComponent,
+    MomentPipe,
+    ImageShatterComponent,
+    InViewDirective
   ],
   imports: [
     CommonModule,
     MaterialModule,
     AngularResizedEventModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     MaterialModule,
@@ -45,7 +57,11 @@ import { TrackScrollDirective } from './directives/track-scroll.directive'
     RenderedDirective,
     NoScrollDirective,
     ScrollBlockComponent,
-    TrackScrollDirective
+    TrackScrollDirective,
+    ProjectsListComponent,
+    MomentPipe,
+    ImageShatterComponent,
+    InViewDirective
   ]
 })
 export class CoreModule { }

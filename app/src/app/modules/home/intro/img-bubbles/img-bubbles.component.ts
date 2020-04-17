@@ -12,16 +12,9 @@ import { debounceTime } from 'rxjs/operators'
   styleUrls: ['./img-bubbles.component.scss']
 })
 export class ImgBubblesComponent implements AfterViewInit {
-  @HostListener('window:keyup', ['$event'])
-  onKeyUp (e: KeyboardEvent) {
-    // if (e.code === 'Space') {
-    //   if (this.bubbles.state === 'running') this.bubbles.stopAnimation()
-    //   else if (this.bubbles.state === 'stopped') this.bubbles.startAnimation()
-    // }
-  }
-
   bubbles: Bubbles
   resizeEvent = new Subject()
+
   constructor (
     private _http: HttpClient,
     private _el: ElementRef<HTMLElement>
@@ -38,6 +31,7 @@ export class ImgBubblesComponent implements AfterViewInit {
   }
 
   async toggleAnimation (animate: boolean) {
+    if (!this.bubbles) return
     if (!animate) await this.bubbles.stopAnimation()
     else this.bubbles.startAnimation()
   }

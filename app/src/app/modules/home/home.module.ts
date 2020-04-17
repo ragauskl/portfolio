@@ -8,7 +8,8 @@ import { ImgBubblesComponent } from './intro/img-bubbles/img-bubbles.component'
 import { ContactMeComponent } from './contact-me/contact-me.component'
 import { WavesComponent } from './components/waves/waves.component'
 import { ExperienceSectionComponent } from './experience-section/experience-section.component'
-import { CardCarouselComponent } from './experience-section/card-carousel/card-carousel.component'
+import { CardCarouselComponent } from './experience-section/card-carousel/card-carousel.component';
+import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component'
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CardCarouselComponent } from './experience-section/card-carousel/card-c
     ImgBubblesComponent,
     ContactMeComponent,
     ExperienceSectionComponent,
-    CardCarouselComponent
+    CardCarouselComponent,
+    FeaturedProjectsComponent
   ],
   imports: [
     CommonModule,

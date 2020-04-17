@@ -2,7 +2,9 @@ import browser from 'bowser'
 
 enum Browser {
   Chrome = 'Chrome',
+  Brave = 'Brave',
   Edge = 'Edge',
+  EdgeC = 'Edge (Chromium)',
   Opera = 'Opera',
   Firefox = 'Firefox',
   Safari = 'Safari',
@@ -12,36 +14,42 @@ enum Browser {
 class BrowserUtil {
   private logos = 'assets/icons/browsers'
   browsers = [{
-    name: 'Firefox',
-    supported: true,
+    name: Browser.Firefox,
+    // Performance issues
+    supported: false,
     src: `${this.logos}/firefox.svg`,
     href: 'https://www.mozilla.org/en-GB/firefox/new/'
   }, {
-    name: 'Chrome',
+    name: Browser.Chrome,
     supported: true,
     src: `${this.logos}/chrome.svg`,
     href: 'https://www.google.com/chrome/'
   }, {
-    name: 'Brave',
+    name: Browser.Brave,
     supported: true,
     src: `${this.logos}/brave.svg`,
     href: 'https://brave.com/xsc238'
   }, {
-    name: 'Safari',
+    name: Browser.Safari,
     supported: true,
     src: `${this.logos}/safari.svg`,
     href: 'https://www.apple.com/uk/safari/'
   }, {
-    name: 'Edge',
+    name: Browser.Edge,
     supported: false,
     src: `${this.logos}/edge.svg`
   }, {
-    name: 'Opera',
+    name: Browser.EdgeC,
+    supported: true,
+    src: `${this.logos}/edge-chromium.svg`,
+    href: 'https://www.microsoft.com/en-us/edge'
+  }, {
+    name: Browser.Opera,
     supported: true,
     src: `${this.logos}/opera.svg`,
     href: 'https://www.opera.com/'
   }, {
-    name: 'IE',
+    name: Browser.IE,
     supported: false,
     src: `${this.logos}/ie.svg`
   }]
@@ -56,6 +64,8 @@ class BrowserUtil {
     name = name.toLowerCase()
     if (name.includes('chrome')) {
       return Browser.Chrome
+    } else if (window.navigator.userAgent.toLowerCase().includes('edg/')) {
+      return Browser.EdgeC
     } else if (name.includes('edge')) {
       return Browser.Edge
     } else if (name.includes('opera')) {
@@ -69,8 +79,12 @@ class BrowserUtil {
     }
   }
 
-  isSafari () {
+  get isSafari () {
     return this.browserName === Browser.Safari
+  }
+
+  get isFirefox () {
+    return this.browserName === Browser.Firefox
   }
 }
 

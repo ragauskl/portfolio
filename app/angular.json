@@ -30,13 +30,19 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/theme/main.scss"
+              "src/theme/main.scss",
+              "src/assets/prism/prism-one-dark.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
             ],
             "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "node_modules/prismjs/components/prism-typescript.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/app/styles"
+                "src/app/styles"
               ]
             }
           },
@@ -98,13 +104,19 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/theme/main.scss"
+              "src/theme/main.scss",
+              "src/assets/prism/prism-one-dark.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
             ],
             "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "node_modules/prismjs/components/prism-typescript.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                  "src/app/styles"
+                "src/app/styles"
               ]
             }
           }
@@ -135,6 +147,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "app"
+    }
+  },
+  "defaultProject": "app",
+  "cli": {
+    "analytics": false
+  }
 }

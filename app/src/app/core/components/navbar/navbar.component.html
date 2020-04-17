@@ -1,14 +1,15 @@
 <div id=navbar-wrap>
   <div id="nav-title"></div>
 
-  <div id="logo-container" (click)="navBar.scrollTo(null)" [style.top]="logoContainerTop">
+  <div id="logo-container" (click)="navBar.goTo(section.intro)">
     <img src="assets/logo/logo-dark.svg" alt="Lina Ragauskaite">
   </div>
 
   <div class="menu">
     <div class="sections" *ngIf="!viewService.mobile">
-      <a (click)="navBar.scrollTo(section.experience)">Experience</a>
-      <a (click)="navBar.scrollTo(section.contact)">Contact</a>
+      <a [class.active]="navBar.activeSection === 'experience'" (click)="navBar.goTo(section.experience)">Experience</a>
+      <a [class.active]="navBar.activeSection === projectsSection" (click)="navBar.goTo(section[projectsSection])">Projects</a>
+      <a [class.active]="navBar.activeSection === 'contact'" (click)="navBar.goTo(section.contact)">Contact</a>
     </div>
 
     <div id="menu-backdrop" [class.expanded]="menuOpen" [no-scroll]="menuOpen">
@@ -17,9 +18,10 @@
       <mat-icon *ngIf="menuOpen" (click)="menuOpen = false">close</mat-icon>
 
       <div class="sections" *ngIf="menuOpen">
-        <a (click)="menuOpen = false; navBar.scrollTo(null)">Intro</a>
-        <a (click)="menuOpen = false; navBar.scrollTo(section.experience)">Experience</a>
-        <a (click)="menuOpen = false; navBar.scrollTo(section.contact)">Contact</a>
+        <a [class.active]="navBar.activeSection === 'intro'" (click)="menuOpen = false; navBar.goTo(section.intro)">Intro</a>
+        <a [class.active]="navBar.activeSection === 'experience'" (click)="menuOpen = false; navBar.goTo(section.experience)">Experience</a>
+        <a [class.active]="navBar.activeSection === projectsSection" (click)="menuOpen = false; navBar.goTo(section[projectsSection])">Projects</a>
+        <a [class.active]="navBar.activeSection === 'contact'" (click)="menuOpen = false; navBar.goTo(section.contact)">Contact</a>
       </div>
     </div>
   </div>

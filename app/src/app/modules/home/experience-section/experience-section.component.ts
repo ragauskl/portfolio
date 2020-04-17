@@ -450,7 +450,7 @@ class GraphNode {
 
     const forTitle = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
 
-    if (browserUtil.isSafari()) {
+    if (browserUtil.isSafari) {
       forTitle.setAttributeNS(null, 'width', `54%`)
       forTitle.setAttributeNS(null, 'height', `${this.size}`)
     } else {

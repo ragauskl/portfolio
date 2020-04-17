@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core'
-import { environment } from 'environments/environment'
 import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
 import { fromEvent } from 'rxjs'
+import { Router, NavigationEnd } from '@angular/router'
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,13 @@ export class AppComponent {
       !window.location.href.includes('error')
   }
 
-  headerHeight = 100
+  headerHeight = 150
+  headerResizable = true
 
   constructor (
     private _matIconRegistry: MatIconRegistry,
-    private _domSanitizer: DomSanitizer
+    private _domSanitizer: DomSanitizer,
+    private _router: Router
   ) {
     this.RegisterCustomIcons([
       ['send', 'icons/action/send.svg'],
@@ -28,8 +30,22 @@ export class AppComponent {
     ])
 
     fromEvent(window, 'scroll').subscribe(e =>
-      this.headerHeight = Math.max(50, 100 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1))
+      this.headerResizable && this.CalculateHeader()
     )
+
+    this._router.events
+    .subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.headerResizable = e.url === '/'
+        this.CalculateHeader()
+      }
+    })
+  }
+
+  private CalculateHeader () {
+    this.headerHeight = this.headerResizable ?
+      Math.max(50, 150 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1)) :
+      50
   }
 
   private RegisterCustomIcons (icons: [string, string][]) {
