@@ -37,16 +37,16 @@ jobs:
         cd app && npm run build && npm run deploy
       )"
 
-# branches:
-#   only:
-#   - master
-#   - develop
+branches:
+  only:
+  - master
+  - develop
 
-# install:
-#   - npm i -g @angular/cli
-#   - cd api
-#   - npm i
-#   - cd ../app
-#   - npm i
-#   - cd ..
+install:
+  - npm i -g @angular/cli
+  - cd api
+  - npm i
+  - cd ../app
+  - npm i
+  - cd ..
 
