@@ -16,7 +16,7 @@ before_install:
   - git config user.email "$GITHUB_EMAIL"
   - git config user.name "$GITHUB_USER"
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
-  - cd dev && npm i && npm start
+
 stages:
   - name: sentry
     if: commit_message ~= /--sentry|-s/
