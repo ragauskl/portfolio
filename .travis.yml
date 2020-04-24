@@ -19,7 +19,7 @@ before_install:
 
 stages:
   - name: sentry
-    if: commit_message ~= /--sentry|-s/
+    # if: commit_message ~= /--sentry|-s/
   - name: build_app
     if: type = pull_request
   - name: deploy_app
