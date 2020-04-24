@@ -18,7 +18,7 @@ before_install:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 stages:
-  - name: sentry
+  # - name: sentry
     # if: commit_message ~= /--sentry|-s/
   - name: build_app
     if: type = pull_request
