@@ -23,10 +23,8 @@ stages:
   - name: build_app
     if: type = pull_request
   - name: deploy_app
-    if: type = never AND branch = master
-# Develop to master, is develop head_branch and master a branch?
-# env(FOO)
-# https://docs.travis-ci.com/user/conditions-v1
+    if: type = push AND branch = master
+
 jobs:
   include:
     - stage: sentry
@@ -34,8 +32,10 @@ jobs:
     - stage: build_app
       script: cd app && npm run build
     - stage: deploy_app
-      script: echo "Should only print in merge to master"
-      # script: cd app && npm run deploy
+      # If this test is false, then it's a commit from merge request
+      script: test -z $(git rev-parse --verify $TRAVIS_COMMIT^2 2> /dev/null) || (
+        cd app && npm run build && npm run deploy
+      )
 
 branches:
   only:
