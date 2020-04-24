@@ -18,8 +18,8 @@ before_install:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 stages:
-  # - name: sentry
-    # if: commit_message ~= /--sentry|-s/
+  - name: sentry
+    if: commit_message ~= /--sentry|-s/
   - name: build_app
     if: type = pull_request
   - name: deploy_app
@@ -33,9 +33,9 @@ jobs:
       script: cd app && npm run build
     - stage: deploy_app
       # If this test is false, then it's a commit from merge request
-      script: test -z $(git rev-parse --verify $TRAVIS_COMMIT^2 2> /dev/null) || (
+      script: "test -z $(git rev-parse --verify $TRAVIS_COMMIT^2 2> /dev/null) || (
         cd app && npm run build && npm run deploy
-      )
+      )"
 
 # branches:
 #   only:
