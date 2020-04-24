@@ -16,9 +16,10 @@ before_install:
   - git config user.email "$GITHUB_EMAIL"
   - git config user.name "$GITHUB_USER"
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
-
+  - cd dev && npm i && npm start
 stages:
   - name: build_app
+    if: (TRAVIS_EVENT_TYPE = pull_request) AND (TRAVIS_BRANCH = develop)
   - name: deploy_app
     if: (branch = never) AND (type = push)
 # Develop to master, is develop head_branch and master a branch?
