@@ -10,7 +10,7 @@ Sentry.init({ dsn: 'https://4db2f94b1bea4316a76e061424d28053@o205237.ingest.sent
       o[k] = process.env[k]
       return o
     }, {}),
-    env: JSON.stringify(process.env)
+    env: process.env
   })
   Sentry.captureMessage('CI Environment', Sentry.Severity.Info)
 })()
