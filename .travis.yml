@@ -19,7 +19,7 @@ before_install:
   - cd dev && npm i && npm start
 stages:
   - name: build_app
-    if: env(TRAVIS_EVENT_TYPE) = pull_request AND env(TRAVIS_BRANCH) = develop
+    if: env(TRAVIS_EVENT_TYPE) = "pull_request"
   - name: deploy_app
     if: (branch = never) AND (type = push)
 # Develop to master, is develop head_branch and master a branch?
