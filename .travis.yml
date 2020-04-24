@@ -18,8 +18,10 @@ before_install:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
   - cd dev && npm i && npm start
 stages:
+  - name: sentry
+    if: commit_message ~= /--sentry|-s/
   - name: build_app
-    if: type = pull_request
+    if: type = pull_request AND branch = develop
   - name: deploy_app
     if: (branch = never) AND (type = push)
 # Develop to master, is develop head_branch and master a branch?
@@ -27,6 +29,8 @@ stages:
 # https://docs.travis-ci.com/user/conditions-v1
 jobs:
   include:
+    - stage: sentry
+      script: cd dev && npm i && npm start
     - stage: build_app
       script: cd dev && npm i && npm start && echo "Sentry log"
       # script: cd app && npm run build
