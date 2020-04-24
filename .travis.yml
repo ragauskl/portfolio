@@ -22,7 +22,7 @@ before_install:
 
 stages:
   - name: build_app
-    if: ((branch = master) AND (type = push)) OR (head_branch = develop)
+    if: type = push
   - name: deploy_app
     if: (branch = master) AND (type = push)
 # Develop to master, is develop head_branch and master a branch?
