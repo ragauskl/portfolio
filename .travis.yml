@@ -7,10 +7,6 @@ services:
 
 before_install:
   - npm -v
-  - echo $TRAVIS_BRANCH
-  - echo $TRAVIS_EVENT_TYPE
-  - echo $TRAVIS_PULL_REQUEST
-  - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
   - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
   - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
@@ -22,28 +18,35 @@ before_install:
   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
 stages:
+  - name: sentry
+    if: commit_message ~= /--sentry|-s/
   - name: build_app
-    if: ((branch = master) AND (type = push)) OR (head_branch = develop)
+    if: type = pull_request
   - name: deploy_app
-    if: (branch = master) AND (type = push)
-
+    if: type = never AND branch = master
+# Develop to master, is develop head_branch and master a branch?
+# env(FOO)
+# https://docs.travis-ci.com/user/conditions-v1
 jobs:
   include:
+    - stage: sentry
+      script: cd dev && npm i && npm start
     - stage: build_app
       script: cd app && npm run build
     - stage: deploy_app
-      script: cd app && npm run deploy
+      script: echo "Should only print in merge to master"
+      # script: cd app && npm run deploy
 
 branches:
   only:
   - master
   - develop
 
-install:
-  - npm i -g @angular/cli
-  - cd api
-  - npm i
-  - cd ../app
-  - npm i
-  - cd ..
+# install:
+#   - npm i -g @angular/cli
+#   - cd api
+#   - npm i
+#   - cd ../app
+#   - npm i
+#   - cd ..
 
