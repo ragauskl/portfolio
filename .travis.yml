@@ -22,9 +22,8 @@ before_install:
 
 stages:
   - name: build_app
-    if: type = push
-  - name: deploy_app
-    if: (branch = master) AND (type = push)
+  # - name: deploy_app
+  #   if: (branch = master) AND (type = push)
 # Develop to master, is develop head_branch and master a branch?
 # env(FOO)
 # https://docs.travis-ci.com/user/conditions-v1
