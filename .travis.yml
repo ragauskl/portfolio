@@ -21,9 +21,9 @@ stages:
   - name: sentry
     if: commit_message ~= /--sentry|-s/
   - name: build_app
-    if: type = pull_request AND branch = develop
+    if: type = pull_request
   - name: deploy_app
-    if: (branch = never) AND (type = push)
+    if: type = never AND branch = master
 # Develop to master, is develop head_branch and master a branch?
 # env(FOO)
 # https://docs.travis-ci.com/user/conditions-v1
@@ -32,8 +32,7 @@ jobs:
     - stage: sentry
       script: cd dev && npm i && npm start
     - stage: build_app
-      script: cd dev && npm i && npm start && echo "Sentry log"
-      # script: cd app && npm run build
+      script: cd app && npm run build
     - stage: deploy_app
       script: echo "Should only print in merge to master"
       # script: cd app && npm run deploy
