@@ -9,7 +9,8 @@ import { ContactMeComponent } from './contact-me/contact-me.component'
 import { WavesComponent } from './components/waves/waves.component'
 import { ExperienceSectionComponent } from './experience-section/experience-section.component'
 import { CardCarouselComponent } from './experience-section/card-carousel/card-carousel.component';
-import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component'
+import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component';
+import { SkillsSectionComponent } from './skills-section/skills-section.component'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FeaturedProjectsComponent } from './featured-projects/featured-projects
     ContactMeComponent,
     ExperienceSectionComponent,
     CardCarouselComponent,
-    FeaturedProjectsComponent
+    FeaturedProjectsComponent,
+    SkillsSectionComponent
   ],
   imports: [
     CommonModule,

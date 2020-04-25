@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core'
+import { Component, Input, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
 import { Subscription, interval, fromEvent } from 'rxjs'
 
 @Component({
@@ -6,13 +6,28 @@ import { Subscription, interval, fromEvent } from 'rxjs'
   templateUrl: './arrow-scroll.component.html',
   styleUrls: ['./arrow-scroll.component.scss']
 })
-export class ArrowScrollComponent {
+export class ArrowScrollComponent implements AfterViewInit, OnDestroy {
+  private _subscriptions = new Subscription()
   @Input() contentContainerId?: string
   @Input() contentId?: string
   @ViewChild('scroll', { static: true }) scrollRef!: ElementRef<HTMLElement>
 
   private scrollSubscription?: Subscription
   scrollBy = 0
+
+  canScrollUp = false
+  canScrollDown = false
+
+  ngAfterViewInit () {
+    this._subscriptions.add(
+      fromEvent(window, 'resize').subscribe(() => this.UpdateScrollButtons())
+    )
+    setTimeout(() => this.UpdateScrollButtons(), 500)
+  }
+
+  ngOnDestroy () {
+    this._subscriptions.unsubscribe()
+  }
 
   scrollDirection (direction: 1 | 0 | -1 | number) {
     if (this.scrollSubscription) this.scrollSubscription.unsubscribe()
@@ -28,6 +43,13 @@ export class ArrowScrollComponent {
         }
       })
     }
+    this.UpdateScrollButtons()
+  }
+
+  private UpdateScrollButtons () {
+    const scroll = this.scrollRef.nativeElement
+    this.canScrollUp = !!scroll.scrollTop
+    this.canScrollDown = scroll.scrollTop < (scroll.scrollHeight - scroll.clientHeight)
   }
 
   scrollSpeed (by: number) {

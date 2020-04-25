@@ -7,11 +7,15 @@
 
 .section {
   width: 100%;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 50px);
   min-height: 500px;
   overflow: hidden;
   display: flex;
   box-sizing: border-box;
+}
+
+app-intro.section {
+  height: calc(100vh - 150px);
 }
 
 app-featured-projects.section {

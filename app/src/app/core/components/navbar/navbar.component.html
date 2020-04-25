@@ -9,6 +9,7 @@
     <div class="sections" *ngIf="!viewService.mobile">
       <a [class.active]="navBar.activeSection === 'experience'" (click)="navBar.goTo(section.experience)">Experience</a>
       <a [class.active]="navBar.activeSection === projectsSection" (click)="navBar.goTo(section[projectsSection])">Projects</a>
+      <a [class.active]="navBar.activeSection === 'skills'" (click)="navBar.goTo(section.skills)">Skills</a>
       <a [class.active]="navBar.activeSection === 'contact'" (click)="navBar.goTo(section.contact)">Contact</a>
     </div>
 
@@ -21,6 +22,7 @@
         <a [class.active]="navBar.activeSection === 'intro'" (click)="menuOpen = false; navBar.goTo(section.intro)">Intro</a>
         <a [class.active]="navBar.activeSection === 'experience'" (click)="menuOpen = false; navBar.goTo(section.experience)">Experience</a>
         <a [class.active]="navBar.activeSection === projectsSection" (click)="menuOpen = false; navBar.goTo(section[projectsSection])">Projects</a>
+        <a [class.active]="navBar.activeSection === 'skills'" (click)="menuOpen = false; navBar.goTo(section.skills)">Skills</a>
         <a [class.active]="navBar.activeSection === 'contact'" (click)="menuOpen = false; navBar.goTo(section.contact)">Contact</a>
       </div>
     </div>

@@ -4,8 +4,8 @@ import moment from 'moment'
 import { Subject, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
-import { MatTabGroup } from '@angular/material/tabs'
 import browserUtil from '@core/utils/browser.util'
+import { HorizontalTabPairComponent } from '@core/components/layout/horizontal-tab-pair/horizontal-tab-pair.component'
 
 @Component({
   selector: 'app-experience-section',
@@ -14,7 +14,6 @@ import browserUtil from '@core/utils/browser.util'
 })
 export class ExperienceSectionComponent implements OnDestroy {
   private _subscriptions = new Subscription()
-  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
   readonly drawGrid = false
   commits: Commit[] = []
   nodes: GraphNode[] = []
@@ -24,7 +23,7 @@ export class ExperienceSectionComponent implements OnDestroy {
   private readonly _ySkip = 2
   private history!: History
 
-  @ViewChild('matTabGroup', { static: false }) matTabGroup?: MatTabGroup
+  @ViewChild('tabGroup', { static: false }) tabGroup!: HorizontalTabPairComponent
 
   constructor (
     private http: HttpClient,
@@ -54,15 +53,6 @@ export class ExperienceSectionComponent implements OnDestroy {
 
   ngOnDestroy () {
     this._subscriptions.unsubscribe()
-  }
-
-  swipe (eType: string) {
-    if (!this.matTabGroup) return
-    if (eType === this.SWIPE_ACTION.RIGHT && this.matTabGroup.selectedIndex > 0) {
-      this.matTabGroup.selectedIndex--
-    } else if (eType === this.SWIPE_ACTION.LEFT && this.matTabGroup.selectedIndex < 1) {
-      this.matTabGroup.selectedIndex++
-    }
   }
 
   private async RenderGraph () {
@@ -152,8 +142,8 @@ export class ExperienceSectionComponent implements OnDestroy {
 
         node.onFocusChange.subscribe(focused => this.NodeFocusedChanged(node, focused))
         node.onClick.subscribe(() => {
-          if (this.matTabGroup) {
-            if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+          if (this.tabGroup.compact) {
+            if (this.tabGroup.selectedIndex === 0) this.tabGroup.selectTab(1)
           }
         })
 
@@ -253,14 +243,10 @@ export class ExperienceSectionComponent implements OnDestroy {
       if (this._focusedNode) this._focusedNode.focused = false
       this._focusedNode = node
 
-      if (this.matTabGroup) {
-        if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+      if (this.tabGroup.compact) {
+        if (this.tabGroup.selectedIndex === 0) this.tabGroup.selectTab(1)
       }
     }
-  }
-
-  selectTab (i: 0 | 1) {
-    if (this.matTabGroup) this.matTabGroup.selectedIndex = i
   }
 
   private CenterNode (node: GraphNode, onInit = false) {

@@ -2,64 +2,30 @@
 
 :host {
   @include flex(column, center, center);
-
-  h1 {
-    flex: 0 0 auto;
-  }
 }
 
-.experience-panel {
+app-horizontal-tab-pair {
   flex: 0 1 100%;
   width: 100%;
   overflow: auto;
-  @include flex(row, space-evenly, center);
+}
 
-  #graph-cards, #graph-container {
-    max-height: 80%;
-    height: 80%;
-    width: 40%;
-    position: relative;
+#experience-graph {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
 
-    &.compact {
-      width: 95%;
-    }
-  }
+.primary-content {
+  max-height: 90%;
+  height: 90%;
+  width: 100%;
+}
 
-  .arrow-back {
-    position: absolute;
-    z-index: 2;
-    left: 0;
-    top: 50%;
-    opacity: 0.3;
-    cursor: pointer;
-    transform: translate(-50%, -50%) rotate(90deg);
-    width: 10%;
-    max-width: 30px;
-
-    polygon {
-      animation: canGoBack 3s infinite ease-in-out;
-    }
-
-    @keyframes canGoBack {
-      0% {
-        opacity: 0.3;
-      }
-
-      50% {
-        opacity: 1;
-      }
-
-      100% {
-        opacity: 0.3;
-      }
-    }
-  }
-
-  #experience-graph {
-    height: 100%;
-    width: 100%;
-    display: flex;
-  }
+.secondary-content {
+  max-height: 80%;
+  height: 80%;
+  width: 100%;
 }
 
 :host ::ng-deep {
@@ -108,21 +74,6 @@
       transform: scale(1);
       .graph-node-filler {
         opacity: 0.8;
-      }
-    }
-  }
-
-  .mat-tab-group {
-    .mat-tab-header {
-      display: none;
-    }
-
-    .mat-tab-body {
-      width: 80vw;
-      height: 75vh;
-
-      .mat-tab-body-content {
-        @include flex;
       }
     }
   }
