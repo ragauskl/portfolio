@@ -1,15 +1,3 @@
-
-export interface SkillsConfig {
-  development: Skill[]
-  devops: Skill[]
-}
-
-export interface Skill {
-  title: string
-  src: string
-  sprite: string
-}
-
 export type Coordinate = {x: number, y: number}
 
 export type IconMeta = {

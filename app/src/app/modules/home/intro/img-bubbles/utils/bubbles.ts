@@ -1,7 +1,7 @@
-import { IconMeta, shuffle, SkillsConfig } from './bubble-utils'
+import { IconMeta, shuffle } from './bubble-utils'
 import Bubble from './bubble'
 import Noise from 'noisejs'
-import browserUtil from '@core/utils/browser.util'
+import { SkillMetadata, BubbleType } from '@core/utils/content'
 
 export class Bubbles {
   pixelRatioMultiplier = Math.max(window.devicePixelRatio - 1, 1)
@@ -30,7 +30,7 @@ export class Bubbles {
 
   scaleGen = this.nextScale()
   devSkillGen = this.nextDevelopmentSkill()
-  opsSkillGen = this.nextDevopsSkill()
+  opsSkillGen = this.nextDevOpsSkill()
 
   state: 'running' | 'stop requested' | 'stopped'
 
@@ -46,10 +46,16 @@ export class Bubbles {
     return this.el.clientWidth * 0.5
   }
 
+  developmentSkills: SkillMetadata[]
+  devopsSkills: SkillMetadata[]
+
   constructor (
     public el: HTMLElement,
-    public skills: SkillsConfig
+    public skills: SkillMetadata[]
   ) {
+    this.developmentSkills = skills.filter(x => x.bubble === BubbleType.FullStack)
+    this.devopsSkills = skills.filter(x => x.bubble === BubbleType.DevOps)
+
     this.updateSize()
     this.updatePadding()
     this.init()
@@ -248,25 +254,25 @@ export class Bubbles {
 
     while (true) {
       i++
-      if (i === this.skills.development.length) i = 0
+      if (i === this.developmentSkills.length) i = 0
       yield {
-        src: `assets/icons/skills/jpg/development/${this.skills.development[i].src}`,
-        title: this.skills.development[i].title,
-        sprite: this.skills.development[i].sprite
+        src: `assets/icons/skills/jpg/development/${this.developmentSkills[i].src}`,
+        title: this.developmentSkills[i].title,
+        sprite: this.developmentSkills[i].sprite
       }
     }
   }
 
-  private *nextDevopsSkill (): IterableIterator<IconMeta> {
+  private *nextDevOpsSkill (): IterableIterator<IconMeta> {
     let i = -1
 
     while (true) {
       i++
-      if (i === this.skills.devops.length) i = 0
+      if (i === this.devopsSkills.length) i = 0
       yield {
-        src: `assets/icons/skills/jpg/devops/${this.skills.devops[i].src}`,
-        title: this.skills.devops[i].title,
-        sprite: this.skills.devops[i].sprite
+        src: `assets/icons/skills/jpg/devops/${this.devopsSkills[i].src}`,
+        title: this.devopsSkills[i].title,
+        sprite: this.devopsSkills[i].sprite
       }
     }
   }
