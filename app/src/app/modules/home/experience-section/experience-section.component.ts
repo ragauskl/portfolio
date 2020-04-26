@@ -65,6 +65,8 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
     const rows = this.history.commits.length * this._ySkip - 1
 
     const parent = document.getElementById('experience-graph')
+    if (!parent) return
+
     const cellSize = this.viewService.mobile ? 20 : 30
     const height = rows * cellSize
     const getX = (x) => cellSize * (x - 0.5) + 5

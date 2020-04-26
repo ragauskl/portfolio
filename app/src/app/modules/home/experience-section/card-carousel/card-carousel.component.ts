@@ -112,7 +112,7 @@ export class CardCarouselComponent implements OnInit {
 }
 
 class Card {
-  readonly maxBehind = 3
+  readonly maxBehind = 2
   readonly maxIndex = this.maxBehind - 1
   get hide () {
     return Math.abs(this._index) >= this.maxBehind
@@ -156,7 +156,7 @@ class Card {
   }
 
   generateStyle () {
-    const multiplier = window.innerWidth < 600 ? 13 : 20
+    const multiplier = window.innerWidth < 600 ? 16 : 12
     this.style = {
       'z-index': -Math.abs(this.styleIndex),
       transform: `translate(-50%, ${-50 + (this.styleIndex * multiplier)}%) scale(${

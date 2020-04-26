@@ -36,7 +36,7 @@ h3, p {
 
   .ratio-wrapper {
     width: 100%;
-    padding-top: 75%; /* 4:3 Aspect Ratio */
+    padding-top: 120%;
     position: relative;
     min-height: 200px;
     @include break('lt', 's') {
@@ -51,6 +51,9 @@ h3, p {
       right: 0;
       padding: 15px 30px;
       cursor: pointer;
+      box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.03),
+      0 5px 8px 0 rgba(0, 0, 0, 0.04),
+      0 1px 14px 0 rgba(0, 0, 0, 0.03);
 
       @include break('lt', 's') {
         padding: 7.5px 15px;
