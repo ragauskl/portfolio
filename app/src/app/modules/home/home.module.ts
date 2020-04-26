@@ -10,7 +10,8 @@ import { WavesComponent } from './components/waves/waves.component'
 import { ExperienceSectionComponent } from './experience-section/experience-section.component'
 import { CardCarouselComponent } from './experience-section/card-carousel/card-carousel.component';
 import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component';
-import { SkillsSectionComponent } from './skills-section/skills-section.component'
+import { SkillsSectionComponent } from './skills-section/skills-section.component';
+import { HorizontalSkillBarComponent } from './skills-section/horizontal-skill-bar/horizontal-skill-bar.component'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SkillsSectionComponent } from './skills-section/skills-section.componen
     ExperienceSectionComponent,
     CardCarouselComponent,
     FeaturedProjectsComponent,
-    SkillsSectionComponent
+    SkillsSectionComponent,
+    HorizontalSkillBarComponent
   ],
   imports: [
     CommonModule,

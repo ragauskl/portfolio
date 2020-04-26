@@ -1,0 +1,33 @@
+@import 'abstracts';
+
+:host {
+  @include flex(column, flex-start, stretch);
+  @include item-space(column, 5px);
+}
+
+.skill-details {
+  @include flex(row, space-between, center);
+  font-weight: bold;
+
+  p {
+    margin: 0;
+  }
+}
+
+.skill-bar {
+  height: 10px;
+  border-radius: 10px;
+  background: rgba(119,119,119, 0.2);
+  overflow: hidden;
+
+  @include break('lt', 's') {
+    height: 5px;
+  }
+
+  .bar-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #0ccebc;
+  }
+}

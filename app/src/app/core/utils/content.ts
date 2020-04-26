@@ -1,9 +1,8 @@
 export enum SkillLevel {
   Master = 10,
   Expert = 7.5,
-  Proficient = 5,
-  Familiar = 2.5,
-  Beginner = 0
+  Intermediate = 5,
+  Beginner = 1.5
 }
 
 export enum SkillSetType {
@@ -37,6 +36,12 @@ export interface SkillMetadata {
   bubble: BubbleType
 }
 
+export interface SkillSet {
+  title: string
+  summary: string
+  type: SkillSetType
+}
+
 export namespace Experience {
   export type Branch = 'master' | string
   export interface History {
@@ -66,15 +71,11 @@ export namespace Experience {
 }
 
 export namespace Content {
-  export const SkillSets: {
-    title: string
-    summary: string
-    type: SkillSetType
-  }[] = [{
+  export const SkillSets: SkillSet[] = [{
     type: SkillSetType.Service,
     title: 'JavaScript/TypeScript APIs and Microservices',
-    summary: `Highly experienced and enjoy building TypeScript APIs and writing smaller scripts in JavaScript.' +
-    ' Mostly I have worked with RESTful APIs with certain worker services separated for performance reasons, but lately I have been expanding my experience by working with Microservice architecture on my own time` +
+    summary: 'Highly experienced and enjoy building TypeScript APIs and writing smaller scripts in JavaScript.' +
+    ' Mostly I have worked with RESTful APIs with certain worker services separated for performance reasons, but lately I have been expanding my experience by working with Microservice architecture on my own time' +
     ' as well as learning GraphQL.'
   }, {
     type: SkillSetType.Host,
@@ -133,21 +134,21 @@ export namespace Content {
     title: 'Electron',
     src: 'electron.jpg',
     sprite: 'electron',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Application,
-    bubble: BubbleType.FullStack
-  }, {
-    title: 'JavaScript',
-    src: 'javascript.jpg',
-    sprite: 'javascript',
-    level: SkillLevel.Expert,
-    set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
     title: 'TypeScript',
     src: 'typescript.jpg',
     sprite: 'typescript',
     level: SkillLevel.Master,
+    set: SkillSetType.Service,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'JavaScript',
+    src: 'javascript.jpg',
+    sprite: 'javascript',
+    level: SkillLevel.Expert,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
@@ -161,35 +162,35 @@ export namespace Content {
     title: 'Go Lang',
     src: 'gopher.jpg',
     sprite: 'gopher',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
     title: 'GraphQL',
     src: 'graphql.jpg',
     sprite: 'graphql',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
     title: 'NestJS',
     src: 'nestjs.jpg',
     sprite: 'nestjs',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
     title: 'Docker',
     src: 'docker.jpg',
     sprite: 'docker',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Host,
     bubble: BubbleType.DevOps
   }, {
     title: 'Kubernetes',
     src: 'kubernetes-logo.jpg',
     sprite: 'kubernetes-logo',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Host,
     bubble: BubbleType.DevOps
   }, {
@@ -210,7 +211,7 @@ export namespace Content {
     title: 'Cloudflare',
     src: 'cloudflare.jpg',
     sprite: 'cloudflare',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Host,
     bubble: BubbleType.DevOps
   }, {
@@ -224,7 +225,7 @@ export namespace Content {
     title: 'Postgres SQL',
     src: 'postgresql.jpg',
     sprite: 'postgresql',
-    level: SkillLevel.Master,
+    level: SkillLevel.Expert,
     set: SkillSetType.DataStorage,
     bubble: BubbleType.FullStack
   }, {
@@ -238,28 +239,28 @@ export namespace Content {
     title: 'MongoDB',
     src: 'mongodb.jpg',
     sprite: 'mongodb',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.DataStorage,
     bubble: BubbleType.FullStack
   }, {
     title: 'GC Datastore',
     src: 'cloud-datastore.jpg',
     sprite: 'cloud-datastore',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.DataStorage,
     bubble: BubbleType.DevOps
   }, {
     title: 'Mocha',
     src: 'mocha.jpg',
     sprite: 'mocha',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Testing,
     bubble: BubbleType.FullStack
   }, {
     title: 'Jasmine',
     src: 'jasmine.jpg',
     sprite: 'jasmine',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.Testing,
     bubble: BubbleType.FullStack
   }, {
@@ -273,20 +274,20 @@ export namespace Content {
     title: 'Swagger',
     src: 'swagger.jpg',
     sprite: 'swagger',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.JsLibrary,
     bubble: BubbleType.FullStack
   }, {
     title: 'Google Cloud Platform',
     src: 'google-cloud.jpg',
     sprite: 'google-cloud',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     bubble: BubbleType.DevOps
   }, {
     title: 'Heroku',
     src: 'heroku.jpg',
     sprite: 'heroku',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     bubble: BubbleType.DevOps
   }, {
     title: 'GC Stackdriver',
@@ -299,28 +300,28 @@ export namespace Content {
     title: 'Elasticsearch',
     src: 'elasticsearch.jpg',
     sprite: 'elasticsearch',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Monitoring,
     bubble: BubbleType.DevOps
   }, {
     title: 'Beats',
     src: 'beats.jpg',
     sprite: 'beats',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Monitoring,
     bubble: BubbleType.DevOps
   }, {
     title: 'Logstash',
     src: 'logstash.jpg',
     sprite: 'logstash',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Monitoring,
     bubble: BubbleType.DevOps
   }, {
     title: 'Kibana',
     src: 'kibana.jpg',
     sprite: 'kibana',
-    level: SkillLevel.Familiar,
+    level: SkillLevel.Beginner,
     set: SkillSetType.Monitoring,
     bubble: BubbleType.DevOps
   }, {
@@ -334,14 +335,14 @@ export namespace Content {
     title: 'Gitlab CI',
     src: 'gitlab.jpg',
     sprite: 'gitlab',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.CiCd,
     bubble: BubbleType.DevOps
   }, {
     title: 'Travis CI',
     src: 'travis-ci.jpg',
     sprite: 'travis-ci',
-    level: SkillLevel.Proficient,
+    level: SkillLevel.Intermediate,
     set: SkillSetType.CiCd,
     bubble: BubbleType.DevOps
   }, {

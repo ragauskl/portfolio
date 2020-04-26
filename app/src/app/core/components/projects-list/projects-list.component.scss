@@ -71,7 +71,19 @@
 
     > * {
       flex: unset;
-      width: 100%;
+
+      &:first-child {
+        width: 80%;
+
+        @include break('lt', 's') {
+          width: 100%;
+        }
+      }
+
+      &:last-child {
+        width: 100%;
+      }
+
     }
   }
 }

@@ -1,9 +1,16 @@
 <h1>Skills</h1>
 
-<app-horizontal-tab-pair>
-  <div id="skills-graph" class="primary-content" style="background: red; height: 500px;">
-  </div>
+<div id="skill-set-list">
+  <div class="skill-set" *ngFor="let set of skillSets">
+    <div class="description">
+    <h2>{{set.title}}</h2>
 
-  <div id="card" class="secondary-content" style="background: cyan; height: 500px;">
+    <p>{{set.summary}}</p>
+    </div>
+
+    <div class="tool-graph">
+      <app-horizontal-skill-bar *ngFor="let tool of set.tools" [skill]="tool">
+      </app-horizontal-skill-bar>
+    </div>
   </div>
-</app-horizontal-tab-pair>
+</div>

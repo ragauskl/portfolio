@@ -2,82 +2,42 @@
 
 :host {
   @include flex(column, center, center);
-  @include item-space(column, 50px);
+  @include item-space(column, 10vw);
   margin-bottom: 50px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-app-horizontal-tab-pair {
-  flex: 0 1 100%;
+#skill-set-list {
+  @include flex(column, center, stretch);
+  @include item-space(column, 10vw);
+  width: 80%;
 }
 
-.primary-content {
-  background: red;
+.skill-set {
+  @include flex(row, space-between, flex-start);
+  flex-wrap: wrap;
+  min-height: 100px;
+
+  .description,
+  .tool-graph {
+    @include flex(column, flex-start, stretch);
+  }
+
+  .description {
+    flex: 0 1 45%;
+  }
+
+  .tool-graph {
+    margin-top: 20px;
+    flex: 0 1 45%;
+    @include item-space(column, 20px);
+
+    @include break('lt', 's') {
+      margin-top: 10px;
+    }
+  }
+
+  @include break('lt', 'm') {
+    @include flex(column, flex-start, stretch);
+  }
 }
-
-.secodnary-content {
-  background: blue;
-}
-
-// .skills-panel {
-//   flex: 0 1 100%;
-//   width: 100%;
-//   overflow: auto;
-//   @include flex(row, space-evenly, center);
-// }
-
-// #skills-cards, #skills-container {
-//   max-height: 80%;
-//   height: 80%;
-//   position: relative;
-// }
-
-// #skills-cards {
-//   width: 35%;
-// }
-
-// #skills-container {
-//   width: 55%;
-// }
-
-// .compact {
-//   #skills-cards, #skills-container {
-//     width: 95%;
-//   }
-// }
-
-// .arrow-back {
-//   position: absolute;
-//   z-index: 2;
-//   left: 0;
-//   top: 50%;
-//   opacity: 0.3;
-//   cursor: pointer;
-//   transform: translate(-50%, -50%) rotate(90deg);
-//   width: 10%;
-//   max-width: 30px;
-
-//   polygon {
-//     animation: canGoBack 3s infinite ease-in-out;
-//   }
-
-//   @keyframes canGoBack {
-//     0% {
-//       opacity: 0.3;
-//     }
-
-//     50% {
-//       opacity: 1;
-//     }
-
-//     100% {
-//       opacity: 0.3;
-//     }
-//   }
-// }
-
-// #skills-graph {
-//   height: 100%;
-//   width: 100%;
-//   display: flex;
-// }

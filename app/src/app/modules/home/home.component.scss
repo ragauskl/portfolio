@@ -21,3 +21,13 @@ app-intro.section {
 app-featured-projects.section {
   height: fit-content;
 }
+
+app-skills-section {
+  // Pull skills section closer to projects,
+  // due to custom offsets needed for 3js canvas
+  margin-top: -5vw;
+
+  @include break('lt', 'l') {
+    margin-top: 0;
+  }
+}

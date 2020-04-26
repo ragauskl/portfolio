@@ -1,5 +1,5 @@
 <div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0" [style.margin-top]="i === 0 ? 0 : ''">
-  <div class="ratio-wrapper">
+  <div class="ratio-wrapper cover">
     <div class="image">
       <app-image-shatter #el *ngIf="project.cover"
       (clicked)="projectsService.viewProject(project)"
@@ -12,7 +12,7 @@
   <div class="ratio-wrapper">
     <div class="summary-wrapper">
       <div class="summary-content">
-        <h3 class="read-more" (click)="projectsService.viewProject(project)">{{project.title}}</h3>
+        <h2 class="read-more" (click)="projectsService.viewProject(project)">{{project.title}}</h2>
         <p>
           <small *ngIf="project.startDate">{{project.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
           <small *ngIf="project.endDate">- {{project.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>
