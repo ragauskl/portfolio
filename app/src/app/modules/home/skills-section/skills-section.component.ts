@@ -18,8 +18,6 @@ export class SkillsSectionComponent implements OnDestroy {
   constructor (
     public viewService: ViewService
   ) {
-    window['skills'] = this
-
     this.skillSets = Content.SkillSets.map(x => ({
       ...x,
       tools: Content.ToolSet.filter(y => y.set === x.type)
