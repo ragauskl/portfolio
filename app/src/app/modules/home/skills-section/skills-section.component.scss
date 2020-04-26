@@ -7,6 +7,13 @@
   min-height: 100vh;
 }
 
+h1 {
+  // Required so that 3js canvas would not get drawn on top.
+  // Might someday fix/adjust 3js canvas positioning but for now
+  // this will do
+  z-index: 1;
+}
+
 #skill-set-list {
   @include flex(column, center, stretch);
   @include item-space(column, 10vw);

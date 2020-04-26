@@ -113,7 +113,7 @@ export namespace Content {
   }, {
     type: SkillSetType.JsLibrary,
     title: 'Popular JavaScript Libraries',
-    summary: 'Experience with wide range of JavaScript libraries for various purposes, here\'s a list of few more popular ones.'
+    summary: 'Experience with wide range of JavaScript libraries which help to write more readable and extensible code and document it. Here\'s a list of few more popular ones.'
   }]
 
   export const ToolSet: SkillMetadata[] = [{
@@ -368,15 +368,15 @@ export namespace Content {
       {
         branch: 'uni',
         origin: 'master',
-        color: 'rgb(86, 182, 194)'
+        color: 'rgb(51, 186, 204)'
       }, {
         branch: 'sorion',
         origin: 'uni',
-        color: 'rgb(229, 192, 123)'
+        color: 'rgb(226, 198, 96)'
       }, {
         branch: 'gsi',
         origin: 'master',
-        color: '#009688'
+        color: 'rgb(51, 204, 189)'
       }
     ],
     commits: [
