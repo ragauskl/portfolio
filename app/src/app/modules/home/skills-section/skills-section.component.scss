@@ -1,0 +1,50 @@
+@import 'abstracts';
+
+:host {
+  @include flex(column, center, center);
+  @include item-space(column, 5vw);
+  margin-bottom: 50px;
+  min-height: 100vh;
+}
+
+h1 {
+  // Required so that 3js canvas would not get drawn on top.
+  // Might someday fix/adjust 3js canvas positioning but for now
+  // this will do
+  z-index: 1;
+}
+
+#skill-set-list {
+  @include flex(column, center, stretch);
+  @include item-space(column, 5vw);
+  width: 80%;
+}
+
+.skill-set {
+  @include flex(row, space-between, flex-start);
+  flex-wrap: wrap;
+  min-height: 100px;
+
+  .description,
+  .tool-graph {
+    @include flex(column, flex-start, stretch);
+  }
+
+  .description {
+    flex: 0 1 45%;
+  }
+
+  .tool-graph {
+    margin-top: 20px;
+    flex: 0 1 45%;
+    @include item-space(column, 20px);
+
+    @include break('lt', 's') {
+      margin-top: 10px;
+    }
+  }
+
+  @include break('lt', 'm') {
+    @include flex(column, flex-start, stretch);
+  }
+}

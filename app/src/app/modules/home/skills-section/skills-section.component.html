@@ -1,0 +1,16 @@
+<h1>Skills</h1>
+
+<div id="skill-set-list">
+  <div class="skill-set" *ngFor="let set of skillSets">
+    <div class="description">
+    <h2>{{set.title}}</h2>
+
+    <p>{{set.summary}}</p>
+    </div>
+
+    <div class="tool-graph">
+      <app-horizontal-skill-bar *ngFor="let tool of set.tools" [skill]="tool">
+      </app-horizontal-skill-bar>
+    </div>
+  </div>
+</div>

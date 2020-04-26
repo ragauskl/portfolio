@@ -1,38 +1,40 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { Component, ViewChild, OnDestroy, AfterViewInit } from '@angular/core'
 import moment from 'moment'
 import { Subject, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
-import { MatTabGroup } from '@angular/material/tabs'
 import browserUtil from '@core/utils/browser.util'
+import { HorizontalTabPairComponent } from '@core/components/layout/horizontal-tab-pair/horizontal-tab-pair.component'
+import { Content, Experience } from '@core/utils/content'
 
 @Component({
   selector: 'app-experience-section',
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss']
 })
-export class ExperienceSectionComponent implements OnDestroy {
+export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   private _subscriptions = new Subscription()
-  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
   readonly drawGrid = false
-  commits: Commit[] = []
+  commits: Experience.Commit[] = []
   nodes: GraphNode[] = []
   // Will be ignored if history element has focused prop defined
   selectedIndex: number = 19
   private _focusedNode?: GraphNode
   private readonly _ySkip = 2
-  private history!: History
+  private history!: Experience.History
 
-  @ViewChild('matTabGroup', { static: false }) matTabGroup?: MatTabGroup
+  @ViewChild('tabGroup', { static: false }) tabGroup!: HorizontalTabPairComponent
 
   constructor (
-    private http: HttpClient,
     public viewService: ViewService
-  ) {
-    this._subscriptions.add(
-      viewService.viewModeChange.subscribe(() => this.RenderGraph())
-    )
+  ) {}
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this._subscriptions.add(
+        this.viewService.viewModeChange.subscribe(() => this.RenderGraph())
+      )
+    }, 1)
   }
 
   onSelectedChange (index: number) {
@@ -56,22 +58,15 @@ export class ExperienceSectionComponent implements OnDestroy {
     this._subscriptions.unsubscribe()
   }
 
-  swipe (eType: string) {
-    if (!this.matTabGroup) return
-    if (eType === this.SWIPE_ACTION.RIGHT && this.matTabGroup.selectedIndex > 0) {
-      this.matTabGroup.selectedIndex--
-    } else if (eType === this.SWIPE_ACTION.LEFT && this.matTabGroup.selectedIndex < 1) {
-      this.matTabGroup.selectedIndex++
-    }
-  }
-
-  private async RenderGraph () {
-    if (!this.history) this.history = await this.http.get('assets/history.json').toPromise() as History
+  private RenderGraph () {
+    if (!this.history) this.history = Content.ExperienceHistory
 
     const columns = this.history.branches.length
     const rows = this.history.commits.length * this._ySkip - 1
 
     const parent = document.getElementById('experience-graph')
+    if (!parent) return
+
     const cellSize = this.viewService.mobile ? 20 : 30
     const height = rows * cellSize
     const getX = (x) => cellSize * (x - 0.5) + 5
@@ -103,7 +98,7 @@ export class ExperienceSectionComponent implements OnDestroy {
         y += this._ySkip
         commit.y = y
 
-        const branch: BranchElement = this.history.branches.find(x => x.branch === commit.branch)
+        const branch: Experience.BranchElement = this.history.branches.find(x => x.branch === commit.branch)
         if (!branch) {
           console.warn(`Branch '${commit.branch}' undefined.`)
           continue
@@ -152,8 +147,8 @@ export class ExperienceSectionComponent implements OnDestroy {
 
         node.onFocusChange.subscribe(focused => this.NodeFocusedChanged(node, focused))
         node.onClick.subscribe(() => {
-          if (this.matTabGroup) {
-            if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+          if (this.tabGroup.compact) {
+            if (this.tabGroup.selectedIndex === 0) this.tabGroup.selectTab(1)
           }
         })
 
@@ -253,14 +248,10 @@ export class ExperienceSectionComponent implements OnDestroy {
       if (this._focusedNode) this._focusedNode.focused = false
       this._focusedNode = node
 
-      if (this.matTabGroup) {
-        if (this.matTabGroup.selectedIndex === 0) this.selectTab(1)
+      if (this.tabGroup.compact) {
+        if (this.tabGroup.selectedIndex === 0) this.tabGroup.selectTab(1)
       }
     }
-  }
-
-  selectTab (i: 0 | 1) {
-    if (this.matTabGroup) this.matTabGroup.selectedIndex = i
   }
 
   private CenterNode (node: GraphNode, onInit = false) {
@@ -312,32 +303,6 @@ export class ExperienceSectionComponent implements OnDestroy {
   }
 }
 
-type Branch = 'master' | string
-export interface History {
-  branches: BranchElement[]
-  commits: Commit[]
-}
-
-export interface BranchElement {
-  branch: Branch
-  origin?: Branch
-  color: string
-  x?: number
-}
-
-export interface Commit {
-  date: string
-  branch: Branch
-  comment: string
-  description?: string
-  closed?: boolean
-  x?: number
-  y?: number
-  color?: string
-  focused?: true
-  el?: SVGGElement
-}
-
 function matchEveniness (target: number, input: number) {
   if (Math.round(target) % 2 === 0) {
     if (Math.round(input) % 2 !== 0) input--
@@ -385,7 +350,7 @@ class GraphNode {
 
   constructor (
     private viewService: ViewService,
-    public commit: Commit,
+    public commit: Experience.Commit,
     private size: number,
     private position: {x: number, y: number},
     private textX: number,

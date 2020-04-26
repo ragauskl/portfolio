@@ -1,10 +1,9 @@
-import { Component, ElementRef, HostListener, AfterViewInit } from '@angular/core'
-import { SkillsConfig } from './utils/bubble-utils'
-import { HttpClient } from '@angular/common/http'
+import { Component, ElementRef, AfterViewInit } from '@angular/core'
 import { ResizedEvent } from 'angular-resize-event'
 import { Bubbles } from './utils/bubbles'
 import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
+import { Content } from '@core/utils/content'
 
 @Component({
   selector: 'app-img-bubbles',
@@ -16,7 +15,6 @@ export class ImgBubblesComponent implements AfterViewInit {
   resizeEvent = new Subject()
 
   constructor (
-    private _http: HttpClient,
     private _el: ElementRef<HTMLElement>
   ) {
     let resizeInProgress = false
@@ -37,9 +35,7 @@ export class ImgBubblesComponent implements AfterViewInit {
   }
 
   ngAfterViewInit () {
-    this._http.get('assets/skills.json').subscribe((json: SkillsConfig) => {
-      this.bubbles = new Bubbles(this._el.nativeElement, json)
-    })
+    this.bubbles = new Bubbles(this._el.nativeElement, Content.ToolSet)
   }
 
   onResized (e: ResizedEvent) {

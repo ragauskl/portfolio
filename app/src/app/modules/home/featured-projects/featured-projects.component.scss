@@ -20,10 +20,6 @@ app-projects-list {
   max-width: 1200px;
 
   @include break ('lt', 'm') {
-    width: 60%;
-  }
-
-  @include break ('lt', 's') {
     width: 80%;
   }
 }

@@ -98,6 +98,10 @@ h1 {
   @include break-font(32px, null, 32px);
 }
 
+h2 {
+  @include break-font(24px, null, 24px);
+}
+
 h3 {
   @include break-font(19px, 13px, 19px);
 }

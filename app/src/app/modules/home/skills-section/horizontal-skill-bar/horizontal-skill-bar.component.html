@@ -1,0 +1,11 @@
+<div class="skill-details">
+  <div class="skill-title">
+    <img [src]="src" [class.small]="smallerIcon">
+    <p>{{skill.title}}</p>
+  </div>
+  <p>{{skillLevelName}}</p>
+</div>
+
+<span class="skill-bar">
+  <span class="bar-fill" [style.width]="skill.level * 10 + '%'"></span>
+</span>

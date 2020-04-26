@@ -30,8 +30,10 @@ async function bootstrap () {
   }))
   app.use(cors())
 
-  await app.listen(process.env[ENV.PORT], process.env[ENV.HOST])
-  console.log(`#> Server up. Listening to port ${process.env[ENV.HOST] || ''}:${process.env[ENV.PORT]}`)
+  const env: any = process.env
+  await app.listen(env[ENV.PORT], env[ENV.HOST])
+  console.log(`#> Server up. Listening to port ${env[ENV.HOST] || ''}:${env[ENV.PORT]}`)
 }
 
+// tslint:disable-next-line
 bootstrap()

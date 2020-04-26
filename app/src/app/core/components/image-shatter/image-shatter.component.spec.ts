@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ImageShatterComponent } from './image-shatter.component';
+import { ImageShatterComponent } from './image-shatter.component'
 
 describe('ImageShatterComponent', () => {
-  let component: ImageShatterComponent;
-  let fixture: ComponentFixture<ImageShatterComponent>;
+  let component: ImageShatterComponent
+  let fixture: ComponentFixture<ImageShatterComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ImageShatterComponent ]
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImageShatterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ImageShatterComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

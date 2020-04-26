@@ -5,7 +5,7 @@
   [class.hide]="card.hide"
   [ngStyle]="card.style">
     <div class="ratio-wrapper" *ngIf="!card.hide">
-      <div class="carousel-card mat-elevation-z5"
+      <div class="carousel-card"
       (click)="card.zIndex !== styleFocusedIndex && focusCard(card, 'a')">
         <h3>{{card.title}}</h3>
         <p><small>{{card.subtitle}}</small></p>
