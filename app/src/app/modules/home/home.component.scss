@@ -14,8 +14,17 @@
   box-sizing: border-box;
 }
 
+app-contact-me.section {
+  height: fit-content;
+}
+
 app-intro.section {
   height: calc(100vh - 150px);
+  margin-bottom: 5vw;
+}
+
+app-experience-section.section {
+  margin-bottom: 5vw;
 }
 
 app-featured-projects.section {
@@ -32,4 +41,6 @@ app-skills-section {
   @include break('lt', 'l') {
     margin-top: 0;
   }
+
+  margin-bottom: 5vw;
 }

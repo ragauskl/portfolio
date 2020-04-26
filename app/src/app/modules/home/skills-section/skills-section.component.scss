@@ -2,7 +2,7 @@
 
 :host {
   @include flex(column, center, center);
-  @include item-space(column, 10vw);
+  @include item-space(column, 5vw);
   margin-bottom: 50px;
   min-height: 100vh;
 }
@@ -16,7 +16,7 @@ h1 {
 
 #skill-set-list {
   @include flex(column, center, stretch);
-  @include item-space(column, 10vw);
+  @include item-space(column, 5vw);
   width: 80%;
 }
 

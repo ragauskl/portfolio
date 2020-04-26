@@ -11,7 +11,7 @@ export enum SkillSetType {
   Host,
   DataStorage,
   Testing,
-  JsLibrary,
+  Other,
   Monitoring,
   CiCd
 }
@@ -82,17 +82,19 @@ export namespace Content {
     title: `Hosting Scalable Applications and Services`,
     summary: 'Mostly I work with various services of Google Cloud Platform to host APIs and Web applications, but am looking to expand experience with' +
     ' Cloud Platforms to AWS in near future. I have setup and managed small to medium size Kubernetes cluster with auto-scaling and auto-updating wildcard SSL certificates,' +
-    ' as well as dealt with serverless scripts hosting which can be scheduled or triggered by Pub/Sub messaging service.'
+    ' as well as dealt with serverless scripts hosting which can be scheduled or triggered by Pub/Sub messaging service.' +
+    ' Have 2+ years of experience with containerising web applications and services in Docker for local development and remote production environments as well as' +
+    ' automated testing and deployments.'
   }, {
     type: SkillSetType.Application,
     title: 'Web and Mobile Applications',
     summary: 'Worked 3+ years with building responsive and complex Web applications and lightweight Mobile applications.' +
     ' Previously deployed Ionic applications to Google App Store and Apple App Store.' +
-    ' Have fully white labeled user interface, email and domain, all customisable for every customer of the application.'
+    ' Have fully white labeled user interfaces, email and domain, all customisable for every customer of the application.'
   }, {
     type: SkillSetType.DataStorage,
     title: 'Data Storage',
-    summary: 'Have worked with file storing on buckets, GIS data storage on Geoserver and Postgis and data storage on both SQL and NoSQL databases.' +
+    summary: 'Have worked with file storing on buckets, GIS data storage on Geoserver and PostGIS and data storage on both SQL and NoSQL databases.' +
     ' Good with building complex and performant SQL queries for 100s of thousands data points from multiple tables.'
   }, {
     type: SkillSetType.CiCd,
@@ -111,10 +113,10 @@ export namespace Content {
     title: 'Testing',
     summary: 'Some experience with writing unit, integration and e2e tests. Mocking and stubbing services.'
   }, {
-    type: SkillSetType.JsLibrary,
-    title: 'Popular Libraries and APIs',
-    summary: 'Experience with wide range of JavaScript libraries which help to write more readable and extensible code, document it.' +
-    ' Also libraries and APIs for using 3rd party services. Here\'s a list of few, more popular, ones.'
+    type: SkillSetType.Other,
+    title: 'Other Packages and APIs',
+    summary: 'Experience with wide range of JavaScript packages which help to write more readable and extensible code, document it.' +
+    ' Also packages and APIs for using 3rd party services. Here\'s a list of few, more popular, ones.'
   }]
 
   export const ToolSet: SkillMetadata[] = [{
@@ -135,6 +137,13 @@ export namespace Content {
     title: 'Electron',
     src: 'electron.jpg',
     sprite: 'electron',
+    level: SkillLevel.Beginner,
+    set: SkillSetType.Application,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'Three.js',
+    src: 'threejs.jpg',
+    sprite: 'threejs',
     level: SkillLevel.Beginner,
     set: SkillSetType.Application,
     bubble: BubbleType.FullStack
@@ -179,6 +188,12 @@ export namespace Content {
     sprite: 'nestjs',
     level: SkillLevel.Intermediate,
     set: SkillSetType.Service,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'Python',
+    src: 'python.jpg',
+    sprite: 'python',
+    level: SkillLevel.Intermediate,
     bubble: BubbleType.FullStack
   }, {
     title: 'Pupeteer',
@@ -258,6 +273,13 @@ export namespace Content {
     set: SkillSetType.DataStorage,
     bubble: BubbleType.DevOps
   }, {
+    title: 'Elasticsearch',
+    src: 'elasticsearch.jpg',
+    sprite: 'elasticsearch',
+    level: SkillLevel.Beginner,
+    set: SkillSetType.DataStorage,
+    bubble: BubbleType.DevOps
+  }, {
     title: 'Mocha',
     src: 'mocha.jpg',
     sprite: 'mocha',
@@ -283,22 +305,29 @@ export namespace Content {
     src: 'reactivex.jpg',
     sprite: 'reactivex',
     level: SkillLevel.Master,
-    set: SkillSetType.JsLibrary,
+    set: SkillSetType.Other,
     bubble: BubbleType.FullStack
   }, {
     title: 'Mailgun',
     src: 'mailgun.jpg',
     sprite: 'mailgun',
     level: SkillLevel.Expert,
-    set: SkillSetType.JsLibrary,
+    set: SkillSetType.Other,
     bubble: BubbleType.FullStack
   }, {
     title: 'Swagger',
     src: 'swagger.jpg',
     sprite: 'swagger',
     level: SkillLevel.Intermediate,
-    set: SkillSetType.JsLibrary,
+    set: SkillSetType.Other,
     bubble: BubbleType.FullStack
+  }, {
+    title: 'Verdaccio',
+    src: 'verdaccio.jpg',
+    sprite: 'verdaccio',
+    level: SkillLevel.Intermediate,
+    set: SkillSetType.Other,
+    bubble: BubbleType.DevOps
   }, {
     title: 'Google Cloud Platform',
     src: 'google-cloud.jpg',
@@ -316,13 +345,6 @@ export namespace Content {
     src: 'stackdriver.jpg',
     sprite: 'stackdriver',
     level: SkillLevel.Expert,
-    set: SkillSetType.Monitoring,
-    bubble: BubbleType.DevOps
-  }, {
-    title: 'Elasticsearch',
-    src: 'elasticsearch.jpg',
-    sprite: 'elasticsearch',
-    level: SkillLevel.Beginner,
     set: SkillSetType.Monitoring,
     bubble: BubbleType.DevOps
   }, {
@@ -351,13 +373,12 @@ export namespace Content {
     src: 'git-icon.jpg',
     sprite: 'git-icon',
     level: SkillLevel.Expert,
-    set: SkillSetType.CiCd,
     bubble: BubbleType.DevOps
   }, {
     title: 'Gitlab CI',
     src: 'gitlab.jpg',
     sprite: 'gitlab',
-    level: SkillLevel.Intermediate,
+    level: SkillLevel.Expert,
     set: SkillSetType.CiCd,
     bubble: BubbleType.DevOps
   }, {
@@ -503,7 +524,7 @@ export namespace Content {
         date: '2018-Jun',
         branch: 'gsi',
         comment: 'Learning PostgreSQL',
-        description: "During work at GSI I've been learning everything about <b>PostgreSQL</b> and Geospatial Data storage using <b>Postgis</b> as this was most suitable database solution due to the nature of the projects."
+        description: "During work at GSI I've been learning everything about <b>PostgreSQL</b> and Geospatial Data storage using <b>PostGIS</b> as this was most suitable database solution due to the nature of the projects."
       }, {
         date: '2018-Jun',
         branch: 'gsi',
