@@ -1,37 +1,40 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { Component, ViewChild, OnDestroy, AfterViewInit } from '@angular/core'
 import moment from 'moment'
 import { Subject, Subscription } from 'rxjs'
 import color from 'color'
 import { ViewService } from '@core/services/view.service'
 import browserUtil from '@core/utils/browser.util'
 import { HorizontalTabPairComponent } from '@core/components/layout/horizontal-tab-pair/horizontal-tab-pair.component'
+import { Content, Experience } from '@core/utils/content'
 
 @Component({
   selector: 'app-experience-section',
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss']
 })
-export class ExperienceSectionComponent implements OnDestroy {
+export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   private _subscriptions = new Subscription()
   readonly drawGrid = false
-  commits: Commit[] = []
+  commits: Experience.Commit[] = []
   nodes: GraphNode[] = []
   // Will be ignored if history element has focused prop defined
   selectedIndex: number = 19
   private _focusedNode?: GraphNode
   private readonly _ySkip = 2
-  private history!: History
+  private history!: Experience.History
 
   @ViewChild('tabGroup', { static: false }) tabGroup!: HorizontalTabPairComponent
 
   constructor (
-    private http: HttpClient,
     public viewService: ViewService
-  ) {
-    this._subscriptions.add(
-      viewService.viewModeChange.subscribe(() => this.RenderGraph())
-    )
+  ) {}
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this._subscriptions.add(
+        this.viewService.viewModeChange.subscribe(() => this.RenderGraph())
+      )
+    }, 1)
   }
 
   onSelectedChange (index: number) {
@@ -55,8 +58,8 @@ export class ExperienceSectionComponent implements OnDestroy {
     this._subscriptions.unsubscribe()
   }
 
-  private async RenderGraph () {
-    if (!this.history) this.history = await this.http.get('assets/history.json').toPromise() as History
+  private RenderGraph () {
+    if (!this.history) this.history = Content.ExperienceHistory
 
     const columns = this.history.branches.length
     const rows = this.history.commits.length * this._ySkip - 1
@@ -93,7 +96,7 @@ export class ExperienceSectionComponent implements OnDestroy {
         y += this._ySkip
         commit.y = y
 
-        const branch: BranchElement = this.history.branches.find(x => x.branch === commit.branch)
+        const branch: Experience.BranchElement = this.history.branches.find(x => x.branch === commit.branch)
         if (!branch) {
           console.warn(`Branch '${commit.branch}' undefined.`)
           continue
@@ -298,32 +301,6 @@ export class ExperienceSectionComponent implements OnDestroy {
   }
 }
 
-type Branch = 'master' | string
-export interface History {
-  branches: BranchElement[]
-  commits: Commit[]
-}
-
-export interface BranchElement {
-  branch: Branch
-  origin?: Branch
-  color: string
-  x?: number
-}
-
-export interface Commit {
-  date: string
-  branch: Branch
-  comment: string
-  description?: string
-  closed?: boolean
-  x?: number
-  y?: number
-  color?: string
-  focused?: true
-  el?: SVGGElement
-}
-
 function matchEveniness (target: number, input: number) {
   if (Math.round(target) % 2 === 0) {
     if (Math.round(input) % 2 !== 0) input--
@@ -371,7 +348,7 @@ class GraphNode {
 
   constructor (
     private viewService: ViewService,
-    public commit: Commit,
+    public commit: Experience.Commit,
     private size: number,
     private position: {x: number, y: number},
     private textX: number,

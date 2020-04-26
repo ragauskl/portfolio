@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
-import { Subscription, interval, fromEvent } from 'rxjs'
+import { Subscription, interval, fromEvent, merge } from 'rxjs'
 
 @Component({
   selector: 'app-arrow-scroll[contentContainerId]',
@@ -20,7 +20,10 @@ export class ArrowScrollComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit () {
     this._subscriptions.add(
-      fromEvent(window, 'resize').subscribe(() => this.UpdateScrollButtons())
+      merge(
+        fromEvent(this.scrollRef.nativeElement, 'scroll'),
+        fromEvent(window, 'resize')
+      ).subscribe(() => this.UpdateScrollButtons())
     )
     setTimeout(() => this.UpdateScrollButtons(), 500)
   }
