@@ -5,12 +5,13 @@
     <ng-content></ng-content>
   </div>
 </div>
+
 <div class="overflow-indicator"></div>
 
 <div class="overflow-top" (mouseenter)="scrollDirection(-1)" (mouseleave)="scrollDirection(0)">
   <svg xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 0 60 40" class="arrow-top"
     [class.active]="scrollBy < 0"
-    *ngIf="scroll.scrollTop" (click)="scrollSpeed(-1)">
+    *ngIf="canScrollUp" (click)="scrollSpeed(-1)">
     <polygon points="9.3,15.2 14.5,10 32.6,28.1 50.7,10 55.9,15.2 32.6,38.5" />
   </svg>
 </div>
@@ -18,7 +19,7 @@
 <div class="overflow-bottom" (mouseenter)="scrollDirection(1)" (mouseleave)="scrollDirection(0)">
   <svg xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 0 60 40" class="arrow-bottom"
   [class.active]="scrollBy > 0"
-    *ngIf="scroll.scrollTop < scroll.scrollHeight - scroll.clientHeight" (click)="scrollSpeed(1)">
+    *ngIf="canScrollDown" (click)="scrollSpeed(1)">
     <polygon points="9.3,15.2 14.5,10 32.6,28.1 50.7,10 55.9,15.2 32.6,38.5" />
   </svg>
 </div>

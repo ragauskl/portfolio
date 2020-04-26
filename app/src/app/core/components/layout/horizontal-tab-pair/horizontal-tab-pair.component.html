@@ -1,0 +1,32 @@
+<ng-container *ngIf="!compact">
+  <ng-container *ngTemplateOutlet="primaryTab"></ng-container>
+  <ng-container *ngTemplateOutlet="secondaryTab"></ng-container>
+</ng-container>
+
+<ng-container *ngIf="compact">
+  <mat-tab-group (selectedIndexChange)="tabChange.emit($event)" #matTabGroup>
+    <mat-tab>
+      <ng-container *ngTemplateOutlet="primaryTab"></ng-container>
+    </mat-tab>
+    <mat-tab>
+      <ng-container *ngTemplateOutlet="secondaryTab"></ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+
+<ng-template #primaryTab>
+  <div class="primary-tab" [style.width]="primarySize" (swipeleft)="swipe($event.type)">
+    <ng-content select=".primary-content"></ng-content>
+  </div>
+</ng-template>
+
+<ng-template #secondaryTab>
+  <div class="secondary-tab" [style.width]="secondarySize" (swiperight)="swipe($event.type)">
+    <ng-content select=".secondary-content"></ng-content>
+  </div>
+</ng-template>
+
+<svg xmlns="http://www.w3.org/2000/svg" height="40px" width="40px" viewBox="0 0 60 40" class="arrow-back"
+  (click)="selectTab(0)" *ngIf="showBack">
+        <polygon points="9.3,15.2 14.5,10 32.6,28.1 50.7,10 55.9,15.2 32.6,38.5" />
+</svg>

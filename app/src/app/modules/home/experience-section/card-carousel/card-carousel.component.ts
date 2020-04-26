@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core'
-import { Commit } from '../experience-section.component'
 import { Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
 import moment from 'moment'
+import { Experience } from '@core/utils/content'
 @Component({
   selector: 'app-card-carousel',
   templateUrl: './card-carousel.component.html',
@@ -27,12 +27,12 @@ export class CardCarouselComponent implements OnInit {
     this._focusCard.next('change')
   }
 
-  private _items: Commit[] = []
+  private _items: Experience.Commit[] = []
   @Input()
   get items () {
     return this._items
   }
-  set items (val: Commit[]) {
+  set items (val: Experience.Commit[]) {
     this._items = val
     if (this._loaded) this.RenderCards()
   }
@@ -112,7 +112,7 @@ export class CardCarouselComponent implements OnInit {
 }
 
 class Card {
-  readonly maxBehind = 3
+  readonly maxBehind = 2
   readonly maxIndex = this.maxBehind - 1
   get hide () {
     return Math.abs(this._index) >= this.maxBehind
@@ -156,7 +156,7 @@ class Card {
   }
 
   generateStyle () {
-    const multiplier = window.innerWidth < 600 ? 13 : 20
+    const multiplier = window.innerWidth < 600 ? 16 : 12
     this.style = {
       'z-index': -Math.abs(this.styleIndex),
       transform: `translate(-50%, ${-50 + (this.styleIndex * multiplier)}%) scale(${

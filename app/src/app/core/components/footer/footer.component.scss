@@ -1,13 +1,15 @@
 @import 'abstracts';
 
 :host {
-  display: flex;
+  @include flex(row, center, center);
   height: 30px;
   width: 100%;
+  margin-bottom: 20px;
 
   small {
     margin: auto;
     color: color('foreground-secondary');
     font-size: 12px;
+    @include item-space(row, 10px);
   }
 }

@@ -1,0 +1,76 @@
+@import 'abstracts';
+
+:host {
+  @include flex(row, space-evenly, center);
+  width: 100%;
+  overflow: visible;
+  padding: 0 5%;
+  position: relative;
+}
+
+:host ::ng-deep {
+  .mat-tab-group {
+    .mat-tab-header {
+      display: none;
+    }
+
+    .mat-tab-body {
+      width: 80vw;
+      height: 75vh;
+
+      .mat-tab-body-content {
+        @include flex;
+      }
+    }
+  }
+
+  .primary-content,
+  .secondary-content {
+    position: relative;
+    width: 100%;
+  }
+}
+
+.primary-tab,
+.secondary-tab {
+  position: relative;
+  height: 100%;
+  @include flex(row, stretch, center);
+}
+
+:host.compact {
+  .primary-tab,
+  .secondary-tab {
+    width: 100% !important;
+  }
+}
+
+.arrow-back {
+  position: absolute;
+  z-index: 2;
+  left: 7.5%;
+  top: 50%;
+  opacity: 0.3;
+  cursor: pointer;
+  transform: translate(-50%, -50%) rotate(90deg);
+  width: 10%;
+  max-width: 30px;
+
+  polygon {
+    animation: canGoBack 3s infinite ease-in-out;
+  }
+
+  @keyframes canGoBack {
+    0% {
+      opacity: 0.3;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0.3;
+    }
+  }
+}

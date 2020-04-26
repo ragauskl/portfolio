@@ -1,13 +1,19 @@
 $color: (
   // od = 'one dark pro' vscode theme
+  // vivid = 60 s 50l
   od-v-dark: rgb(27, 29, 31),
   od-dark: rgb(46, 50, 53),
   od-light: rgb(255, 255, 255),
   od-dec: rgb(198, 120, 221),
+  od-dec-vivid: rgb(168, 51, 204),
   od-str: rgb(152, 195, 121),
+  od-str-vivid: rgb(115, 204, 51),
   od-obj: rgb(229, 192, 123),
+  od-obj-vivid: rgb(204, 150, 51),
   od-fn: rgb(86, 182, 194),
+  od-fn-vivid: rgb(51, 186, 204),
   od-var: rgb(224, 108, 117),
+  od-var-vivid: rgb(204, 51, 64),
   od-cmt: rgb(100, 100, 100)
 );
 
@@ -19,6 +25,7 @@ $theme: (
   // 500s
   primary: rgb(82, 37, 70),
   secondary: rgb(38, 166, 154),
+  secondary-vivid: rgb(51, 204, 189),
   warn: rgb(255, 152, 0),
   success: map-get($color, 'od-str'),
   error: map-get($color, 'od-var'),

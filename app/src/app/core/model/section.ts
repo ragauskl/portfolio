@@ -3,5 +3,6 @@ export const Section = {
   experience: 'experience-section',
   contact: 'contact-section',
   featured: 'featured-projects',
+  skills: 'skills-section',
   projects: '/projects'
 }

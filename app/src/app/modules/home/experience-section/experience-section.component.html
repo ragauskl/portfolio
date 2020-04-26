@@ -1,37 +1,16 @@
 <h1>Experience</h1>
 
-<div class="experience-panel">
-  <ng-container *ngIf="!viewService.mobile">
-    <ng-container *ngTemplateOutlet="graph"></ng-container>
-    <ng-container *ngTemplateOutlet="cards"></ng-container>
-  </ng-container>
+<app-horizontal-tab-pair #tabGroup (tabChange)="$event === 0 && onTabChange()" primarySize="40%" secondarySize="40%">
+  <div class="primary-content">
+    <app-arrow-scroll contentContainerId="experience-graph-container"
+    contentId="experience-graph">
+    </app-arrow-scroll>
+  </div>
 
-  <ng-container *ngIf="viewService.mobile">
-    <mat-tab-group (selectedIndexChange)="$event === 0 && onTabChange()" #matTabGroup>
-      <mat-tab label="Graph View">
-        <ng-container *ngTemplateOutlet="graph"></ng-container>
-      </mat-tab>
-      <mat-tab label="Card View">
-        <ng-container *ngTemplateOutlet="cards"></ng-container>
-      </mat-tab>
-    </mat-tab-group>
-  </ng-container>
+  <div class="secondary-content">
+    <app-card-carousel  [items]="commits"
+    [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)">
+    </app-card-carousel>
+  </div>
+</app-horizontal-tab-pair>
 
-  <ng-template #graph>
-    <div id="graph-container" [class.compact]="viewService.mobile" (swipeleft)="swipe($event.type)">
-      <app-arrow-scroll contentContainerId="experience-graph-container" contentId="experience-graph">
-      </app-arrow-scroll>
-    </div>
-  </ng-template>
-
-  <ng-template #cards>
-    <div id="graph-cards" [class.compact]="viewService.mobile" (swiperight)="swipe($event.type)">
-      <app-card-carousel  [items]="commits" [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onSelectedChange($event)"></app-card-carousel>
-
-      <svg xmlns="http://www.w3.org/2000/svg" height="40px" width="40px" viewBox="0 0 60 40" class="arrow-back" (click)="selectTab(0)"
-      *ngIf="viewService.mobile">
-          <polygon points="9.3,15.2 14.5,10 32.6,28.1 50.7,10 55.9,15.2 32.6,38.5" />
-      </svg>
-    </div>
-  </ng-template>
-</div>

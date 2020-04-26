@@ -4,11 +4,20 @@
   ::-webkit-scrollbar {
     display: none;
   }
+  @include flex(column, center, center);
+  max-height: 100%;
+}
+
+.overflow-content-container,
+.overflow-indicator {
+  position: absolute;
+  top: 4%;
+  bottom: 4%;
+  right: 0;
+  left: 0;
 }
 
 .overflow-content-container {
-  height: 100%;
-  width: 100%;
   overflow: auto;
   display: flex;
 }
@@ -17,14 +26,10 @@
   width: 100%;
   height: fit-content;
   padding: 50px 0;
+  position: relative;
 }
 
 .overflow-indicator {
-  position: absolute;
-  top: -1px;
-  bottom: -1px;
-  right: 0;
-  left: 0;
   pointer-events: none;
   background: linear-gradient(to bottom,
       white 0,
@@ -36,7 +41,6 @@
 
 .arrow-top,
 .arrow-bottom {
-  @include absolute-centre(true, false);
   height: 30px;
   opacity: 0.3;
   cursor: pointer;
@@ -47,16 +51,14 @@
 }
 
 .arrow-top {
-  transform: rotate(180deg) translateY(100%);
-}
-.arrow-bottom {
-  transform: translateY(100%);
+  transform: rotate(180deg);
 }
 
 .overflow-top, .overflow-bottom {
   height: 30px;
   width: 100%;
   position: absolute;
+  @include flex(row, center, center);
 
   .arrow-top,
   .arrow-bottom {
