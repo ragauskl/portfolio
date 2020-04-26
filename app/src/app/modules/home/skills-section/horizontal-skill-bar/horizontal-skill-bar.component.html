@@ -1,5 +1,8 @@
 <div class="skill-details">
-  <p>{{skill.title}}</p>
+  <div class="skill-title">
+    <img [src]="src" [class.small]="smallerIcon">
+    <p>{{skill.title}}</p>
+  </div>
   <p>{{skillLevelName}}</p>
 </div>
 

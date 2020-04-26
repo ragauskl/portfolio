@@ -53,8 +53,8 @@ export class Bubbles {
     public el: HTMLElement,
     public skills: SkillMetadata[]
   ) {
-    this.developmentSkills = skills.filter(x => x.bubble === BubbleType.FullStack)
-    this.devopsSkills = skills.filter(x => x.bubble === BubbleType.DevOps)
+    this.developmentSkills = shuffle(skills.filter(x => x.bubble === BubbleType.FullStack))
+    this.devopsSkills = shuffle(skills.filter(x => x.bubble === BubbleType.DevOps))
 
     this.updateSize()
     this.updatePadding()

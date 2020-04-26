@@ -12,6 +12,21 @@
   p {
     margin: 0;
   }
+
+  .skill-title {
+    @include flex;
+    @include item-space(row, 10px);
+
+    img {
+      object-fit: contain;
+      width: 2em;
+      border-radius: 50%;
+
+      &.small {
+        width: 1.5em;
+      }
+    }
+  }
 }
 
 .skill-bar {

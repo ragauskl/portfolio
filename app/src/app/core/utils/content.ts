@@ -76,10 +76,10 @@ export namespace Content {
     title: 'JavaScript/TypeScript APIs and Microservices',
     summary: 'Highly experienced and enjoy building TypeScript APIs and writing smaller scripts in JavaScript.' +
     ' Mostly I have worked with RESTful APIs with certain worker services separated for performance reasons, but lately I have been expanding my experience by working with Microservice architecture on my own time' +
-    ' as well as learning GraphQL.'
+    ' as well as learning GraphQL. Worked with automating PDF report generation on demand.'
   }, {
     type: SkillSetType.Host,
-    title: `Hosting scalable applications and services`,
+    title: `Hosting Scalable Applications and Services`,
     summary: 'Mostly I work with various services of Google Cloud Platform to host APIs and Web applications, but am looking to expand experience with' +
     ' Cloud Platforms to AWS in near future. I have setup and managed small to medium size Kubernetes cluster with auto-scaling and auto-updating wildcard SSL certificates,' +
     ' as well as dealt with serverless scripts hosting which can be scheduled or triggered by Pub/Sub messaging service.'
@@ -96,24 +96,25 @@ export namespace Content {
     ' Good with building complex and performant SQL queries for 100s of thousands data points from multiple tables.'
   }, {
     type: SkillSetType.CiCd,
-    title: 'Continuous Integration and deployment',
+    title: 'Continuous Integration and Deployment',
     summary: 'Know how to use multiple CI/CD tools to run automated testing and deployment pipelines.' +
     ' Mostly I prefer to stick with developing scripts with TypeScript to handle all the hard work, and utilise CI/CD tool to just execute the code, this' +
     ' way I have better and more granular control of what is happening, also this allows to almost seamlessly switch between CI/CD tools if there' +
     ' would be a need to.'
   }, {
     type: SkillSetType.Monitoring,
-    title: 'System uptime and issue monitoring',
+    title: 'System Uptime and Issue Monitoring',
     summary: 'Have worked with monitoring logs and setting up system issue alerts, creating additional logs and system reports to provide better insight' +
-    ' into systems performance and help with locating problems.'
+    ' into systems performance and help with locating problems. Lately started learning to utilise ELK stack for improved monitoring.'
   }, {
     type: SkillSetType.Testing,
     title: 'Testing',
-    summary: 'Some experience with writing unit, integration and e2e tests.'
+    summary: 'Some experience with writing unit, integration and e2e tests. Mocking and stubbing services.'
   }, {
     type: SkillSetType.JsLibrary,
-    title: 'Popular JavaScript Libraries',
-    summary: 'Experience with wide range of JavaScript libraries which help to write more readable and extensible code and document it. Here\'s a list of few more popular ones.'
+    title: 'Popular Libraries and APIs',
+    summary: 'Experience with wide range of JavaScript libraries which help to write more readable and extensible code, document it.' +
+    ' Also libraries and APIs for using 3rd party services. Here\'s a list of few, more popular, ones.'
   }]
 
   export const ToolSet: SkillMetadata[] = [{
@@ -176,6 +177,13 @@ export namespace Content {
     title: 'NestJS',
     src: 'nestjs.jpg',
     sprite: 'nestjs',
+    level: SkillLevel.Intermediate,
+    set: SkillSetType.Service,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'Pupeteer',
+    src: 'pupeteer.jpg',
+    sprite: 'pupeteer',
     level: SkillLevel.Intermediate,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
@@ -264,10 +272,24 @@ export namespace Content {
     set: SkillSetType.Testing,
     bubble: BubbleType.FullStack
   }, {
+    title: 'Karma',
+    src: 'karma.jpg',
+    sprite: 'karma',
+    level: SkillLevel.Intermediate,
+    set: SkillSetType.Testing,
+    bubble: BubbleType.FullStack
+  }, {
     title: 'RxJS',
     src: 'reactivex.jpg',
     sprite: 'reactivex',
     level: SkillLevel.Master,
+    set: SkillSetType.JsLibrary,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'Mailgun',
+    src: 'mailgun.jpg',
+    sprite: 'mailgun',
+    level: SkillLevel.Expert,
     set: SkillSetType.JsLibrary,
     bubble: BubbleType.FullStack
   }, {
