@@ -16,7 +16,7 @@ class BrowserUtil {
   browsers = [{
     name: Browser.Firefox,
     // Performance issues
-    supported: false,
+    supported: true,
     src: `${this.logos}/firefox.svg`,
     href: 'https://www.mozilla.org/en-GB/firefox/new/'
   }, {
@@ -85,6 +85,10 @@ class BrowserUtil {
 
   get isFirefox () {
     return this.browserName === Browser.Firefox
+  }
+
+  get disableAnimations () {
+    return this.isFirefox
   }
 }
 
