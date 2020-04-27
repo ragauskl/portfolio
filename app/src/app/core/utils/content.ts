@@ -196,9 +196,9 @@ export namespace Content {
     level: SkillLevel.Intermediate,
     bubble: BubbleType.FullStack
   }, {
-    title: 'Pupeteer',
-    src: 'pupeteer.jpg',
-    sprite: 'pupeteer',
+    title: 'Puppeteer',
+    src: 'puppeteer.jpg',
+    sprite: 'puppeteer',
     level: SkillLevel.Intermediate,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
