@@ -13,7 +13,12 @@ export class NavBarService {
 
   activeSection?: keyof typeof Section
 
-  constructor (private _router: Router) {
+  headerHeight = 150
+  headerResizable = true
+
+  constructor (
+    private _router: Router
+  ) {
     this._router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.currentRoute = e.url
@@ -21,9 +26,27 @@ export class NavBarService {
       }
     })
 
+    fromEvent(window, 'scroll').subscribe(e =>
+      this.headerResizable && this.CalculateHeader()
+    )
+
+    this._router.events
+    .subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.headerResizable = e.url === '/'
+        this.CalculateHeader()
+      }
+    })
+
     fromEvent(window, 'scroll')
     .pipe(auditTime(500))
     .subscribe(() => this.UpdateActiveSection())
+  }
+
+  private CalculateHeader () {
+    this.headerHeight = this.headerResizable ?
+      Math.max(50, 150 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1)) :
+      50
   }
 
   private UpdateActiveSection () {
@@ -112,9 +135,7 @@ export class NavBarService {
     }
 
     const { top } = this.relativeBoundingClientRect(el, document.scrollingElement)
-
     const target = this.AdjustByHeader(top)
-
     document.scrollingElement.scrollTo({
       top: target,
       behavior: 'smooth'
@@ -122,7 +143,8 @@ export class NavBarService {
   }
 
   private AdjustByHeader (value: number) {
-    return value - 50 - Math.max(0, 50 - document.scrollingElement.scrollTop)
+    const header = (this.headerHeight - 50) || 50
+    return value - header - Math.max(0, 50 - document.scrollingElement.scrollTop)
   }
 
   relativeBoundingClientRect (child: HTMLElement, parent: Element) {

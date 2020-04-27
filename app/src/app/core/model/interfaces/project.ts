@@ -8,6 +8,7 @@ export interface Project {
   featured: boolean
   endDate?: string
   cover?: string
+  coverOutlined?: string
   hidden?: string
   links?: {
     name: string

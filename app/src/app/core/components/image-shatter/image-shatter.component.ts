@@ -80,8 +80,6 @@ export class ImageShatterComponent implements OnDestroy {
       this.scene
     )
 
-    if (browserUtil.disableAnimations) return
-
     const sub = this.image.rendered.subscribe(rendered => {
       if (!rendered) return
       sub.unsubscribe()

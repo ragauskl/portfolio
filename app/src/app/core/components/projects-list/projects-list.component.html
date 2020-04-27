@@ -1,12 +1,12 @@
 <div class="project-block" *ngFor="let project of projects; let i = index" [class.reverse]="i % 2 !== 0" [style.margin-top]="i === 0 ? 0 : ''">
   <div class="ratio-wrapper cover">
     <div class="image">
-      <app-image-shatter #el *ngIf="project.cover && !basicImage"
+      <app-image-shatter #el *ngIf="project.coverOutlined && !basicImage"
       (clicked)="projectsService.viewProject(project)"
       (in-view)="renderWhen === 'in-view' && el.render()"
       (rendered)="renderWhen === 'rendered' && el.render()"
-      [src]="'assets/projects/' + project.cover"></app-image-shatter>
-      <img *ngIf="basicImage" [src]="'assets/projects/' + project.cover">
+      [src]="'assets/projects/' + project.coverOutlined"></app-image-shatter>
+      <img *ngIf="basicImage" [src]="'assets/projects/' + project.coverOutlined">
     </div>
   </div>
 
