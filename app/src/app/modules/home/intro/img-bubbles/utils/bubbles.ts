@@ -2,20 +2,21 @@ import { IconMeta, shuffle } from './bubble-utils'
 import Bubble from './bubble'
 import Noise from 'noisejs'
 import { SkillMetadata, BubbleType } from '@core/utils/content'
+import browserUtil from '@core/utils/browser.util'
 
 export class Bubbles {
   pixelRatioMultiplier = Math.max(window.devicePixelRatio - 1, 1)
 
   get scrollSpeed () {
-    return Math.max(Math.min(this.size * 0.002, 0.4), 0.05) * this.pixelRatioMultiplier
+    return browserUtil.disableAnimations ? 0 : (Math.max(Math.min(this.size * 0.002, 0.4), 0.05) * this.pixelRatioMultiplier)
   }
 
   get noiseAmount () {
-    return this.size * 0.03 * this.pixelRatioMultiplier
+    return browserUtil.disableAnimations ? 0 : (this.size * 0.03 * this.pixelRatioMultiplier)
   }
 
   get noiseSpeed () {
-    return this.noiseAmount / 1000
+    return browserUtil.disableAnimations ? 0 : (this.noiseAmount / 1000)
   }
 
   list: Bubble[] = []
@@ -120,7 +121,7 @@ export class Bubbles {
     this.curr.y = this.midY + this.yPadding
 
     while (!this.list.length || this.list[this.list.length - 1].x < this.el.clientWidth) {
-      this.list.push(this.nextBubble(this.last ? this.last.x : undefined))
+      this.list.push(this.nextBubble(this.last ? this.last.x : (-this.size)))
     }
 
     for (const r of this.list) {
@@ -162,15 +163,11 @@ export class Bubbles {
     this.checkIfNextRequired()
     this.checkFirstOutOfBounds()
 
-    // Queue up another nextFrame() method call on the next frame
-    // if (browserUtil.isFirefox) {
-    //   setTimeout(this.nextFrame.bind(this), 2)
-    // } else {
     requestAnimationFrame(this.nextFrame.bind(this))
-    // }
   }
 
   private checkFirstOutOfBounds () {
+    if (browserUtil.disableAnimations) return
     const first = this.list[0]
     if (first.x < -first.size - 20) {
       this.list.splice(0, 1)

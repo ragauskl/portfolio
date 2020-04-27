@@ -1,4 +1,5 @@
 import { IconMeta, map, describeArc, scaleCoordinate, angleBetweenPoints } from './bubble-utils'
+import browserUtil from '@core/utils/browser.util'
 
 export default class Bubble {
   noiseSeedX = Math.floor(Math.random() * 64000)
@@ -165,6 +166,7 @@ export default class Bubble {
     percentage > 60 ? 180 : map(percentage, 40, 60, 0, 180 + 360)
     rotate = rotate % 360
     this.elContainer.style.transform = `translate(${this.xWithNoise}px, ${this.yWithNoise}px)`
-    this.el.style.transform = `rotateY(${rotate}deg)`
+
+    if (!browserUtil.disableAnimations) this.el.style.transform = `rotateY(${rotate}deg)`
   }
 }

@@ -97,3 +97,9 @@
 app-image-shatter {
   @include absolute-fill;
 }
+
+img {
+  @include absolute-centre;
+  object-fit: contain;
+  width: 60%;
+}
