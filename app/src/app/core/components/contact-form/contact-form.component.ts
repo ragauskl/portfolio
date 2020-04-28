@@ -45,7 +45,7 @@ export class ContactFormComponent {
 
     this.sending = true
     try {
-      await this.api.wrapr.Emails().sendContactForm(this.form.value).run()
+      await this.api.wrapper.Emails().sendContactForm(this.form.value).run()
 
       this.submitted = true
     } catch (error) {

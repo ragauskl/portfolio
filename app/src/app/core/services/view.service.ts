@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { fromEvent, Subject, BehaviorSubject } from 'rxjs'
+import { fromEvent, BehaviorSubject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
-
+import WebGLStats from '@core/utils/webgl-stats'
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +21,8 @@ export class ViewService {
     return this._viewModeChange.asObservable()
   }
 
+  readonly reducedPerformance = WebGLStats.majorPerformanceCaveat
+
   constructor () {
     this.calculateType(false)
     this._viewModeChange = new BehaviorSubject(this._viewMode)
@@ -28,6 +30,8 @@ export class ViewService {
     .pipe(
       auditTime(100)
     ).subscribe(() => this.calculateType())
+
+    console.log('this.reducedPerformance:', this.reducedPerformance)
   }
 
   calculateType (emit: boolean = true) {
