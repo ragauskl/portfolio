@@ -4,7 +4,7 @@ class WebGLStats {
   readonly webglVersion = window.location.search.indexOf('v=2') > 0 ? 2 : 1
   possibleNames = (this.webglVersion === 2) ? ['webgl2', 'experimental-webgl2'] : ['webgl', 'experimental-webgl']
 
-  private _canvas = document.createElement('canvas')
+  private _canvas: HTMLCanvasElement = document.createElement('canvas')
   private readonly _contextName = this.possibleNames.find(name => {
     const gl = this._canvas.getContext(name, { stencil: true })
     return !!gl
@@ -15,6 +15,8 @@ class WebGLStats {
   majorPerformanceCaveat: boolean
 
   constructor () {
+    this._canvas.width = 1
+    this._canvas.height = 1
     this.majorPerformanceCaveat = this.GetMajorPerformanceCaveat()
   }
 
@@ -38,6 +40,8 @@ class WebGLStats {
 
     return false
   }
+
+  // Check if EXT_frag_depth and EXT_shader_texture_lod are supported
 }
 
 export default new WebGLStats()
