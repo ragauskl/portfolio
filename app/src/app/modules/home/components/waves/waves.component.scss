@@ -2,7 +2,9 @@
 
 ::ng-deep #waves-container {
   width: 100%;
-  height: 100%;
+  // 1% extra because in firefox there's sometimes a gap line, as intro section
+  // is dark background, and waves are not on perfect 0 bottom position
+  height: 101%;
   position: relative;
 
   svg {

@@ -65,7 +65,7 @@ export namespace Experience {
     x?: number
     y?: number
     color?: string
-    focused?: true
+    focused?: boolean
     el?: SVGGElement
   }
 }
