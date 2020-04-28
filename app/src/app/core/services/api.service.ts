@@ -10,7 +10,7 @@ import { AppError } from '../utils/app-error'
   providedIn: 'root'
 })
 export class ApiService {
-  wrapr = new Api(this)
+  wrapper = new Api(this)
 
   constructor (
     private http: HttpClient
@@ -93,7 +93,7 @@ export class ApiService {
         // Too many requests page
         break
       case 0:
-        const res = await this.handleRequest(this.wrapr.Root().ping(), undefined, true) as (string | number)
+        const res = await this.handleRequest(this.wrapper.Root().ping(), undefined, true) as (string | number)
         if (res === 0) {
           // Redirect to server down
           throw new AppError(`Server is down.`)
