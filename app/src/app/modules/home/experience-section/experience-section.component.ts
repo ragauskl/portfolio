@@ -27,7 +27,25 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
 
   constructor (
     public viewService: ViewService
-  ) {}
+  ) {
+    this.history = Content.ExperienceHistory
+    this.commits = this.history.commits.sort(
+      (a, b) => {
+        const date1 = moment(a.date, 'YYYY-MMM')
+        const date2 = moment(b.date, 'YYYY-MMM')
+        return date1.isAfter(date2) ?
+        1 : (
+          // If same date, keep original order
+          date1.isSame(date2) ? 1 : -1
+        )
+      }
+    )
+
+    for (const commit of this.commits) {
+      const branch = this.history.branches.find(x => x.branch === commit.branch)
+      commit.color = branch.color
+    }
+  }
 
   ngAfterViewInit () {
     setTimeout(() => {
@@ -59,8 +77,6 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   }
 
   private RenderGraph () {
-    if (!this.history) this.history = Content.ExperienceHistory
-
     const columns = this.history.branches.length
     const rows = this.history.commits.length * this._ySkip - 1
 
@@ -76,18 +92,6 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
     const grid = this.GetGridTemplate(cellSize, rows + 2, columns)
     if (parent.firstChild) parent.removeChild(parent.firstChild)
     parent.appendChild(grid)
-
-    this.commits = this.history.commits.sort(
-        (a, b) => {
-          const date1 = moment(a.date, 'YYYY-MMM')
-          const date2 = moment(b.date, 'YYYY-MMM')
-          return date1.isAfter(date2) ?
-          1 : (
-            // If same date, keep original order
-            date1.isSame(date2) ? 1 : -1
-          )
-        }
-      )
 
     const calculatePositions = () => {
         // First commit must be on master
@@ -109,7 +113,6 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
         commit.x = branch.x
 
         if (commit.closed) activeBranches.delete(branch.branch)
-        commit.color = branch.color
       }
     }
 
@@ -322,6 +325,7 @@ class GraphNode {
       return
     }
     this._focused = val
+    this.commit.focused = val
     this._focusChange.next(this._focused)
 
     if (this._focused) {
