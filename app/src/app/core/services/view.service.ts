@@ -30,8 +30,6 @@ export class ViewService {
     .pipe(
       auditTime(100)
     ).subscribe(() => this.calculateType())
-
-    console.log('this.reducedPerformance:', this.reducedPerformance)
   }
 
   calculateType (emit: boolean = true) {
