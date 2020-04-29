@@ -28,7 +28,6 @@ export class ProjectComponent {
         img: l.href.includes('github.com') ? 'assets/icons/misc/github.svg' :
           l.href.includes('youtube.com') ? 'assets/icons/misc/youtube.svg' : ''
       }))
-      console.log('this.links:', this.links)
     })
   }
 

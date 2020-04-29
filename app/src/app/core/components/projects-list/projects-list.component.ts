@@ -13,10 +13,10 @@ import browserUtil from '@core/utils/browser.util'
 export class ProjectsListComponent {
   @Input() projects: Project[]
   @Input() renderWhen: 'in-view' | 'rendered' = 'in-view'
-  basicImage = browserUtil.disableAnimations
+  basicImage = browserUtil.disableAnimations || this.viewService.reducedPerformance
 
   constructor (
     public viewService: ViewService,
     public projectsService: ProjectsService
-  ) { }
+  ) {}
 }
