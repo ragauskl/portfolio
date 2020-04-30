@@ -28,6 +28,7 @@ import { ProjectsService } from '@core/services/projects.service'
     )
   ]
 })
+
 export class NavBarComponent {
   @ViewChild('menuBackdrop', { static: true }) menuBackdrop: ElementRef<HTMLElement>
   section = Section

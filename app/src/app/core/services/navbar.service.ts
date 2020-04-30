@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Section } from '@core/model/section'
 import { Router, NavigationEnd } from '@angular/router'
-import { fromEvent } from 'rxjs'
+import { fromEvent, Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
 
 @Injectable({
@@ -44,9 +44,26 @@ export class NavBarService {
   }
 
   private CalculateHeader () {
-    this.headerHeight = this.headerResizable ?
-      Math.max(50, 150 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1)) :
-      50
+    this._targetHeight = this.headerResizable ?
+    Math.max(50, 150 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1)) :
+    50
+
+    this.AnimateHeader()
+  }
+
+  private _targetHeight = 150
+  private AnimateHeader () {
+    if (this.headerHeight === this._targetHeight) return
+    const by = Math.max(1, Math.abs(this.headerHeight - this._targetHeight) * 0.05)
+
+    if (Math.abs(this.headerHeight - this._targetHeight) <= by) {
+      this.headerHeight = this._targetHeight
+      return
+    }
+
+    this.headerHeight += this._targetHeight > this.headerHeight ? by : -by
+
+    requestAnimationFrame(this.AnimateHeader.bind(this))
   }
 
   private UpdateActiveSection () {
