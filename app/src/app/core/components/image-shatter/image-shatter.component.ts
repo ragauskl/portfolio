@@ -138,7 +138,6 @@ export class ImageShatterComponent implements OnDestroy {
             onLeave()
             mouseOver = false
           } else if (inside) onMove(lastPosition.x, lastPosition.y)
-
         })
       )
 

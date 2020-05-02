@@ -67,6 +67,7 @@ export class Image {
     private _height: number,
     private _scene: Scene
   ) {
+    window['image'] = this
     this.InitRender()
     .then(() => this._rendered.next(true))
   }
@@ -128,7 +129,7 @@ export class Image {
       })
 
       const mesh = new THREE.Mesh(geom, material)
-      mesh.position.set(0, 0, 20)
+      mesh.position.set(0, 0, 0)
       mesh.castShadow = true
       mesh.receiveShadow = true
       return mesh
@@ -166,9 +167,9 @@ export class Image {
     const zs: {
       [z: string]: THREE.Box3[]
     } = {}
-    // Should have at least 7 options
-    const zOptions = getRangeOptions(-50, 60, 10).map(z => `${z}`)
-
+    // Spacing 20z because if z difference is less, the elements start flickering as if they overlap
+    // even tho they don't, might have something to do with custom shader
+    const zOptions = getRangeOptions(-50, 8, 20).map(z => `${z}`)
     this._stateConfig.shattered.objects = geometries.map((vertices, i) => {
       const geom = new THREE.BufferGeometry()
       const uvs = []
@@ -186,36 +187,60 @@ export class Image {
       const centerX = xs.reduce((sum, x) => sum + x, 0) / xs.length
       const centerY = ys.reduce((sum, x) => sum + x, 0) / ys.length
 
-      const newCentroid = calculateNewCentroid(centerX, centerY, 1.45, 1.50)
+      // Set vertices to be drawn around center of canvas, and be positioned using objects
+      // position property
+      const position = { x: centerX, y: centerY, z: 0 }
 
-      const diff = {
-        x: newCentroid.x - centerX,
-        y: newCentroid.y - centerY
+      for (let i = 0; i < vertices.length; i += 3) {
+        const [x, y] = vertices.slice(i, i + 2)
+        vertices[i] = x - centerX
+        vertices[i + 1] = y - centerY
       }
 
       geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
       geom.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(uvs), 2))
       geom.computeVertexNormals()
 
+      const newCentroid = calculateNewCentroid(centerX, centerY, 1.45, 1.50)
+      const shatteredPosition = { x: newCentroid.x, y: newCentroid.y }
+
+      const diff = {
+        x: newCentroid.x - centerX,
+        y: newCentroid.y - centerY
+      }
+
+      const distance = Math.sqrt(Math.pow(newCentroid.x, 2) + Math.pow(newCentroid.y, 2)) * 100 / ((this._width + this._height) / 2)
+      const rx = 2
+      const ry = 2
+      const rz = 21
+      const randomRotation = {
+        rx: degreesToRadians(randomRange(-rx, rx)), ry: degreesToRadians(randomRange(-ry, ry)), rz: degreesToRadians(randomRange(-rz, rz))
+      }
+
       let mesh = createMesh(geom)
+      mesh.position.set(shatteredPosition.x, shatteredPosition.y, position.z)
+      mesh.rotation.set(randomRotation.rx, randomRotation.ry, randomRotation.rz)
       mesh.geometry.computeBoundingBox()
+
       const box3 = new THREE.Box3().setFromObject(mesh)
 
-      const pad = 10
+      const pad = 30
+      const zPad = 21
       const bbox = new THREE.Box3().setFromPoints([
-        new THREE.Vector3(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad, box3.min.z - pad),
-        new THREE.Vector3(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad, box3.max.z + pad),
-        new THREE.Vector3(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad, box3.min.z - pad),
-        new THREE.Vector3(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad, box3.max.z + pad)
+        new THREE.Vector3(box3.min.x + diff.x - pad, box3.min.y + diff.y - pad, box3.min.z - zPad),
+        new THREE.Vector3(box3.max.x + diff.x + pad, box3.max.y + diff.y + pad, box3.max.z + zPad)
       ])
 
-      const shatteredPosition = { x: mesh.position.x + diff.x, y: mesh.position.y + diff.y }
+      mesh.position.set(position.x, position.y, position.z)
+      mesh.rotation.set(0, 0, 0)
+      mesh.geometry.computeBoundingBox()
 
       const usedZs = Object.keys(zs).filter(z =>
         !!zs[z].find(box =>
           box.intersectsBox(bbox)
         )
       )
+
       const zFrom = usedZs.length ? [...zOptions].filter(z => !usedZs.includes(z)) : zOptions
 
       let z = randomFrom(zFrom)
@@ -224,17 +249,19 @@ export class Image {
         z = randomFrom(zOptions)
       }
 
-      this.debugShardArray.push({
-        o: { x: centerX, y: centerY },
-        n: { x: newCentroid.x, y: newCentroid.y },
-        i,
-        z: +z,
-        mesh
-      } as any)
+      // this.debugShardArray.push({
+      //   o: { x: centerX, y: centerY },
+      //   n: { x: newCentroid.x, y: newCentroid.y },
+      //   i,
+      //   z: +z,
+      //   usedZ: [...usedZs],
+      //   remainingZ: [...zFrom],
+      //   mesh,
+      //   distance
+      // } as any)
       if (!zs[`${z}`]) zs[`${z}`] = []
       zs[`${z}`].push(bbox)
 
-      const r = 10
       const object = {
         mesh,
         solid: {
@@ -243,7 +270,7 @@ export class Image {
         },
         shattered: {
           ...shatteredPosition, z: mesh.position.z + +z,
-          rx: degreesToRadians(randomRange(-r, r)), ry: degreesToRadians(randomRange(-r, r)), rz: degreesToRadians(randomRange(-r, r))
+          ...randomRotation
         }
       }
 
@@ -275,17 +302,15 @@ export class Image {
     this.text.position.set(-offsetX, -offsetY, -55)
 
     this.RenderState()
-
-    // DEBUG: render index on every shard, to identify it in debugShardArray
-    // window['position'] = this.renderPositions.bind(this)
   }
 
+  // DEBUG: render index on every shard, to identify it in debugShardArray
   async renderPositions () {
     const fontLoader = new THREE.FontLoader()
     for (const el of this.debugShardArray) {
       const text: THREE.TextGeometry = await new Promise(res => {
         fontLoader.load('assets/three/fonts/roboto_bold.typeface.json', font => {
-          res(new THREE.TextGeometry(`${el.i}`, {
+          res(new THREE.TextGeometry(`${el.i}:${el.mesh.position.z}`, {
             font,
             size: 7,
             height: 1,
@@ -302,10 +327,11 @@ export class Image {
       ])
       const size = new THREE.Box3().setFromObject(mesh)
       const [offsetX, offsetY] = [round(size.max.x - size.min.x, 2) / 2, round(size.max.y - size.min.y, 2) / 2]
-      mesh.position.set(el.n.x - offsetX, el.n.y - offsetY, el.z + 30)
+      mesh.position.set(el.n.x - offsetX, el.n.y - offsetY, el.z + 70)
       this.activeGroup.add(mesh)
     }
   }
+
   changeToState (state: State) {
     if (this._targetState === state) return
     this._targetState = state
@@ -394,7 +420,7 @@ export class Image {
 
     this.activeGroup = new THREE.Group()
     this._scene.scene.add(this.activeGroup)
-
+    this.activeGroup.position.z = 20
     this.activeGroup.add(this.text)
 
     if (this._firstRender) {
@@ -404,12 +430,14 @@ export class Image {
       // Set their z behind so it's not in view, but not too far
       // so that it is not visible/different during first animation
       setTimeout(() => {
+        if (this._targetState === 'shattered') return
         const config = this._stateConfig.shattered
         for (const obj of config.objects) {
-          obj.mesh.position.z = -10
+          obj.mesh.position.z = -30
           this.activeGroup.add(obj.mesh)
         }
-      }, 100)
+        setTimeout(() => this._scene.updateCamera(), 10)
+      }, 105)
     }
 
     const config = this._stateConfig[this._currentState]

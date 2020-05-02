@@ -4,6 +4,7 @@ import { Section } from '@core/model/section'
 import { ViewService } from '@core/services/view.service'
 import { trigger, transition, stagger, style, query } from '@angular/animations'
 import { ProjectsService } from '@core/services/projects.service'
+import browserUtil from '@core/utils/browser.util'
 
 @Component({
   selector: 'app-nav',
@@ -28,6 +29,7 @@ import { ProjectsService } from '@core/services/projects.service'
     )
   ]
 })
+
 export class NavBarComponent {
   @ViewChild('menuBackdrop', { static: true }) menuBackdrop: ElementRef<HTMLElement>
   section = Section
@@ -43,9 +45,13 @@ export class NavBarComponent {
     return this.projectsService.hasProjectsPage ? 'projects' : 'featured'
   }
 
+  touch = false
+
   constructor (
     public navBar: NavBarService,
     public viewService: ViewService,
     public projectsService: ProjectsService
-  ) {}
+  ) {
+    this.touch = browserUtil.touchDevice
+  }
 }

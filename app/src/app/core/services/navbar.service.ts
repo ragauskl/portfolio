@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Section } from '@core/model/section'
 import { Router, NavigationEnd } from '@angular/router'
-import { fromEvent } from 'rxjs'
+import { fromEvent, Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
 
 @Injectable({
@@ -13,9 +13,6 @@ export class NavBarService {
 
   activeSection?: keyof typeof Section
 
-  headerHeight = 150
-  headerResizable = true
-
   constructor (
     private _router: Router
   ) {
@@ -26,27 +23,9 @@ export class NavBarService {
       }
     })
 
-    fromEvent(window, 'scroll').subscribe(e =>
-      this.headerResizable && this.CalculateHeader()
-    )
-
-    this._router.events
-    .subscribe(e => {
-      if (e instanceof NavigationEnd) {
-        this.headerResizable = e.url === '/'
-        this.CalculateHeader()
-      }
-    })
-
     fromEvent(window, 'scroll')
     .pipe(auditTime(500))
     .subscribe(() => this.UpdateActiveSection())
-  }
-
-  private CalculateHeader () {
-    this.headerHeight = this.headerResizable ?
-      Math.max(50, 150 - document.scrollingElement.scrollTop * 0.5 * Math.max(1, Math.round(window.devicePixelRatio) - 1)) :
-      50
   }
 
   private UpdateActiveSection () {
@@ -135,16 +114,11 @@ export class NavBarService {
     }
 
     const { top } = this.relativeBoundingClientRect(el, document.scrollingElement)
-    const target = this.AdjustByHeader(top)
+    const headerHeight = 50
     document.scrollingElement.scrollTo({
-      top: target,
+      top: top - headerHeight,
       behavior: 'smooth'
     })
-  }
-
-  private AdjustByHeader (value: number) {
-    const header = (this.headerHeight - 50) || 50
-    return value - header - Math.max(0, 50 - document.scrollingElement.scrollTop)
   }
 
   relativeBoundingClientRect (child: HTMLElement, parent: Element) {
