@@ -9,14 +9,16 @@
     width: 100%;
     min-height: 50px;
     max-height: 150px;
+    height: 150px;
     z-index: 10;
     position: fixed;
     top: 0;
     left: 0;
-    transition: box-shadow 0s linear, height 0.01s linear;
+    transition:  box-shadow 0.5s, height 0.3s ease-out;
 
-    &.mat-elevation-z5 {
-      transition:  box-shadow 0.5s, height 0.01s linear;
+    &.compact {
+      height: 50px;
+      transition:  box-shadow 0.5s, height 0.3s ease-in-out;
     }
   }
 
