@@ -12,8 +12,8 @@ export function randomFrom (arr: (number | string)[]) {
   return arr[Math.min(max, randIndex)]
 }
 
-export function getRangeOptions (min: number, max: number, inc = 1) {
-  return Array(Math.round((max + 1 - min) / inc)).fill(undefined).map((_, i) => i * inc + min)
+export function getRangeOptions (startVal: number, size: number, inc = 1) {
+  return Array(size).fill(undefined).map((_, i) => startVal + (i * inc))
 }
 
 export function clamp (x: number, min: number, max: number) {

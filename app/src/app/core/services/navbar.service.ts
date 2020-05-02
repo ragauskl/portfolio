@@ -114,17 +114,11 @@ export class NavBarService {
     }
 
     const { top } = this.relativeBoundingClientRect(el, document.scrollingElement)
-    const target = this.AdjustByHeader(top)
+    const headerHeight = 50
     document.scrollingElement.scrollTo({
-      top: target,
+      top: top - headerHeight,
       behavior: 'smooth'
     })
-  }
-
-  private AdjustByHeader (value: number) {
-    const headerHeight = document.scrollingElement.scrollTop > 1 ? 50 : 150
-    const header = (headerHeight - 50) || 50
-    return value - header - Math.max(0, 50 - document.scrollingElement.scrollTop)
   }
 
   relativeBoundingClientRect (child: HTMLElement, parent: Element) {

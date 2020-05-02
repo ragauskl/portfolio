@@ -179,6 +179,12 @@ export class Scene {
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.enablePan = true
+    this.AlwaysUpdateCamera()
+  }
+
+  private AlwaysUpdateCamera () {
+    this.updateCamera()
+    requestAnimationFrame(this.AlwaysUpdateCamera.bind(this))
   }
 
   updateCamera () {

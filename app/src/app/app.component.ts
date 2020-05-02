@@ -3,6 +3,8 @@ import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
 import { Subscription, fromEvent } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
+import { NavBarService } from '@core/services/navbar.service'
+import { Router, NavigationEnd } from '@angular/router'
 
 @Component({
   selector: 'app-root',
@@ -18,15 +20,25 @@ export class AppComponent implements OnDestroy {
   }
 
   miniHeader = false
+  resizableHeader = true
 
   constructor (
     private _matIconRegistry: MatIconRegistry,
-    private _domSanitizer: DomSanitizer
+    private _domSanitizer: DomSanitizer,
+    private _router: Router
   ) {
     this.RegisterCustomIcons([
       ['send', 'icons/action/send.svg'],
       ['menu', 'icons/action/menu.svg']
     ])
+
+    this._subscriptions.add(
+      this._router.events.subscribe(e => {
+        if (e instanceof NavigationEnd) {
+          this.resizableHeader = e.url === '/'
+        }
+      })
+    )
 
     this._subscriptions.add(
       fromEvent(window, 'scroll')

@@ -1,5 +1,5 @@
-<app-nav *ngIf="showMenu" [class.mat-elevation-z5]="miniHeader" [class.compact]="miniHeader"></app-nav>
-<div id="header-placeholder"></div>
+<app-nav *ngIf="showMenu" [class.mat-elevation-z5]="miniHeader || !resizableHeader" [class.compact]="miniHeader" [class.resizable]="!resizableHeader"></app-nav>
+<div id="header-placeholder" [class.resizable]="!resizableHeader"></div>
 
 <router-outlet></router-outlet>
 
