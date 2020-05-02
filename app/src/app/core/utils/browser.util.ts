@@ -60,6 +60,16 @@ class BrowserUtil {
 
   supported = !!this.browsers.find(x => x.name === this.browserName && x.supported)
 
+  touchDevice = this.isTouchDevice()
+  isTouchDevice () {
+    try {
+      document.createEvent('TouchEvent')
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
   private formatName (name: string) {
     name = name.toLowerCase()
     if (name.includes('chrome')) {

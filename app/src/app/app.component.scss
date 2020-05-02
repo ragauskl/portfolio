@@ -14,11 +14,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    transition: box-shadow 0.5s, height 0.3s ease-out;
+    transition: box-shadow 0.5s, height 0.5s ease-out;
 
     &.compact {
       height: 50px;
-      transition: box-shadow 0.5s, height 0.3s ease-in-out;
+      transition: box-shadow 0.5s, height 0.5s ease-in-out;
     }
   }
 

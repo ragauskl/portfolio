@@ -4,6 +4,7 @@ import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { Scene } from './scene'
 import { Image } from './image'
+import browserUtil from '@core/utils/browser.util'
 @Component({
   selector: 'app-image-shatter',
   templateUrl: './image-shatter.component.html',
@@ -137,7 +138,6 @@ export class ImageShatterComponent implements OnDestroy {
             onLeave()
             mouseOver = false
           } else if (inside) onMove(lastPosition.x, lastPosition.y)
-
         })
       )
 
