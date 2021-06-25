@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core'
 import { Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
 import moment from 'moment'
-import { Experience } from '@core/utils/content'
+import { Experience, Link } from '@core/utils/content'
 @Component({
   selector: 'app-card-carousel',
   templateUrl: './card-carousel.component.html',
@@ -24,7 +24,7 @@ export class CardCarouselComponent implements OnInit {
   }
   set selectedIndex (val: number) {
     this._selectedIndex = val
-    this._focusCard.next('change')
+    this._focusCard.next()
   }
 
   private _items: Experience.Commit[] = []
@@ -43,8 +43,8 @@ export class CardCarouselComponent implements OnInit {
 
     this._focusCard.pipe(
       auditTime(10)
-    ).subscribe((x) => {
-      if (this.cards.length) this.focusCard(this.currentIndex, x)
+    ).subscribe(() => {
+      if (this.cards.length) this.focusCard(this.currentIndex)
     })
 
     this._loaded = true
@@ -76,7 +76,9 @@ export class CardCarouselComponent implements OnInit {
         i - index,
         // top most index - offset (0 for focused, <0 for before and >0 for after)
         this.styleFocusedIndex - Math.abs(i - index),
-        x.color || 'rgba(255, 255, 255, 0)'
+        x.color || 'rgba(255, 255, 255, 0)',
+        x.article,
+        x.links
       )
 
       return card
@@ -84,7 +86,9 @@ export class CardCarouselComponent implements OnInit {
     if (this._selectedIndex === undefined) this.SetSelectedIndex(index)
   }
 
-  focusCard (target: Card | number, o: any) {
+  focusCard (target: Card | number) {
+    if (target instanceof Card && target.zIndex === this.styleFocusedIndex) return
+
     const index = typeof target === 'number' ?
       target : this.cards.findIndex(x => x === target)
     if (index === undefined) return
@@ -150,7 +154,9 @@ class Card {
     public readonly description: string,
     private _index: number,
     private _zIndex: number,
-    public color: string
+    public color: string,
+    public article?: string,
+    public links?: Link[]
   ) {
     this.generateStyle()
   }

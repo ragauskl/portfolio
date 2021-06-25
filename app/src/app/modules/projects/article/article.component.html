@@ -1,0 +1,29 @@
+<div class="cover-preview">
+  <img *ngIf="article" src="assets/articles/{{article.article}}/cover.jpg">
+</div>
+
+<div class="content">
+  <h1>{{article.title}}</h1>
+
+  <app-link-list *ngIf="article.links" [links]="article.links"></app-link-list>
+
+  <div class="links">
+    <ng-container *ngFor="let link of links; let i = index">
+      <a [href]="link.href" target="_blank">
+        <img *ngIf="link.img" [src]="link.img">
+        <p>{{link.name}}</p>
+      </a>
+
+      <span *ngIf="i !== links.length - 1" class="dot"></span>
+    </ng-container>
+  </div>
+
+  <p>
+    <small *ngIf="article.startDate">{{article.startDate | moment:'YYYY.MM=>YYYY MMM'}}&nbsp;</small>
+    <small *ngIf="article.endDate">- {{article.endDate | moment:'YYYY.MM=>YYYY MMM'}}</small>
+  </p>
+  <small *ngIf="article.subtitle">{{article.subtitle}}</small>
+
+  <markdown #description src="assets/articles/{{article.article}}/description.md" (load)="onLoad()"
+  lineNumbers></markdown>
+</div>

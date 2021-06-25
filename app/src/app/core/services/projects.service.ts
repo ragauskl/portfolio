@@ -1,30 +1,26 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Project } from '@core/model/interfaces/project'
 import { Router } from '@angular/router'
+import { Content, Article } from '@core/utils/content'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
-  projects: Project[] = []
-  featuredProjects: Project[] = []
+  projects: Article[] = []
+  featuredProjects: Article[] = []
 
   get hasProjectsPage () {
     return this.projects > this.featuredProjects
   }
 
   constructor (
-    private _http: HttpClient,
     private _router: Router
   ) {
-    this._http.get('assets/projects/projects.json').subscribe((json: Project[]) => {
-      this.projects = json.filter(x => !x.hidden)
-      this.featuredProjects = this.projects.filter(x => x.featured)
-    })
+    this.projects = Content.Articles.filter(x => x.type === 'project' && !x.hidden)
+    this.featuredProjects = this.projects.filter(x => x.featured)
   }
 
-  viewProject (project: Project) {
-    this._router.navigate(['projects', project.tag])
+  viewProject (project: Article) {
+    this._router.navigate(['projects', project.article])
   }
 }

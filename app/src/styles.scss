@@ -113,3 +113,10 @@ small {
 p, ul, code {
   @include break-font(17px, 11px, 17px);
 }
+
+#stats {
+  inset: unset !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+}

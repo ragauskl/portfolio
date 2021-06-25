@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common'
 import { ProjectsComponent } from './projects.component'
 import { CoreModule } from '@core/core.module'
 import { ProjectsRoutingModule } from './projects.routing'
-import { ProjectComponent } from './project/project.component'
 import { MarkdownModule } from 'ngx-markdown'
+import { ArticleComponent } from 'app/modules/projects/article/article.component'
+
 @NgModule({
   declarations: [
     ProjectsComponent,
-    ProjectComponent
+    ArticleComponent
   ],
   imports: [
     CommonModule,

@@ -13,7 +13,8 @@ export class MomentPipe implements PipeTransform {
       const from = formats[1] || moment.ISO_8601
       if (!formats[2]) throw new Error(`Output format must be specified for 'moment' pipe.`)
       const to = formats[2]
-      return moment(value, from).format(to)
+      const date = moment(value, from)
+      return date.isValid() ? date.format(to) : value
     } catch (error) {
       return value
     }

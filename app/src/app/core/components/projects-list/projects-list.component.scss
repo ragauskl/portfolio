@@ -10,7 +10,11 @@
   margin-left: -10%;
   margin-top: -180px;
 
-  &.reverse {
+  &:first-of-type {
+    margin-top: 0px;
+  }
+
+  &:nth-child(even) {
     flex-direction: row-reverse;
     margin-left: 10%;
   }

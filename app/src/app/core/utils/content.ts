@@ -42,6 +42,19 @@ export interface SkillSet {
   type: SkillSetType
 }
 
+export interface Article {
+  title: string
+  type: 'default' | 'project'
+  subtitle?: string
+  article: string
+  summary: string
+  startDate: string
+  featured: boolean
+  endDate?: string
+  hidden?: string
+  links?: Link[]
+}
+
 export namespace Experience {
   export type Branch = 'master' | string
   export interface History {
@@ -67,7 +80,19 @@ export namespace Experience {
     color?: string
     focused?: boolean
     el?: SVGGElement
+    links?: {
+      href: string
+      icon: 'git' | 'youtube' | 'web' | string
+      name?: string
+    }[]
+    article?: string
   }
+}
+
+export interface Link {
+  href: string
+  icon: 'git' | 'youtube' | 'web' | string
+  name?: string
 }
 
 export namespace Content {
@@ -420,6 +445,10 @@ export namespace Content {
         branch: 'gsi',
         origin: 'master',
         color: 'rgb(51, 204, 189)'
+      }, {
+        branch: 'bitgapp',
+        origin: 'master',
+        color: 'rgb(152, 83, 201)'
       }
     ],
     commits: [
@@ -517,9 +546,9 @@ export namespace Content {
       }, {
         date: '2018-Jun',
         branch: 'gsi',
+        article: 'gsi',
         comment: 'Full-stack JS Developer at Geospatial Insight Ltd',
-        description: 'Working as part of the team developing tools used to display and manipulate a wide range of geospatial data collected from satellites, plane and drone imagery which is analysed by GSI Machine Learning team to produce insight into the collected data. Most of my work included <b>developing, testing, deploying and maintaining</b> main project <b>Visual Intelligence Platform</b> as well as couple other smaller projects and <b>automating development processes</b>.\n\nOther responsibilities include code quality reviews, project scope planning and review meetings, keeping planned tasks up-to-date in Jira and writing documentation.',
-        focused: true
+        description: 'Working as part of the team developing tools used to display and manipulate a wide range of geospatial data collected from satellites, plane and drone imagery which is analysed by GSI Machine Learning team to produce insight into the collected data. Most of my work included <b>developing, testing, deploying and maintaining</b> main project <b>Visual Intelligence Platform</b> as well as couple other smaller projects and <b>automating development processes</b>.\n\nOther responsibilities include code quality reviews, project scope planning and review meetings, keeping planned tasks up-to-date in Jira and writing documentation.'
       }, {
         date: '2018-Jun',
         branch: 'gsi',
@@ -564,13 +593,73 @@ export namespace Content {
         date: '2019-Jun',
         branch: 'master',
         comment: 'GraphQL',
-        description: "Another technology that interested me was GraphQL and has been in my 'to-learn' list for a while. As I was at the time working on a personal portfolio I decided to use it as a learning ground and used GraphQL to communicate with server side."
+        description: "GraphQL and has been in my 'to-learn' list for a while therefore I started to use it for sandbox applications to get experience working with it."
       }, {
-        date: '2019-Dec',
+        date: '2020-Nov',
         branch: 'master',
         comment: 'ELK stack',
-        description: 'Researching and implementing sandbox application with Elasticsearch, Logstash, Metricbeat and Kibana on a Kubernetes cluster.'
+        description: 'Created mock API which is monitored with Elasticsearch, Logstash, Metricbeat and Kibana on a Kubernetes cluster in order to gain better understanding of ELK stack and how to work with it.',
+        links: [{
+          href: 'https://github.com/ragauskl/elk-on-minikube',
+          icon: 'git'
+        }]
+      }, {
+        date: '2020-Dec',
+        branch: 'gsi',
+        article: 'gsi',
+        comment: 'Left Geospatial Insight Ltd',
+        description: 'After working at GSI Ltd for 2 year and 7 months I left the position in order to take a break in official work and focus on personal projects, spend some time catching up with latest tech and spend some time for self-improvement and learning new tech/skills for which I did not have time before.',
+        closed: true
+      }, {
+        date: '2021-Apr',
+        branch: 'bitgapp',
+        comment: 'Joined Bitgapp',
+        description: 'Bitgapp, founded by my partner, is a legal entity that now the two of us use for personal/entrepreneur projects. Reason for joining Bitgapp, instead of creating new legal entity for myself, was plan to collaborate on current and future projects which is easier under one company in terms of legal and financial aspects.'
+      }, {
+        date: '2021-Apr',
+        branch: 'bitgapp',
+        article: 'cursr',
+        comment: 'Cursr - Utility tool to customise mouse transitions between screens',
+        description: 'Started working on first release of Cursr, a personal project started in order to solve annoyances when moving mouse between different resolution screens, without having to sacrifice screen resolution. Cursr is a cross-platform <b>Electron</b> application for Windows, Mac and list of Linux distributions.',
+        focused: true
       }
     ]
   }
+
+  export const Articles: Article[] = [{
+    title: 'Cursr',
+    type: 'project',
+    article: 'cursr',
+    summary: 'Cross-platform software for customising mouse transitions between screens to help optimise workflow and smooth out cursor movement between different resolution screens.',
+    startDate: '2021.04',
+    endDate: 'Present',
+    featured: true,
+    links: [{
+      name: 'Webpage',
+      icon: 'assets/articles/cursr/logo.png',
+      href: 'https://cursr.app'
+    }]
+  }, {
+    title: 'RouteFox (Dissertation)',
+    type: 'project',
+    article: 'route-fox',
+    summary: 'A mobile travel recommender system, that generates route suggestions between 2+ points of interests, based on the user preferences such as visit length for every place, arrival and departure preferences, the priority of each place as well as preferred transport type. The mobile application also has a feature to live-track a saved route and warn the user if wandering off too far away from the selected path.',
+    startDate: '2018.01',
+    endDate: '2018.04',
+    featured: true,
+    links: [{
+      name: 'Demo',
+      icon: 'youtube',
+      href: 'https://www.youtube.com/watch?v=9NwdTCJON8U&feature=youtu.be'
+    }]
+  }, {
+    title: 'Full-stack JavaScript Developer at Geospatial Insight Ltd',
+    type: 'default',
+    article: 'gsi',
+    summary: '',
+    startDate: '2018.06',
+    endDate: '2020.12',
+    featured: false
+  }]
+
 }
