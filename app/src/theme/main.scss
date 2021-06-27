@@ -1,31 +1,32 @@
+@use '~@angular/material' as mat;
 @import '~@angular/material/theming';
 @import './abstracts';
 
-@include mat-core();
+@include mat.core();
 // Available color palettes: https://material.io/design/color/
-$light-primary: mat-palette($primary, 500, 400, 800);
-$light-accent:  mat-palette($accent, 500, 400, 800);
-$light-warn:    mat-palette($warn);
+$light-primary: mat.define-palette($primary, 500, 400, 800);
+$light-accent:  mat.define-palette($accent, 500, 400, 800);
+$light-warn:    mat.define-palette($warn);
 
 // LIGHT THEME
-$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
-@include angular-material-theme($light-theme);
+$light-theme: mat.define-light-theme($light-primary, $light-accent, $light-warn);
+@include mat.all-component-themes($light-theme);
 
-$error-primary: mat-palette($error, 500, 400, 800);
+$error-primary: mat.define-palette($error, 500, 400, 800);
 // LIGHT ERROR THEME
-$error-component-theme: mat-light-theme($error-primary, $light-accent, $light-warn);
+$error-component-theme: mat.define-light-theme($error-primary, $light-accent, $light-warn);
 .error-component {
-  @include angular-material-theme($error-component-theme);
+  @include mat.all-component-themes($error-component-theme);
 }
 
 // DARK THEME
-$dark-theme: mat-dark-theme($light-primary, $light-accent, $light-warn);
-$error-dark-component-theme: mat-dark-theme($error-primary, $light-accent, $light-warn);
+$dark-theme: mat.define-dark-theme($light-primary, $light-accent, $light-warn);
+$error-dark-component-theme: mat.define-dark-theme($error-primary, $light-accent, $light-warn);
 .dark-theme {
-  @include angular-material-theme($dark-theme);
+  @include mat.all-component-themes($dark-theme);
 
   // DARK ERROR THEME
   .error-component {
-    @include angular-material-theme($error-dark-component-theme);
+    @include mat.all-component-themes($error-dark-component-theme);
   }
 }
