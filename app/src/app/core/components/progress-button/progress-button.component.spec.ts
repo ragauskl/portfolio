@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 
 import { ProgressButtonComponent } from './progress-button.component'
 
@@ -6,7 +6,7 @@ describe('ProgressButtonComponent', () => {
   let component: ProgressButtonComponent
   let fixture: ComponentFixture<ProgressButtonComponent>
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProgressButtonComponent ]
     })
