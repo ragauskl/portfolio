@@ -12,7 +12,7 @@ export class HorizontalTabPairComponent implements OnDestroy {
   private _subscriptions = new Subscription()
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' }
 
-  @ViewChild('matTabGroup', { static: false }) matTabGroup?: MatTabGroup
+  @ViewChild('matTabGroup') matTabGroup?: MatTabGroup
   @Output() tabChange = new EventEmitter<number>()
 
   showBack = false

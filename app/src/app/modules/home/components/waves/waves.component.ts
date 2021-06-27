@@ -12,7 +12,7 @@ export class WavesComponent implements AfterViewInit {
     this.GenerateWaves()
   }
 
-  @ViewChild('wavesContainer', { static: false }) wavesContainer!: ElementRef<HTMLElement>
+  @ViewChild('wavesContainer') wavesContainer!: ElementRef<HTMLElement>
   ngAfterViewInit () {
     this.GenerateWaves()
   }

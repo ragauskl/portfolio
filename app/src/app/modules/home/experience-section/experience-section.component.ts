@@ -28,7 +28,7 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   private readonly _ySkip = 2
   private history!: Experience.History
 
-  @ViewChild('tabGroup', { static: false }) tabGroup!: HorizontalTabPairComponent
+  @ViewChild('tabGroup') tabGroup!: HorizontalTabPairComponent
 
   constructor (
     public viewService: ViewService

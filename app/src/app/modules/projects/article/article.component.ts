@@ -10,7 +10,7 @@ import { Article, Content } from '@core/utils/content'
 })
 export class ArticleComponent {
   article: Article
-  @ViewChild('description', { static: false }) description!: MarkdownComponent
+  @ViewChild('description') description!: MarkdownComponent
 
   constructor (
     public activatedRoute: ActivatedRoute

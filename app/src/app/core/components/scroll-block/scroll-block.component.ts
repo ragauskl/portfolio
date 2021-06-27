@@ -9,7 +9,7 @@ import { Subscription, fromEvent } from 'rxjs'
 export class ScrollBlockComponent implements OnDestroy, AfterViewInit {
   private _subscriptions = new Subscription()
   @Input() contentClass?: string
-  @ViewChild('scroll', { static: false }) scrollElement!: ElementRef<HTMLElement>
+  @ViewChild('scroll') scrollElement!: ElementRef<HTMLElement>
 
   canScrollUp = true
   canScrollDown = true
