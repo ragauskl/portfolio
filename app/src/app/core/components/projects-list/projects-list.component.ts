@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { ChangeDetectorRef, Component, Input } from '@angular/core'
 import { ViewService } from '@core/services/view.service'
 import { ProjectsService } from '@core/services/projects.service'
 import browserUtil from '@core/utils/browser.util'
@@ -17,6 +17,11 @@ export class ProjectsListComponent {
 
   constructor (
     public viewService: ViewService,
-    public projectsService: ProjectsService
+    public projectsService: ProjectsService,
+    private _cd: ChangeDetectorRef
   ) {}
+
+  detectChanges () {
+    this._cd.detectChanges()
+  }
 }

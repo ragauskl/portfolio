@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, Input, HostBinding, Output, EventEmitter, HostListener } from '@angular/core'
+import { Component, ElementRef, OnDestroy, Input, HostBinding, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
@@ -17,6 +17,7 @@ export class ImageShatterComponent implements OnDestroy {
   private get _cursor () {
     return this.pointer ? 'pointer' : 'default'
   }
+
   @HostListener('click')
   onClick () {
     if (this.pointer) this.clicked.next()
@@ -24,6 +25,8 @@ export class ImageShatterComponent implements OnDestroy {
 
   @Input() src: string
   @Output() clicked = new EventEmitter<void>()
+
+  @Output() detectChanges = new EventEmitter<void>()
 
   scene: Scene
   image: Image
@@ -39,6 +42,7 @@ export class ImageShatterComponent implements OnDestroy {
     clearTimeout(this._cameraStopTimeout)
     if (val) this.scene.toggleCameraUpdates.next(true)
     else this._cameraStopTimeout = setTimeout(() => this.scene.toggleCameraUpdates.next(false), 1000)
+    this.detectChanges.next()
   }
 
   private _rendered = false
