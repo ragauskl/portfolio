@@ -23,7 +23,7 @@ export class ImageShatterComponent implements OnDestroy {
   }
 
   @Input() src: string
-  @Output() clicked = new EventEmitter()
+  @Output() clicked = new EventEmitter<void>()
 
   scene: Scene
   image: Image

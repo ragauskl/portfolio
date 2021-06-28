@@ -8,10 +8,8 @@
 
 // precision highp float; // set float precision (optional)
 
-uniform sampler2D texture; // identify the texture as a uniform argument
+uniform sampler2D t; // identify the texture as a uniform argument
 varying vec2 vUv; // identify the uv values as a varying attribute
-uniform float bWidth; // Width in %
-uniform vec3 bColor;
 // chunk(common);
 // chunk(packing);
 // chunk(bsdfs);
@@ -24,17 +22,7 @@ uniform vec3 bColor;
 
 void main(void) {
   float mask = min(1.0, getShadowMask() + 0.5);
-  vec4 tx = texture2D(texture, vUv) * mask;
+  vec4 tx = texture2D(t, vUv) * mask;
 
   gl_FragColor = vec4(tx.rgb, 1.0);
-  // Comented out shader border due to poor quality
-  // vec3 border = bColor / 255.0;
-
-  // if (vUv.x < bWidth || vUv.x > 1.0 - bWidth) {
-  //   gl_FragColor = vec4(border.xyz, 1.0);
-  // } else if (vUv.y < bWidth || vUv.y > 1.0 - bWidth) {
-  //   gl_FragColor = vec4(border.xyz, 1.0);
-  // } else {
-  //   gl_FragColor = vec4(tx.rgb, 1.0);
-  // }
 }

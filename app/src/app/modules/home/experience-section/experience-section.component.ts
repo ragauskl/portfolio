@@ -373,7 +373,7 @@ class GraphNode {
     return this._focusChange.asObservable()
   }
 
-  private _click = new Subject<boolean>()
+  private _click = new Subject<void>()
   get onClick () {
     return this._click.asObservable()
   }

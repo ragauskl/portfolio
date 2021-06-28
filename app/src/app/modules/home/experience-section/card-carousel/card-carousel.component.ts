@@ -9,7 +9,7 @@ import { Experience, Link } from '@core/utils/content'
   styleUrls: ['./card-carousel.component.scss']
 })
 export class CardCarouselComponent implements OnInit {
-  private _focusCard = new Subject()
+  private _focusCard = new Subject<void>()
   private readonly _reversed = true
   private _loaded = false
   // Set top most index to 100, this will last a while

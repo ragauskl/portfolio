@@ -6,7 +6,7 @@ import { auditTime } from 'rxjs/operators'
 export class InViewDirective implements AfterViewInit, OnDestroy {
   private _subscriptions = new Subscription()
   @Output('in-view')
-    public inView: EventEmitter<InViewDirective> = new EventEmitter()
+    public inView: EventEmitter<void> = new EventEmitter<void>()
 
   private _inView = false
   constructor (

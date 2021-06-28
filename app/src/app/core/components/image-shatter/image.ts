@@ -108,17 +108,9 @@ export class Image {
         uniforms:
         {
           ...lights,
-          texture: {
+          t: {
             type: 't',
             value: loader.load(this._src)
-          },
-          bWidth: {
-            type: 'float',
-            value: 0.017
-          },
-          bColor: {
-            type: 'vec3',
-            value: new THREE.Vector3(78, 83, 87)
           }
         },
         vertexShader: shaderParse(this._vertexShader),

@@ -6,10 +6,10 @@ import { Directive, Output, EventEmitter, ElementRef } from '@angular/core'
 })
 export class TrackScrollDirective {
   @Output('out-of-view')
-    public outOfView: EventEmitter<any> = new EventEmitter()
+    public outOfView: EventEmitter<void> = new EventEmitter<void>()
 
   @Output('in-view')
-    public inView: EventEmitter<any> = new EventEmitter()
+    public inView: EventEmitter<void> = new EventEmitter<void>()
 
   private _inViewport?: boolean
 
