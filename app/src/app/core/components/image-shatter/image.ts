@@ -6,6 +6,7 @@ import { getTriangleVertices, calculateNewCentroid } from './triangulate'
 import { distance, degreesToRadians, round, randomRange, getRangeOptions, randomFrom, map, pointDistance } from './utils'
 import { cloneDeep } from 'lodash'
 type State = 'solid' | 'shattered'
+import { ShaderChunk } from 'three/src/renderers/shaders/ShaderChunk'
 
 export class Image {
   private _vertexShader: string
@@ -103,13 +104,12 @@ export class Image {
     const loader = new THREE.TextureLoader()
     const lights = cloneDeep(THREE.UniformsLib.lights)
 
-    const createMesh = (geom: THREE.Geometry | THREE.BufferGeometry) => {
+    const createMesh = (geom: THREE.BufferGeometry) => {
       const material = new THREE.ShaderMaterial({
         uniforms:
         {
           ...lights,
           t: {
-            type: 't',
             value: loader.load(this._src)
           }
         },
@@ -283,8 +283,7 @@ export class Image {
     text.computeBoundingBox()
     text.computeVertexNormals()
 
-    const buffer = new THREE.BufferGeometry().fromGeometry(text)
-    this.text = new THREE.Mesh(buffer, [
+    this.text = new THREE.Mesh(text, [
       new THREE.MeshPhongMaterial({ color: 'black', flatShading: true })
     ])
     this.text.receiveShadow = true
@@ -313,8 +312,7 @@ export class Image {
       text.computeBoundingBox()
       text.computeVertexNormals()
 
-      const buffer = new THREE.BufferGeometry().fromGeometry(text)
-      const mesh = new THREE.Mesh(buffer, [
+      const mesh = new THREE.Mesh(text, [
         new THREE.MeshPhongMaterial({ color: 'red', flatShading: true })
       ])
       const size = new THREE.Box3().setFromObject(mesh)
@@ -444,7 +442,7 @@ export class Image {
     this.bbox = new THREE.Box3().setFromObject(this.activeGroup)
 
     if (!this.matrix) this.matrix = new THREE.Matrix4()
-    this.matrix.getInverse(this.activeGroup.matrixWorld)
+    this.matrix = this.matrix.copy(this.activeGroup.matrixWorld).invert()
   }
 
   _nextFrame?: number
@@ -545,7 +543,7 @@ export class Image {
 
 function shaderParse (glsl: string) {
   const replaceThreeChunkFn = (_: any, b: any) => {
-    return THREE.ShaderChunk[b] + '\n'
+    return ShaderChunk[b] + '\n'
   }
 
   return glsl.replace(/\/\/\s?chunk\(\s?(\w+)\s?\);/g, replaceThreeChunkFn)

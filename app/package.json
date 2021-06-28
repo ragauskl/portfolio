@@ -32,7 +32,7 @@
     "noisejs": "^2.1.0",
     "rxjs": "^7.1.0",
     "stats.js": "^0.17.0",
-    "three": "^0.114.0",
+    "three": "^0.129.0",
     "tslib": "^2.0.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.11.4"
@@ -49,6 +49,7 @@
     "@types/lodash": "^4.14.170",
     "@types/node": "^12.11.1",
     "@types/noisejs": "0.0.28",
+    "@types/three": "^0.129.1",
     "codelyzer": "^6.0.0",
     "cp": "^0.2.0",
     "gh-pages": "^3.2.3",

@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { degreesToRadians } from './utils'
 import { Subject } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
+import { WEBGL } from 'three/examples/jsm/WebGL'
 
 export class Scene {
   scene: THREE.Scene
@@ -65,7 +66,14 @@ export class Scene {
 
     this.scene = new THREE.Scene()
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true })
+    if (WEBGL.isWebGL2Available()) {
+      this.renderer = new THREE.WebGLRenderer({ antialias: true })
+    } else {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('webgl', { alpha: false })
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas, context })
+    }
+
     this.renderer.setSize(this.width, this.height)
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
