@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnDestroy, Input, HostBinding, Output, EventEmitter, HostListener } from '@angular/core'
+import { Component, ElementRef, OnDestroy, Input, HostBinding, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core'
 import * as THREE from 'three'
 import { Subscription, fromEvent } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { Scene } from './scene'
 import { Image } from './image'
-import browserUtil from '@core/utils/browser.util'
+declare var Stats: any
+
 @Component({
   selector: 'app-image-shatter',
   templateUrl: './image-shatter.component.html',
@@ -16,13 +17,16 @@ export class ImageShatterComponent implements OnDestroy {
   private get _cursor () {
     return this.pointer ? 'pointer' : 'default'
   }
+
   @HostListener('click')
   onClick () {
     if (this.pointer) this.clicked.next()
   }
 
   @Input() src: string
-  @Output() clicked = new EventEmitter()
+  @Output() clicked = new EventEmitter<void>()
+
+  @Output() detectChanges = new EventEmitter<void>()
 
   scene: Scene
   image: Image
@@ -38,6 +42,7 @@ export class ImageShatterComponent implements OnDestroy {
     clearTimeout(this._cameraStopTimeout)
     if (val) this.scene.toggleCameraUpdates.next(true)
     else this._cameraStopTimeout = setTimeout(() => this.scene.toggleCameraUpdates.next(false), 1000)
+    this.detectChanges.next()
   }
 
   private _rendered = false
@@ -68,6 +73,7 @@ export class ImageShatterComponent implements OnDestroy {
     )
 
     this.scene = new Scene(element)
+    // this.debugPerformance()
     this._subscriptions.add(
       fromEvent(window, 'resize').subscribe(() => this.scene.onResize())
     )
@@ -148,5 +154,78 @@ export class ImageShatterComponent implements OnDestroy {
         })
       )
     })
+  }
+
+  private debugPerformance () {
+    const upFn: any[] = []
+    const rendererStats = RendererStats()
+    rendererStats.domElement.style.position = 'fixed'
+    rendererStats.domElement.style.left = '0px'
+    rendererStats.domElement.style.bottom = '0px'
+    document.body.appendChild(rendererStats.domElement)
+    upFn.push(() => rendererStats.update(this.scene.renderer))
+
+    const stats	= new Stats()
+    stats.domElement.id = 'stats'
+    document.body.appendChild(stats.domElement)
+    upFn.push(() => stats.update())
+
+    requestAnimationFrame(function animate () {
+      requestAnimationFrame(animate)
+      upFn.forEach(f => f())
+    })
+  }
+}
+
+const RendererStats	= function () {
+
+  let msMin	= 100
+  let msMax	= 0
+
+  let container	= document.createElement('div')
+  container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer'
+
+  let msDiv	= document.createElement('div')
+  msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#200;'
+  container.appendChild(msDiv)
+
+  let msText	= document.createElement('div')
+  msText.style.cssText = 'color:#f00;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px'
+  msText.innerHTML = 'WebGLRenderer'
+  msDiv.appendChild(msText)
+
+  let msTexts	= []
+  let nLines	= 9
+  for (let i = 0; i < nLines; i++) {
+    msTexts[i]	= document.createElement('div')
+    msTexts[i].style.cssText = 'color:#f00;background-color:#311;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px'
+    msDiv.appendChild(msTexts[i])
+    msTexts[i].innerHTML = '-'
+  }
+
+  let lastTime	= Date.now()
+  return {
+    domElement: container,
+
+    update: function (webGLRenderer) {
+			// sanity check
+      console.assert(webGLRenderer instanceof THREE.WebGLRenderer)
+
+			// refresh only 30time per second
+      if (Date.now() - lastTime < 1000 / 30)	return
+      lastTime	= Date.now()
+
+      let i	= 0
+      msTexts[i++].textContent = '== Memory ====='
+      msTexts[i++].textContent = 'Programs: '	+ webGLRenderer.info.memory.programs
+      msTexts[i++].textContent = 'Geometries: ' + webGLRenderer.info.memory.geometries
+      msTexts[i++].textContent = 'Textures: '	+ webGLRenderer.info.memory.textures
+
+      msTexts[i++].textContent = '== Render ====='
+      msTexts[i++].textContent = 'Calls: '	+ webGLRenderer.info.render.calls
+      msTexts[i++].textContent = 'Vertices: '	+ webGLRenderer.info.render.vertices
+      msTexts[i++].textContent = 'Faces: '	+ webGLRenderer.info.render.faces
+      msTexts[i++].textContent = 'Points: '	+ webGLRenderer.info.render.points
+    }
   }
 }

@@ -15,7 +15,12 @@ import { Content, Experience } from '@core/utils/content'
 export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   private _subscriptions = new Subscription()
   readonly drawGrid = false
-  commits: Experience.Commit[] = []
+  commits: (
+    Experience.Commit & {
+      shortStartCurve?: boolean
+      shortEndCurve?: boolean
+    }
+  )[] = []
   nodes: GraphNode[] = []
   // Will be ignored if history element has focused prop defined
   selectedIndex: number = 19
@@ -23,7 +28,7 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
   private readonly _ySkip = 2
   private history!: Experience.History
 
-  @ViewChild('tabGroup', { static: false }) tabGroup!: HorizontalTabPairComponent
+  @ViewChild('tabGroup') tabGroup!: HorizontalTabPairComponent
 
   constructor (
     public viewService: ViewService
@@ -85,8 +90,8 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
 
     const cellSize = this.viewService.mobile ? 20 : 30
     const height = rows * cellSize
-    const getX = (x) => cellSize * (x - 0.5) + 5
-    const getY = (y) => height - (cellSize * (y - this._ySkip)) + 5
+    const getX = (x: number) => cellSize * (x - 0.5) + 5
+    const getY = (y: number) => height - (cellSize * (y - this._ySkip)) + 5
       // Calculate grid rows/columns (maxX, maxY)
       // X1 = left, Y1 = down, so yq = maxH - size * q
     const grid = this.GetGridTemplate(cellSize, rows + 2, columns)
@@ -132,16 +137,28 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
       return maxX
     }
 
+    let maxY = 1
+
     const createNodes = () => {
       this.nodes = this.commits.map((commit, i) => {
         const node = new GraphNode(
-            this.viewService,
-            commit,
-            cellSize,
-            { x: getX(commit.x), y: getY(commit.y) },
-            getX(findMaxXAtY(commit.y, commit.x) || commit.x),
-            i
-          )
+          this.viewService,
+          commit,
+          cellSize,
+          { x: getX(commit.x), y: getY(commit.y) },
+          getX(findMaxXAtY(commit.y, commit.x) || commit.x),
+          i
+        )
+
+        const nextCommit = this.commits[i + 1]
+        if (nextCommit && commit.closed) {
+          const firstInBranch = this.commits.find(c => c.branch === nextCommit.branch) === nextCommit
+          if (firstInBranch) {
+            commit.shortEndCurve = true
+            nextCommit.shortStartCurve = true
+          }
+        }
+        if (commit.y > maxY) maxY = commit.y
 
         if (node.focused) {
           this._focusedNode = node
@@ -174,17 +191,20 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
     }
 
     const renderBranches = () => {
-      const drawLine = (x1, y1, x2, y2) => {
+      const drawLine = (x1: number, y1: number, x2: number, y2: number, rounded?: boolean) => {
         const el = document.createElementNS('http://www.w3.org/2000/svg', 'line')
         el.setAttributeNS(null, 'stroke-width', `${cellSize * 0.2}`)
         el.setAttributeNS(null, 'x1', `${getX(x1)}`)
         el.setAttributeNS(null, 'y1', `${getY(y1)}`)
         el.setAttributeNS(null, 'x2', `${getX(x2)}`)
         el.setAttributeNS(null, 'y2', `${getY(y2)}`)
+        if (rounded) {
+          el.setAttributeNS(null, 'stroke-linecap', 'round')
+        }
         return el
       }
 
-      const drawCurve = (x1, y1, x2, y2) => {
+      const drawCurve = (x1: number, y1: number, x2: number, y2: number) => {
         const el = document.createElementNS('http://www.w3.org/2000/svg', 'path')
           // M 0 200 C 0 150 50 150 50 100
         const yDiff = (y2 - y1) / 2
@@ -204,10 +224,14 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
           grid.appendChild(line)
         }
         const { x: startX, y: startY } = commits[0]
-        const { x: lastX, y: lastY } = commits[commits.length - 1]
+        let { x: lastX, y: lastY } = commits[commits.length - 1]
 
           // draw line
-        const line = drawLine(startX, startY, lastX, lastY)
+        if (el.branch === 'master') {
+          lastY = maxY
+        }
+
+        const line = drawLine(startX, startY, lastX, lastY, el.branch === 'master')
         if (!functions[el.x]) functions[el.x] = []
         functions[el.x].push(() => appendLine(line))
 
@@ -219,13 +243,15 @@ export class ExperienceSectionComponent implements OnDestroy, AfterViewInit {
                 .find(x => x.branch === origin.branch)
 
             if (forkCommit) {
-              const curve = drawCurve(origin.x, startY - this._ySkip, startX, startY)
+              const yOffset = commits[0].shortStartCurve ? this._ySkip / 3 * 2 : this._ySkip
+              const curve = drawCurve(origin.x, startY - yOffset, startX, startY)
               functions[el.x].push(() => appendLine(curve))
             }
 
             const lastCommit = commits[commits.length - 1]
             if (lastCommit.closed) {
-              const curve = drawCurve(lastX, lastY, origin.x, lastY + this._ySkip)
+              const yOffset = lastCommit.shortEndCurve ? this._ySkip / 3 * 2 : this._ySkip
+              const curve = drawCurve(lastX, lastY, origin.x, lastY + yOffset)
               appendLine(curve)
               functions[el.x].push(() => appendLine(curve))
             }
@@ -347,7 +373,7 @@ class GraphNode {
     return this._focusChange.asObservable()
   }
 
-  private _click = new Subject<boolean>()
+  private _click = new Subject<void>()
   get onClick () {
     return this._click.asObservable()
   }

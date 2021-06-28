@@ -2,7 +2,7 @@ const ghPages = require('gh-pages')
 
 async function publish () {
   try {
-    await new Promise((res, rej) => {
+    await new Promise<void>((res, rej) => {
       ghPages.publish('dist', (err: Error) => {
         if (err) rej(err)
         else res()

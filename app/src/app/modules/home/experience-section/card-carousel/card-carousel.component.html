@@ -6,13 +6,29 @@
   [ngStyle]="card.style">
     <div class="ratio-wrapper" *ngIf="!card.hide">
       <div class="carousel-card"
-      (click)="card.zIndex !== styleFocusedIndex && focusCard(card, 'a')">
+      (click)="focusCard(card, $event)">
         <h3>{{card.title}}</h3>
-        <p><small>{{card.subtitle}}</small></p>
+        <div class="subtitle">
+          <small>{{card.subtitle}}</small>
+          <app-link-list *ngIf="card.links" [links]="card.links"></app-link-list>
+        </div>
 
-        <app-scroll-block class="card-description" contentClass="mini-scrollbar">
-          <p [innerHTML]="card.description"></p>
-        </app-scroll-block>
+        <ng-container *ngIf="!card.article">
+          <app-scroll-block class="card-description" contentClass="mini-scrollbar">
+            <p [innerHTML]="card.description"></p>
+          </app-scroll-block>
+        </ng-container>
+
+
+        <ng-container *ngIf="card.article">
+          <a href="projects/{{card.article}}">
+            <app-scroll-block class="card-description" contentClass="mini-scrollbar">
+              <p [innerHTML]="card.description"></p>
+            </app-scroll-block>
+
+            <span>Read more...</span>
+          </a>
+        </ng-container>
 
       </div>
   </div>

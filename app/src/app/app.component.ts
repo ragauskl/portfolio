@@ -3,7 +3,6 @@ import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
 import { Subscription, fromEvent } from 'rxjs'
 import { auditTime } from 'rxjs/operators'
-import { NavBarService } from '@core/services/navbar.service'
 import { Router, NavigationEnd } from '@angular/router'
 
 @Component({

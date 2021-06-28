@@ -12,7 +12,7 @@ import { Content } from '@core/utils/content'
 })
 export class ImgBubblesComponent implements AfterViewInit {
   bubbles: Bubbles
-  resizeEvent = new Subject()
+  resizeEvent = new Subject<void>()
 
   constructor (
     private _el: ElementRef<HTMLElement>

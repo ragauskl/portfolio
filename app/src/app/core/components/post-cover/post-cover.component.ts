@@ -15,13 +15,13 @@ export class PostCoverComponent {
   @Input() text: string = 'Read more'
   @Output() loaded = new EventEmitter()
 
-  @ViewChild('coverContainer', { static: false }) coverContainerRef: ElementRef
+  @ViewChild('coverContainer') coverContainerRef: ElementRef
   coverContainerEl: HTMLElement
-  @ViewChild('imageRef', { static: false }) imageRef: ElementRef
+  @ViewChild('imageRef') imageRef: ElementRef
   imageEl: HTMLImageElement
-  @ViewChild('shatterContainer', { static: false }) shatterContainerRef: ElementRef
+  @ViewChild('shatterContainer') shatterContainerRef: ElementRef
   shatterContainerEl: HTMLElement
-  @ViewChild('textRef', { static: false }) textRef: ElementRef
+  @ViewChild('textRef') textRef: ElementRef
   textEl: HTMLSpanElement
 
   fragments: Fragment[] = []

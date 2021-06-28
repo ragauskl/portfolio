@@ -1,0 +1,8 @@
+<ng-container *ngFor="let link of links; let i = index">
+  <a [href]="link.href" target="_blank">
+    <img [src]="link.img">
+    <p *ngIf="link.name">{{link.name}}</p>
+  </a>
+
+  <span *ngIf="i !== links.length - 1" class="dot"></span>
+</ng-container>

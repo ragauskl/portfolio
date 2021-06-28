@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 
 import { HorizontalSkillBarComponent } from './horizontal-skill-bar.component'
 
@@ -6,7 +6,7 @@ describe('HorizontalSkillBarComponent', () => {
   let component: HorizontalSkillBarComponent
   let fixture: ComponentFixture<HorizontalSkillBarComponent>
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HorizontalSkillBarComponent ]
     })

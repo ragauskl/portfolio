@@ -1,0 +1,30 @@
+@import 'abstracts';
+
+:host {
+  @include flex;
+  @include item-space(row, 10px);
+  flex-wrap: wrap;
+
+  > a {
+    position: relative;
+    @include flex;
+    @include item-space(row, 5px);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .dot {
+    width: 0.3em;
+    height: 0.3em;
+    background: color('background-primary');
+    border-radius: 50%;
+  }
+
+  img {
+    height: 1.5em;
+    width: 1.5em;
+    object-fit: contain;
+  }
+}

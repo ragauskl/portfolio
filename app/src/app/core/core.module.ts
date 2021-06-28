@@ -19,7 +19,8 @@ import { MomentPipe } from './pipes/moment.pipe'
 import { ImageShatterComponent } from './components/image-shatter/image-shatter.component'
 import { RouterModule } from '@angular/router'
 import { InViewDirective } from './directives/in-view.directive'
-import { HorizontalTabPairComponent } from './components/layout/horizontal-tab-pair/horizontal-tab-pair.component'
+import { HorizontalTabPairComponent } from './components/layout/horizontal-tab-pair/horizontal-tab-pair.component';
+import { LinkListComponent } from './components/link-list/link-list.component'
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { HorizontalTabPairComponent } from './components/layout/horizontal-tab-p
     MomentPipe,
     ImageShatterComponent,
     InViewDirective,
-    HorizontalTabPairComponent
+    HorizontalTabPairComponent,
+    LinkListComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ import { HorizontalTabPairComponent } from './components/layout/horizontal-tab-p
     MomentPipe,
     ImageShatterComponent,
     InViewDirective,
-    HorizontalTabPairComponent
+    HorizontalTabPairComponent,
+    LinkListComponent
   ]
 })
 export class CoreModule { }

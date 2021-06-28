@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 
 import { HorizontalTabPairComponent } from './horizontal-tab-pair.component'
 
@@ -6,7 +6,7 @@ describe('HorizontalTabPairComponent', () => {
   let component: HorizontalTabPairComponent
   let fixture: ComponentFixture<HorizontalTabPairComponent>
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HorizontalTabPairComponent ]
     })
