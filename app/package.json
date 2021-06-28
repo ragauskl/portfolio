@@ -6,6 +6,7 @@
     "start": "ng serve --host=0.0.0.0",
     "build": "ng build --configuration production",
     "deploy": "ts-node deploy.ts",
+    "publish": "npm run build && npm run deploy",
     "lint": "ng lint"
   },
   "private": true,

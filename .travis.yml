@@ -1,52 +1,53 @@
+# DEPRECATED: due to travis moving from .org to .com and loosing all my env variables and setup. No more travis.
+
 language: node_js
-node_js:
-- '13.7.0'
-os: linux
-services:
-- docker
+# node_js:
+# - '13.7.0'
+# os: linux
+# services:
+# - docker
 
-before_install:
-  - npm -v
-  - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
-  - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-  - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
-  - export GITHUB_USER=ragauskl:$GITHUB_TOKEN
-  - git config --global user.email "$GITHUB_EMAIL"
-  - git config --global user.name "$GITHUB_USER"
-  - git config user.email "$GITHUB_EMAIL"
-  - git config user.name "$GITHUB_USER"
-  - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
+# before_install:
+#   - npm -v
+#   - echo "//registry.lina.codes/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
+#   - echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+#   - echo "@prtf:registry=https://registry.lina.codes/" >> ~/.npmrc
+#   - export GITHUB_USER=ragauskl:$GITHUB_TOKEN
+#   - git config --global user.email "$GITHUB_EMAIL"
+#   - git config --global user.name "$GITHUB_USER"
+#   - git config user.email "$GITHUB_EMAIL"
+#   - git config user.name "$GITHUB_USER"
+#   - git remote set-url origin https://$GITHUB_USER@github.com/ragauskl/portfolio.git
 
-stages:
-  - name: sentry
-    if: commit_message ~= /--sentry|-s/
-  - name: build_app
-    if: type = pull_request
-  - name: deploy_app
-    if: type = push AND branch = master
+# stages:
+#   - name: sentry
+#     if: commit_message ~= /--sentry|-s/
+#   - name: build_app
+#     if: type = pull_request
+#   - name: deploy_app
+#     if: type = push AND branch = master
 
-jobs:
-  include:
-    - stage: sentry
-      script: cd dev && npm i && npm start
-    - stage: build_app
-      script: cd app && npm run build
-    - stage: deploy_app
-      # If this test is false, then it's a commit from merge request
-      script: "test -z $(git rev-parse --verify $TRAVIS_COMMIT^2 2> /dev/null) || (
-        cd app && npm run build && npm run deploy
-      )"
+# jobs:
+#   include:
+#     - stage: sentry
+#       script: cd dev && npm i && npm start
+#     - stage: build_app
+#       script: cd app && npm run build
+#     - stage: deploy_app
+#       # If this test is false, then it's a commit from merge request
+#       script: "test -z $(git rev-parse --verify $TRAVIS_COMMIT^2 2> /dev/null) || (
+#         cd app && npm run build && npm run deploy
+#       )"
 
-branches:
-  only:
-  - master
-  - develop
+# branches:
+#   only:
+#   - master
+#   - develop
 
-install:
-  - npm i -g @angular/cli
-  - cd api
-  - npm i
-  - cd ../app
-  - npm i
-  - cd ..
-
+# install:
+#   - npm i -g @angular/cli
+#   - cd api
+#   - npm i
+#   - cd ../app
+#   - npm i
+#   - cd ..
