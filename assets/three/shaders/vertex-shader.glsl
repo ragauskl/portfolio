@@ -27,9 +27,19 @@ varying vec2 vUv; // pass the uv coordinates of each pixel to the frag shader
 varying vec3 vWorldPosition;
 varying vec3 vNormal;
 
+// To init 'inverseTransformDirection' for 'shadowmap_vertex'
+// chunk(common);
+
 // chunk(shadowmap_pars_vertex);
 
+
 void main() {
+  // To initialize 'objectNormal' for 'transformedNormal':
+  // chunk(beginnormal_vertex);
+
+  // To initialize 'transformedNormal' for 'shadowmap_vertex':
+  // chunk(defaultnormal_vertex);
+
   vUv = uv;
   vNormal = normalMatrix * vec3(normal + normalize(position) * 0.2);
 

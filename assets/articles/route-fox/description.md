@@ -1,4 +1,4 @@
-# Description <!-- omit in toc -->
+## Description <!-- omit in toc -->
 RouteFox is a mobile travel recommendation system done as a last year dissertation project for Computing BSc. The primary target of the system is to generate route suggestions between 2+ points of interest (POI), based on the user preferences such as:
 
  - Visit length
@@ -8,7 +8,7 @@ RouteFox is a mobile travel recommendation system done as a last year dissertati
 
 Secondary target of the application is to provide user with real-time tracking and updates of the route as well as warn user if the planned route is no longer valid, for example if user wanders of from the path and will not be able to get back on track in time for a bus.
 
-# Contents <!-- omit in toc -->
+## Contents <!-- omit in toc -->
 - [Technologies](#technologies)
 - [Features](#features)
     - [User System](#user-system)
@@ -17,7 +17,7 @@ Secondary target of the application is to provide user with real-time tracking a
     - [Route Suggestions](#route-suggestions)
     - [Saved Route Tracking](#saved-route-tracking)
 
-# Technologies
+## Technologies
 
  - Client Side
 	 - Ionic 3
@@ -32,18 +32,18 @@ Secondary target of the application is to provide user with real-time tracking a
  - Database
 	 - MongoDB
 
-# Features
+## Features
 
-### User System
+#### User System
 - Authentication/Login
 - Password reset
 - Personal details modification
 
-### Map System
+#### Map System
 - GPS tracking
 - Location search by address/name
 
-### Route Configuration
+#### Route Configuration
 - Modification of points of interest in a route
 - Point of interest preference configuration
   - Add/Remove POI to route
@@ -60,7 +60,7 @@ Secondary target of the application is to provide user with real-time tracking a
   - Public transport
   - Driving
 
-### Route Suggestions
+#### Route Suggestions
 
 - Generate a list of suggestions, based on [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem), exploring multiple options and selecting ones that best match user set preferences
 - Display suggestions with
@@ -82,7 +82,7 @@ Secondary target of the application is to provide user with real-time tracking a
   			- Distance/Stop count based on type of transport
 - Save/Remove route from saved list
 
-### Saved Route Tracking
+#### Saved Route Tracking
 
 - Show time remaining till the start of the journey
 - Display warning to user when live GPS location is too far away from selected route
