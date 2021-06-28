@@ -17,6 +17,11 @@
   &:nth-child(even) {
     flex-direction: row-reverse;
     margin-left: 10%;
+
+    @include break ('lt', 'm') {
+      flex-direction: column;
+      margin-left: 0;
+    }
   }
 
   > * {
@@ -53,10 +58,6 @@
     margin-top: 0;
 
     @include flex(column, flex-start);
-    &.reverse {
-      flex-direction: column;
-      margin-left: 0;
-    }
 
     > * {
       &:last-child {
