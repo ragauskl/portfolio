@@ -7,6 +7,7 @@ import { AppComponent } from './app.component'
 import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http'
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown'
+import { LocationStrategy, PathLocationStrategy } from '@angular/common'
 
 @Injectable()
 export class ScrollHammerConfig extends HammerGestureConfig {
@@ -36,6 +37,9 @@ export class ScrollHammerConfig extends HammerGestureConfig {
   providers: [{
     provide: HAMMER_GESTURE_CONFIG,
     useClass: ScrollHammerConfig
+  }, {
+    provide: LocationStrategy,
+    useClass: PathLocationStrategy
   }],
   bootstrap: [
     AppComponent
