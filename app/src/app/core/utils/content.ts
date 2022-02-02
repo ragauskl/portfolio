@@ -14,7 +14,8 @@ export enum SkillSetType {
   Other,
   Monitoring,
   CiCd,
-  Native
+  Native,
+  Payment
 }
 
 export enum BubbleType {
@@ -114,9 +115,14 @@ export namespace Content {
   }, {
     type: SkillSetType.Application,
     title: 'Web and Mobile Applications',
-    summary: 'Worked 3+ years with building responsive and complex Web applications and lightweight Mobile applications.' +
+    summary: 'Years of experience working with building responsive and complex Web applications and lightweight Mobile applications.' +
     ' Previously deployed Ionic applications to Google App Store and Apple App Store.' +
     ' Have fully white labeled user interfaces, email and domain, all customizable for every customer of the application.'
+  }, {
+    type: SkillSetType.Payment,
+    title: 'Payment and Software Monetization',
+    summary: 'Know how to monetize software and web applications by introducing licensing both for online and offline use and ' +
+    'collecting single time and reoccurring payments through trusted 3rd party solutions.'
   }, {
     type: SkillSetType.DataStorage,
     title: 'Data Storage',
@@ -204,6 +210,13 @@ export namespace Content {
     sprite: 'gopher',
     level: SkillLevel.Beginner,
     set: SkillSetType.Service,
+    bubble: BubbleType.FullStack
+  }, {
+    title: 'Stripe',
+    src: 'stripe.jpg',
+    sprite: 'stripe',
+    level: SkillLevel.Intermediate,
+    set: SkillSetType.Payment,
     bubble: BubbleType.FullStack
   }, {
     title: 'GraphQL',
