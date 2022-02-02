@@ -120,7 +120,7 @@ export namespace Content {
     ' Have fully white labeled user interfaces, email and domain, all customizable for every customer of the application.'
   }, {
     type: SkillSetType.Payment,
-    title: 'Payment and Software Monetization',
+    title: 'Payment Systems',
     summary: 'Know how to monetize software and web applications by introducing licensing both for online and offline use and ' +
     'collecting single time and reoccurring payments through trusted 3rd party solutions.'
   }, {
