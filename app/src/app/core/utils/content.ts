@@ -173,7 +173,7 @@ export namespace Content {
     title: 'Electron',
     src: 'electron.jpg',
     sprite: 'electron',
-    level: SkillLevel.Beginner,
+    level: SkillLevel.Expert,
     set: SkillSetType.Application,
     bubble: BubbleType.FullStack
   }, {
@@ -229,7 +229,7 @@ export namespace Content {
     title: 'NestJS',
     src: 'nestjs.jpg',
     sprite: 'nestjs',
-    level: SkillLevel.Intermediate,
+    level: SkillLevel.Expert,
     set: SkillSetType.Service,
     bubble: BubbleType.FullStack
   }, {
