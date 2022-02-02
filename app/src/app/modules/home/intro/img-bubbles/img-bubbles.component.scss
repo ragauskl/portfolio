@@ -22,9 +22,13 @@
 
   .bubble {
     border-radius: 50%;
+    // Required for bubble titles to have correct rotation when on left side of page/rotated backface to front
     transform-style: preserve-3d;
 
     svg {
+      // Required for backface to not be visible, so that only one side is visible at a time
+      // based on rotation
+      transform-style: preserve-3d;
       position: absolute;
       transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, backface-visibility 0s;
       opacity: 0;
