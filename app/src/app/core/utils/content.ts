@@ -13,7 +13,8 @@ export enum SkillSetType {
   Testing,
   Other,
   Monitoring,
-  CiCd
+  CiCd,
+  Native
 }
 
 export enum BubbleType {
@@ -108,14 +109,14 @@ export namespace Content {
     summary: 'Mostly I work with various services of Google Cloud Platform to host APIs and Web applications, but am looking to expand experience with' +
     ' Cloud Platforms to AWS in near future. I have setup and managed small to medium size Kubernetes cluster with auto-scaling and auto-updating wildcard SSL certificates,' +
     ' as well as dealt with serverless scripts hosting which can be scheduled or triggered by Pub/Sub messaging service.' +
-    ' Have 2+ years of experience with containerising web applications and services in Docker for local development and remote production environments as well as' +
+    ' Have 2+ years of experience with containerizing web applications and services in Docker for local development and remote production environments as well as' +
     ' automated testing and deployments.'
   }, {
     type: SkillSetType.Application,
     title: 'Web and Mobile Applications',
     summary: 'Worked 3+ years with building responsive and complex Web applications and lightweight Mobile applications.' +
     ' Previously deployed Ionic applications to Google App Store and Apple App Store.' +
-    ' Have fully white labeled user interfaces, email and domain, all customisable for every customer of the application.'
+    ' Have fully white labeled user interfaces, email and domain, all customizable for every customer of the application.'
   }, {
     type: SkillSetType.DataStorage,
     title: 'Data Storage',
@@ -133,6 +134,10 @@ export namespace Content {
     title: 'System Uptime and Issue Monitoring',
     summary: 'Have worked with monitoring logs and setting up system issue alerts, creating additional logs and system reports to provide better insight' +
     ' into systems performance and help with locating problems. Lately started learning to utilise ELK stack for improved monitoring.'
+  }, {
+    type: SkillSetType.Native,
+    title: 'Native Addon Development for Node.js',
+    summary: 'Experienced with developing native solution and addons for Node.js with Node-API, C++ and Objective-C, understanding and applying existing solutions from any other native language like C, Swift or other,s as well as using native APIs and libraries in Windows, Linux and macOS in order to implement required native functionality.'
   }, {
     type: SkillSetType.Testing,
     title: 'Testing',
@@ -425,6 +430,20 @@ export namespace Content {
     sprite: 'cloud-tasks',
     level: SkillLevel.Expert,
     bubble: BubbleType.DevOps
+  }, {
+    title: 'C++',
+    src: 'c++.jpg',
+    sprite: 'c++',
+    level: SkillLevel.Intermediate,
+    bubble: BubbleType.FullStack,
+    set: SkillSetType.Native
+  }, {
+    title: 'Objective-C',
+    src: 'obj-c.jpg',
+    sprite: 'obj-c',
+    level: SkillLevel.Beginner,
+    bubble: BubbleType.FullStack,
+    set: SkillSetType.Native
   }]
 
   export const ExperienceHistory: Experience.History = {
@@ -613,14 +632,14 @@ export namespace Content {
       }, {
         date: '2021-Apr',
         branch: 'bitgapp',
-        comment: 'Joined Bitgapp',
-        description: 'Bitgapp, founded by my partner, is a legal entity that now the two of us use for personal/entrepreneur projects. Reason for joining Bitgapp, instead of creating new legal entity for myself, was plan to collaborate on current and future projects which is easier under one company in terms of legal and financial aspects.'
+        comment: 'Co-owner of Bitgapp Ltd',
+        description: 'Director and co-owner of Bitgapp Limited, a small independent software company based in UK.'
       }, {
         date: '2021-Apr',
         branch: 'bitgapp',
         article: 'cursr',
-        comment: 'Cursr - Utility tool to customise mouse transitions between screens',
-        description: 'Started working on first release of Cursr, a personal project started in order to solve annoyances when moving mouse between different resolution screens, without having to sacrifice screen resolution. Cursr is a cross-platform <b>Electron</b> application for Windows, Mac and list of Linux distributions.',
+        comment: 'Cursr - Utility tool to customize mouse transitions between screens',
+        description: 'Project started in order to solve annoyances when moving mouse between different resolution screens, without having to sacrifice screen resolution and later expanded to further optimize mouse and keyboard usage. Cursr is a <b>cross-platform Electron</b> application for Windows, Mac and list of Linux distributions.',
         focused: true
       }
     ]
@@ -630,7 +649,7 @@ export namespace Content {
     title: 'Cursr',
     type: 'project',
     article: 'cursr',
-    summary: 'Cross-platform software for customising mouse transitions between screens to help optimise workflow and smooth out cursor movement between different resolution screens.',
+    summary: 'Cross-platform software for customizing 🖱️ mouse movement between multiple displays 🖥️ (and soon between multiple Computers) to help optimise workflow and smooth out cursor movement between different resolution screens.',
     startDate: '2021.04',
     endDate: 'Present',
     featured: true,
@@ -643,7 +662,7 @@ export namespace Content {
     title: 'RouteFox (Dissertation)',
     type: 'project',
     article: 'route-fox',
-    summary: 'A mobile travel recommender system, that generates route suggestions between 2+ points of interests, based on the user preferences such as visit length for every place, arrival and departure preferences, the priority of each place as well as preferred transport type. The mobile application also has a feature to live-track a saved route and warn the user if wandering off too far away from the selected path.',
+    summary: 'A mobile 🗺️ travel recommender system, that generates route suggestions between 🏞️ 2+ points of interests, based on the user preferences such as visit length for every place, arrival and departure preferences, the priority of each place as well as preferred 🚈 transport type. The mobile application also has a feature to live-track a saved route and warn the user if wandering off too far away from the selected path.',
     startDate: '2018.01',
     endDate: '2018.04',
     featured: true,
