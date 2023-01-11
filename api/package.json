@@ -25,7 +25,7 @@
     "@prtf/shared": "^1.0.0",
     "apollo-server-fastify": "^2.12.0",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.10.1",
+    "class-validator": "^0.14.0",
     "cors": "^2.8.5",
     "express-rate-limit": "^5.0.0",
     "fastify": "^2.9.0",
