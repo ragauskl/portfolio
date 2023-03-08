@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.7.2",
+    "@nestjs/core": "^9.0.5",
     "@nestjs/graphql": "^7.3.5",
     "@nestjs/platform-fastify": "^6.7.2",
     "@prtf/shared": "^1.0.0",
